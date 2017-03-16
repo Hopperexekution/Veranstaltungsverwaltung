@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -38,15 +40,19 @@ public class Veranstaltung {
 	private Date datum;
 	@Column(name="istveroeffentlicht")
 	private boolean istVeroeffentlicht;
+	@ManyToOne
+	@JoinColumn(name="manager", nullable=false)
+	private Nutzer manager;
 	@OneToMany(mappedBy="veranstaltung", cascade=CascadeType.ALL)
 	private Set<Ticket> tickets;
 	
 	public Veranstaltung(){}
-	public Veranstaltung(String name, String beschreibung, Date datum, boolean istVeroeffentlicht){
+	public Veranstaltung(String name, String beschreibung, Date datum, boolean istVeroeffentlicht, Nutzer manager){
 		this.name = name;
 		this.beschreibung = beschreibung;
 		this.datum = datum;
 		this.istVeroeffentlicht = istVeroeffentlicht;
+		this.manager = manager;
 	}
 	public int getId() {
 		return id;
@@ -77,6 +83,18 @@ public class Veranstaltung {
 	}
 	public void setIstVeroeffentlicht(boolean istVeroeffentlicht) {
 		this.istVeroeffentlicht = istVeroeffentlicht;
+	}
+	public Nutzer getManager() {
+		return manager;
+	}
+	public void setManager(Nutzer manager) {
+		this.manager = manager;
+	}
+	public Set<Ticket> getTickets() {
+		return tickets;
+	}
+	public void setTickets(Set<Ticket> tickets) {
+		this.tickets = tickets;
 	}
 	
 }

@@ -1,16 +1,16 @@
 package de.jee.veranstaltungsverwaltung.model;
 
 import java.util.List;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import org.jboss.logging.Logger;
 import org.jboss.logging.Logger.Level;
 
 import de.jee.veranstaltungsverwaltung.controller.HibernateUtil;
 
 public class ReservierungDAO {
-	private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	private static final Logger logger = Logger.getLogger(ReservierungDAO.class);
 	/**
 	 * Bezieht die Reservierung auf Basis der ID
@@ -19,10 +19,10 @@ public class ReservierungDAO {
 	 */
 	public Reservierung findByID(int id){
 		Reservierung reservierung = null;
-		Session session = null;
+		EntityManager em = null;
 		try{
-			session = sessionFactory.openSession();
-			session.get(Reservierung.class, id);
+			em = HibernateUtil.getEntityManager();
+			reservierung = em.find(Reservierung.class, id);
 		}
 		catch(NullPointerException np){
 			logger.log(Level.INFO, "Die Reservierung mit der ID: " + id + " befindet sich nicht in der Datenbank");
@@ -33,11 +33,10 @@ public class ReservierungDAO {
 			return null;
 		}
 		finally{
-			session.close();
+			em.close();
 		}
 		return reservierung;
 	}
-	@SuppressWarnings("unchecked")
 	/**
 	 * Bezieht die Tickets zu der zugehörigen Reservierung. Dazu wird die Reservierungs-ID verwendet.
 	 * @param reservierungsID Die Reservierungs-ID nach der die Tickets gesucht werden sollen.
@@ -45,18 +44,22 @@ public class ReservierungDAO {
 	 */
 	public List<Ticket> getTicketsByReservierungsID(int reservierungsID){
 		List<Ticket> tickets = null;
-		Session session = null;
+		EntityManager em = null;
 		try{
-			session = sessionFactory.openSession();
-			String hql = "from Ticket t where t.reservierung=" + reservierungsID;
-			tickets = session.createQuery(hql).list();
+			em = HibernateUtil.getEntityManager();
+			CriteriaBuilder cb = HibernateUtil.getCriteriaBuilder();
+			CriteriaQuery<Ticket> query = cb.createQuery(Ticket.class);
+			Root<Ticket> root = query.from(Ticket.class);
+			query.select(root);
+			query.where(cb.equal(root.get("reservierung").as(Integer.class), reservierungsID));
+			tickets = em.createQuery(query).getResultList();
 		}
 		catch(Exception e){
 			logger.log(Level.DEBUG, "Die Tickets zu der Reservierungs-ID: " + reservierungsID + " konnten nicht bezogen werden");
 			return null;
 		}
 		finally{
-			session.close();
+			em.close();
 		}
 		return tickets;
 	}

@@ -1,25 +1,21 @@
 package de.jee.veranstaltungsverwaltung.controller;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-
-import de.jee.veranstaltungsverwaltung.model.Nutzer;
-import de.jee.veranstaltungsverwaltung.model.Reservierung;
-import de.jee.veranstaltungsverwaltung.model.Ticket;
-import de.jee.veranstaltungsverwaltung.model.Veranstaltung;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
 
 public class HibernateUtil {
-	private static SessionFactory sessionFactory ;
-    static {
-   	Configuration configuration = new Configuration().configure();
-   	StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
-   	                              .applySettings(configuration.getProperties());
-       sessionFactory = configuration.addAnnotatedClass(Nutzer.class).addAnnotatedClass(Reservierung.class).addAnnotatedClass(Ticket.class).addAnnotatedClass(Veranstaltung.class).buildSessionFactory(builder.build());
-    }
-   public static SessionFactory getSessionFactory() {
-       return sessionFactory;
-   }
-
+	private static final EntityManagerFactory emFactory;
+	static {
+		   emFactory = Persistence.createEntityManagerFactory("veranstaltungsverwaltung");
+	}
+	public static CriteriaBuilder getCriteriaBuilder(){
+		CriteriaBuilder builder = emFactory.getCriteriaBuilder();
+		return  builder;
+	}
+	public static EntityManager getEntityManager(){
+		return emFactory.createEntityManager();
+	}
 
 }

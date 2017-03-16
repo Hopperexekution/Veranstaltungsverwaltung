@@ -2,24 +2,25 @@ package de.jee.veranstaltungsverwaltung.model;
 
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.jboss.logging.Logger;
 import org.jboss.logging.Logger.Level;
 
 import de.jee.veranstaltungsverwaltung.controller.HibernateUtil;
 
 public class TicketDAO {
-	private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	private Logger logger = Logger.getLogger(TicketDAO.class);
 	
 	public Ticket findByID(int id){
 		Ticket ticket = null;
-		Session session = null;
+		EntityManager em = null;
 		try{
-			session = sessionFactory.openSession();
-			ticket = session.get(Ticket.class, id);		
+			em = HibernateUtil.getEntityManager();
+			ticket = em.find(Ticket.class, id);		
 		}
 		catch(NullPointerException np){
 			logger.log(Level.INFO, "Das Ticket mit der ID: " + id + " befindet sich nicht in der Datenbank.");
@@ -30,22 +31,27 @@ public class TicketDAO {
 			return null;
 		}
 		finally{
-			session.close();
+			em.close();
 		}
 		return ticket;
 	}
 	public List<Ticket> alleTicketsEinerVeranstaltung(Veranstaltung veranstaltung){
+		if(veranstaltung.getId() == 0)
+			return null;
 		List<Ticket> tickets = null;
-		Session session = null;
+		EntityManager em = null;
 		try{
-			session = sessionFactory.openSession();
-			tickets = session.createCriteria(Ticket.class).add(Restrictions.eq("veranstaltung", veranstaltung.getId())).list();
-		}
-		catch(NullPointerException np){
-			
+			em = HibernateUtil.getEntityManager();
+			CriteriaBuilder cb = HibernateUtil.getCriteriaBuilder();
+			CriteriaQuery<Ticket> query = cb.createQuery(Ticket.class);
+			Root<Ticket> root = query.from(Ticket.class);
+			query.select(root);
+			query.where(cb.equal(root.get("veranstaltung").as(Integer.class), veranstaltung.getId()));
+			tickets = em.createQuery(query).getResultList();
 		}
 		catch(Exception e){
-			
+			logger.log(Level.DEBUG, "Die Tickets zu der Veranstaltung mit der ID: " + veranstaltung.getId() + " konnten nicht aus der Datenbank geladen werden\n" + e.getStackTrace());
+			return null;
 		}
 		return tickets;		
 	}

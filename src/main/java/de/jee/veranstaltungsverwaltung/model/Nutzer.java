@@ -22,16 +22,21 @@ public class Nutzer {
 	private String benutzername;
 	@Column(name="passwort",nullable=false,length=60)
 	private String passwort;
-	@Column(name="istmanager", nullable=false)
+	@Column(name="istmanager",nullable=false)
 	private boolean istManager;
+	@Column(name="email",nullable=false,length=255)
+	private String email;
 	@OneToMany(mappedBy="nutzer", cascade=CascadeType.ALL)
 	private Set<Reservierung> reservierungen;
+	@OneToMany(mappedBy="nutzer", cascade=CascadeType.ALL)
+	private Set<Veranstaltung> veranstaltungen;
 	
 	public Nutzer(){}
-	public Nutzer(String benutzername, String passwort, boolean istManager){
+	public Nutzer(String benutzername, String passwort, boolean istManager, String email){
 		this.benutzername = benutzername;
 		this.passwort = passwort;
 		this.istManager = istManager;
+		this.email = email;
 	}
 	public int getId() {
 		return id;
@@ -56,6 +61,18 @@ public class Nutzer {
 	}
 	public void setIstManager(boolean istManager) {
 		this.istManager = istManager;
+	}
+	public Set<Reservierung> getReservierungen() {
+		return reservierungen;
+	}
+	public void setReservierungen(Set<Reservierung> reservierungen) {
+		this.reservierungen = reservierungen;
+	}
+	public Set<Veranstaltung> getVeranstaltungen() {
+		return veranstaltungen;
+	}
+	public void setVeranstaltungen(Set<Veranstaltung> veranstaltungen) {
+		this.veranstaltungen = veranstaltungen;
 	}
 	
 }
