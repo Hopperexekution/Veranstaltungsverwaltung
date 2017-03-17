@@ -1,0 +1,34 @@
+<ui:composition template="./grundform.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<ui:define name="title">
+        Veranstaltungsverwaltung
+    </ui:define>
+	<ui:define name="content">
+		<table class="table-hover">
+		<tr>
+		<td>
+		Titel
+		</td>
+		<td>
+		Beschreibung
+		</td>
+		</tr>
+		<tr>
+		<td>
+		<h:inputText value="#{allEventsRequest.events.name}"></h:inputText>
+		</td>
+		<td>
+		<h:inputText value="#{allEventsRequest.events.name}"></h:inputText>
+		</td>
+		</tr>
+		
+		
+		</table>
+
+		
+	</ui:define>
+</ui:composition>

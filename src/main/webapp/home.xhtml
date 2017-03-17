@@ -1,0 +1,30 @@
+<ui:composition template="./grundform.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<ui:define name="title">
+        Veranstaltungsverwaltung
+    </ui:define>
+	<ui:define name="content">
+
+
+		<h:messages />
+
+		<h:panelGroup rendered="#{security.isLoggedIn()}">
+			<h2>Hello #{security.currentUser.benutzername}</h2>
+			<h:form>
+				<h:commandButton action="#{logoutRequest.doLogout}" value="Logout"></h:commandButton>
+			</h:form>
+		</h:panelGroup>
+
+		<h:panelGroup rendered="#{!security.isLoggedIn()}">
+			<p>
+				You need to
+				<h:link outcome="login" value="Login" />
+			</p>
+		</h:panelGroup>
+		
+	</ui:define>
+</ui:composition>

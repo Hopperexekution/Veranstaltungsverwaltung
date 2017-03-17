@@ -12,4 +12,5 @@ dependencies {
     compile 'org.hibernate:hibernate-core:5.2.8.Final'
     compile 'org.hibernate:hibernate-search-orm:5.7.0.Final'
     compile 'mysql:mysql-connector-java:5.1.6'
+    providedCompile 'javax.enterprise:cdi-api:1.2'
 } 
