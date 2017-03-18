@@ -45,6 +45,9 @@ public class Veranstaltung {
 	private Nutzer manager;
 	@OneToMany(mappedBy="veranstaltung", cascade=CascadeType.ALL)
 	private Set<Ticket> tickets;
+	@ManyToOne
+	@JoinColumn(name="tour", nullable=true)
+	private Tour tour;
 	
 	public Veranstaltung(){}
 	public Veranstaltung(String name, String beschreibung, Date datum, boolean istVeroeffentlicht, Nutzer manager){
@@ -95,6 +98,12 @@ public class Veranstaltung {
 	}
 	public void setTickets(Set<Ticket> tickets) {
 		this.tickets = tickets;
+	}
+	public Tour getTour() {
+		return tour;
+	}
+	public void setTour(Tour tour) {
+		this.tour = tour;
 	}
 	
 }

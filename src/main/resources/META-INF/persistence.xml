@@ -12,6 +12,7 @@
         <class>de.jee.veranstaltungsverwaltung.Veranstaltung</class>
         <class>de.jee.veranstaltungsverwaltung.Reservierung</class>
         <class>de.jee.veranstaltungsverwaltung.Ticket</class>
+        <class>de.jee.veranstaltungsverwaltung.Tour</class>
         <properties>
             <property name="javax.persistence.jdbc.driver"
                       value="com.mysql.jdbc.Driver" />
