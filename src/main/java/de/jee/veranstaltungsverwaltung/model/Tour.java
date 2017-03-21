@@ -20,6 +20,8 @@ public class Tour {
 	private int id;
 	@Column(name="name", length=255)
 	private String name;
+	@Column(name="beschreibung")
+	private String beschreibung;
 	@OneToMany(mappedBy="tour", cascade=CascadeType.ALL)
 	private Set<Veranstaltung> veranstaltungen;
 	
@@ -49,5 +51,11 @@ public class Tour {
 	}
 	public void setVeranstaltungen(Set<Veranstaltung> veranstaltungen) {
 		this.veranstaltungen = veranstaltungen;
+	}
+	public String getBeschreibung() {
+		return beschreibung;
+	}
+	public void setBeschreibung(String beschreibung) {
+		this.beschreibung = beschreibung;
 	}
 }

@@ -42,6 +42,8 @@ public class Veranstaltung {
 	private String ort;
 	@Column(name="istveroeffentlicht")
 	private boolean istVeroeffentlicht;
+	@Column(name="ticketpreis")
+	private double ticketPreis;
 	@ManyToOne
 	@JoinColumn(name="manager", nullable=false)
 	private Nutzer manager;
@@ -120,6 +122,12 @@ public class Veranstaltung {
 	}
 	public void setOrt(String ort) {
 		this.ort = ort;
+	}
+	public double getTicketPreis() {
+		return ticketPreis;
+	}
+	public void setTicketPreis(double ticketPreis) {
+		this.ticketPreis = ticketPreis;
 	}
 	
 }
