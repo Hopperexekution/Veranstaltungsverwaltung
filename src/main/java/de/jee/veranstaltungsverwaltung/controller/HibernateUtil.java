@@ -6,16 +6,23 @@ import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
 
 public class HibernateUtil {
-	private static final EntityManagerFactory emFactory;
-	static {
+	private static HibernateUtil hibernateUtil = null;
+	private static EntityManagerFactory emFactory = null;
+	private HibernateUtil() {
 		   emFactory = Persistence.createEntityManagerFactory("veranstaltungsverwaltung");
 	}
+	public static EntityManagerFactory getEntityManagerFactory(){
+		if (hibernateUtil == null){
+			hibernateUtil =  new HibernateUtil();
+		}
+		return emFactory;
+	}
 	public static CriteriaBuilder getCriteriaBuilder(){
-		CriteriaBuilder builder = emFactory.getCriteriaBuilder();
+		CriteriaBuilder builder = HibernateUtil.getEntityManagerFactory().getCriteriaBuilder();
 		return  builder;
 	}
 	public static EntityManager getEntityManager(){
-		return emFactory.createEntityManager();
+		return HibernateUtil.getEntityManagerFactory().createEntityManager();
 	}
 
 }

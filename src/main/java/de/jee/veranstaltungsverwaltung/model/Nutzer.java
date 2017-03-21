@@ -28,7 +28,7 @@ public class Nutzer {
 	private String email;
 	@OneToMany(mappedBy="nutzer", cascade=CascadeType.ALL)
 	private Set<Reservierung> reservierungen;
-	@OneToMany(mappedBy="nutzer", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="manager", cascade=CascadeType.ALL)
 	private Set<Veranstaltung> veranstaltungen;
 	
 	public Nutzer(){}
@@ -73,6 +73,12 @@ public class Nutzer {
 	}
 	public void setVeranstaltungen(Set<Veranstaltung> veranstaltungen) {
 		this.veranstaltungen = veranstaltungen;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 }

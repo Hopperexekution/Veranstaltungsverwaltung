@@ -146,4 +146,26 @@ public class VeranstaltungDAO {
 			}
 			return returncode;
 		}
+		public int save(Veranstaltung veranstaltung, int anzahlTickets){
+			int returncode = 0;
+			EntityManager em = null;
+			try{
+				if(veranstaltung.getName() == null)
+					return -2;
+				em = HibernateUtil.getEntityManager();
+				em.getTransaction().begin();
+				em.persist(veranstaltung);
+				for(int i = 0; i < anzahlTickets; i++)
+					em.persist(new Ticket(veranstaltung));
+				em.getTransaction().commit();
+			}
+			catch(Exception e){
+				logger.log(Level.DEBUG, "Die Veranstaltung mit dem Namen: " + veranstaltung.getName() + " konnte nicht gespeichert werden\n" + e.getStackTrace());
+				returncode = -1;
+			}
+			finally{
+				em.close();
+			}
+			return returncode;
+		}
 }

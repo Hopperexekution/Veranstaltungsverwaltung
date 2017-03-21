@@ -30,7 +30,7 @@ CREATE TABLE `nutzer` (
   `email` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `benutzername_UNIQUE` (`benutzername`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `nutzer` (
 
 LOCK TABLES `nutzer` WRITE;
 /*!40000 ALTER TABLE `nutzer` DISABLE KEYS */;
-INSERT INTO `nutzer` VALUES (1,'jan','test',1,'');
+INSERT INTO `nutzer` VALUES (3,'jan','123456',1,'jan.raupach@gmail.com'),(4,'janni','123456',1,'jan.raupach@googlemail.com');
 /*!40000 ALTER TABLE `nutzer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,13 +81,11 @@ CREATE TABLE `ticket` (
   `veranstaltung` int(11) NOT NULL,
   `reservierung` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `veranstaltung_UNIQUE` (`veranstaltung`),
   KEY `reservierung_idx` (`reservierung`),
-  CONSTRAINT `FKpwhut7pf5xiib6t9sf2gft8lx` FOREIGN KEY (`reservierung`) REFERENCES `reservierung` (`id`),
-  CONSTRAINT `FKrq1xrm6st48xi3fa56srlwu1v` FOREIGN KEY (`veranstaltung`) REFERENCES `veranstaltung` (`id`),
+  KEY `veranstaltung_idx` (`veranstaltung`),
   CONSTRAINT `reservierung` FOREIGN KEY (`reservierung`) REFERENCES `reservierung` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `veranstaltung` FOREIGN KEY (`veranstaltung`) REFERENCES `veranstaltung` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,6 +94,7 @@ CREATE TABLE `ticket` (
 
 LOCK TABLES `ticket` WRITE;
 /*!40000 ALTER TABLE `ticket` DISABLE KEYS */;
+INSERT INTO `ticket` VALUES (25,4,NULL),(26,4,NULL),(27,4,NULL),(28,4,NULL),(29,4,NULL),(30,4,NULL),(31,4,NULL),(32,4,NULL),(33,4,NULL),(34,4,NULL),(35,4,NULL),(36,4,NULL),(37,4,NULL),(38,4,NULL),(39,4,NULL),(40,4,NULL),(41,4,NULL),(42,4,NULL),(43,4,NULL),(44,4,NULL);
 /*!40000 ALTER TABLE `ticket` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,6 +133,7 @@ CREATE TABLE `veranstaltung` (
   `name` varchar(255) NOT NULL,
   `beschreibung` longtext NOT NULL,
   `datum` date NOT NULL,
+  `ort` varchar(255) NOT NULL DEFAULT 'Noch nicht bekannt',
   `istveroeffentlicht` tinyint(4) NOT NULL,
   `manager` int(11) NOT NULL,
   `bild` blob,
@@ -143,7 +143,7 @@ CREATE TABLE `veranstaltung` (
   KEY `Tour_idx` (`tour`),
   CONSTRAINT `Manger` FOREIGN KEY (`manager`) REFERENCES `nutzer` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Tour` FOREIGN KEY (`tour`) REFERENCES `tour` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -152,6 +152,7 @@ CREATE TABLE `veranstaltung` (
 
 LOCK TABLES `veranstaltung` WRITE;
 /*!40000 ALTER TABLE `veranstaltung` DISABLE KEYS */;
+INSERT INTO `veranstaltung` VALUES (4,'Stalken','ldifgoifdjgodgod','2011-01-11','Münster',1,3,NULL,NULL);
 /*!40000 ALTER TABLE `veranstaltung` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -164,4 +165,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-18 16:56:19
+-- Dump completed on 2017-03-21 11:41:50

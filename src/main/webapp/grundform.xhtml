@@ -14,10 +14,10 @@
 			<div class="navbar navbar-inverse navbar-static-top">
   				<div class="container">
     				<ul class="nav navbar-nav">
-      					<li class="active"><h:link outcome = "home.jsf" value="Home"/></li>
       					<li><h:link outcome = "home.jsf" value="Home"/></li>
-      					<li><h:link outcome = "alleVeranstaltungen.jsf" value="Home"/></li>
-      					<li><h:link rendered="#{security.isManager()}" outcome = "newVeranstaltung.jsf" value="Neues Event"/></li>
+      					<li><h:link rendered="#{security.isManager()}" outcome = "neue_tour.jsf" value="Neue Tour"/></li>
+      					<li><h:link rendered="#{security.isManager()}" outcome = "neue_veranstaltung.jsf" value="Neue Veranstaltung"/></li>
+      					<li><h:link outcome = "veranstaltung_suchen.jsf" value="Veranstaltung suchen"/></li>
       					<li><h:commandLink rendered="#{security.isLoggedIn()}" action = "#{logoutRequest.doLogout}" value="Logout"/></li>
       					<li><h:link rendered="#{!security.isLoggedIn()}" outcome = "register.jsf" value="Registrieren"/></li>
       					<li><h:link rendered="#{!security.isLoggedIn()}" outcome = "login.jsf" value="Login"/></li>

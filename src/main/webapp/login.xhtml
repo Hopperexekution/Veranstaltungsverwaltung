@@ -6,36 +6,28 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
 	<ui:define name="title">
-        Login Veranstaltungsverwaltung
+        Login
     </ui:define>
 
 	<ui:define name="content">
-		<h:panelGroup rendered="#{!security.isLoggedIn()}">
-			
+		<h:panelGroup rendered="#{!security.isLoggedIn()}">		
 			<div class="container">
 				<h:form>
-					<table>
-					<tr>
-					<td><h:inputText class="form-control" id="nutzer" value="#{loginRequest.user}"
+					<h:message for="user" style="color:red"/>	
+					<h:inputText class="form-control" id="user" value="#{loginRequest.user}"
 						pt:placeholder="Benutzername" pt:required="true">
 						<f:converter binding="#{userConverter}" />
-					</h:inputText></td>
-					<td><h:message for="nutzer" style="color:red"/></td>
-					</tr>
-					<tr>
-					<td>
-					<h:inputSecret id="pass" value="#{loginRequest.passwort}"
+					</h:inputText>
+					<br/>
+					<h:message for="pass" style="color:red"/>			
+					<h:inputSecret class="form-control" id="pass" value="#{loginRequest.passwort}"
 						pt:placeholder="Passwort" pt:required="true">
-					</h:inputSecret></td>
-					<td><h:message for="pass" style="color:red"/></td>
-					</tr>
-					<tr>
-					
-					<td align="right">
+					</h:inputSecret>
+					<br/>
 					<h:commandButton class="btn" action="#{loginRequest.doLogin}"
-						value="Login"></h:commandButton></td>
-				    </tr>
-						</table>
+						value="Login"></h:commandButton>
+					<br/>
+					<br/>
 				</h:form>
 				<p>
 					Noch nicht angemeldet?

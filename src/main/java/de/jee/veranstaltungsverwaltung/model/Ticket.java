@@ -17,13 +17,16 @@ public class Ticket {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	@ManyToOne
-	@JoinColumn(name="veranstaltung", nullable=false, unique=true)
+	@JoinColumn(name="veranstaltung", nullable=false)
 	private Veranstaltung veranstaltung;
 	@ManyToOne
 	@JoinColumn(name="reservierung")
 	private Reservierung reservierung;
 	
 	public Ticket(){}
+	public Ticket(Veranstaltung veranstaltung){
+		this.veranstaltung = veranstaltung;
+	}
 	public Ticket(Veranstaltung veranstaltung, Reservierung reservierung){
 		this.veranstaltung = veranstaltung;
 		this.reservierung = reservierung;

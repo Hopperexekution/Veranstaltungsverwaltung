@@ -6,47 +6,53 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
 	<ui:define name="title">
-        Login Veranstaltungsverwaltung
+        Registrieren
     </ui:define>
 
 	<ui:define name="content">
 		<h:panelGroup>
-		<div class="container">
-			<h:form>
-			
-				<h:inputText id="email" class= "form-control" value="#{registerRequest.email}" 
-				pt:placeholder="Email-Adresse" pt:required="true" pt:type="email">
-				</h:inputText>
-				<h:message for="user" style="color:red"></h:message>
-				<br/>
-				<h:inputText id="user" class= "form-control" value="#{registerRequest.benutzername}" 
-				pt:placeholder="Benutzername" pt:required="true">
-				</h:inputText>
-				<h:message for="user" style="color:red"></h:message>
-				<br/>
-				<h:inputSecret id="pass1" class="form-control" value="#{registerRequest.passwort1}" 
-				pt:placeholder="Passwort" pt:required ="true">
-					<f:validateLength minimum="6" maximum="32"/>
-				</h:inputSecret>
-				<h:message for="pass1" style="color:red"></h:message>
-				<br/>
-				<h:inputSecret id="pass2" class="form-control" value="#{registerRequest.passwort2}" 
-				pt:placeholder="Passwort bestätigen" pt:required="true"
-				></h:inputSecret>
-				<h:message for="pass2" style="color:red"></h:message>
-				<br/>
-				
-  				<h:selectBooleanCheckbox value="#{registerRequest.istManager}"/>Manager
-				<br/>
-				<h:commandButton class="btn" action="#{registerRequest.doRegister}" value="Registrieren">
-				</h:commandButton>
-			</h:form>
-			<p>
-				Bereits registriert?
-				<h:link outcome="login" value="Login"/>
-			</p>
-		</div>
+			<div class="container">
+				<h:form id="registerForm">
+					<h:message for="user" style="color:red"></h:message>
+					<h:inputText id="user" class="form-control"
+						value="#{registerRequest.benutzername}"
+						pt:placeholder="Benutzername" pt:required="true">
+						<f:validator
+							validatorId="de.jee.veranstaltungsverwaltung.validator.UsernameValidator"></f:validator>
+					</h:inputText>
+					<br />
+					<h:inputText id="email" class="form-control"
+						value="#{registerRequest.email}" pt:placeholder="Email-Adresse"
+						pt:required="true" pt:type="email">
+					</h:inputText>
+					<br/>
+					<h:inputSecret id="pass1" class="form-control"
+						value="#{registerRequest.passwort1}" pt:placeholder="Passwort"
+						pt:required="true">
+						<f:validateLength minimum="6" maximum="32" />
+					</h:inputSecret>
+					<h:message for="pass1" style="color:red"></h:message>
+					<br />
+					<h:inputSecret id="pass2" class="form-control"
+						value="#{registerRequest.passwort2}"
+						pt:placeholder="Passwort bestätigen" pt:required="true"></h:inputSecret>
+					<h:message for="pass2" style="color:red"></h:message>
+					<br />
+
+					<h:selectBooleanCheckbox value="#{registerRequest.istManager}" /> Manager
+					<br/>
+					<br/>
+					<h:commandButton class="btn" action="#{registerRequest.doRegister}"
+						value="Registrieren">
+					</h:commandButton>
+					<br/>
+					<br/>
+				</h:form>
+				<p>
+					Bereits registriert?
+					<h:link outcome="login" value="Login" />
+				</p>
+			</div>
 		</h:panelGroup>
-		<h:message/>
 	</ui:define>
 </ui:composition>

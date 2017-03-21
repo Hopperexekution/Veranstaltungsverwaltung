@@ -16,8 +16,7 @@ public class RegisterRequest {
 	@Inject
 	private Security security;
 
-	private String benutzername;
-
+	private String benutzername;;
 	private String passwort1;
 	
 	private String passwort2;
@@ -35,6 +34,8 @@ public class RegisterRequest {
 					security.login(nutzer);
 				}
 			}
+			else{
+			}				
 		}
 		return "home";
 	}
@@ -79,5 +80,4 @@ public class RegisterRequest {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 }

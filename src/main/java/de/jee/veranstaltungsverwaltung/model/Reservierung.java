@@ -42,5 +42,11 @@ public class Reservierung {
 	public void setNutzer(Nutzer nutzer) {
 		this.nutzer = nutzer;
 	}
+	public Set<Ticket> getTickets() {
+		return tickets;
+	}
+	public void setTickets(Set<Ticket> tickets) {
+		this.tickets = tickets;
+	}
 	
 }

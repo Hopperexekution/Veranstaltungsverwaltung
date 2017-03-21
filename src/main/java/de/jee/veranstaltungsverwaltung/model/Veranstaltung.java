@@ -38,6 +38,8 @@ public class Veranstaltung {
 	private String beschreibung;
 	@Column(name="datum")
 	private Date datum;
+	@Column(name="ort")
+	private String ort;
 	@Column(name="istveroeffentlicht")
 	private boolean istVeroeffentlicht;
 	@ManyToOne
@@ -54,6 +56,14 @@ public class Veranstaltung {
 		this.name = name;
 		this.beschreibung = beschreibung;
 		this.datum = datum;
+		this.istVeroeffentlicht = istVeroeffentlicht;
+		this.manager = manager;
+	}
+	public Veranstaltung(String name, String beschreibung, Date datum, String ort, boolean istVeroeffentlicht, Nutzer manager){
+		this.name = name;
+		this.beschreibung = beschreibung;
+		this.datum = datum;
+		this.ort = ort;
 		this.istVeroeffentlicht = istVeroeffentlicht;
 		this.manager = manager;
 	}
@@ -104,6 +114,12 @@ public class Veranstaltung {
 	}
 	public void setTour(Tour tour) {
 		this.tour = tour;
+	}
+	public String getOrt() {
+		return ort;
+	}
+	public void setOrt(String ort) {
+		this.ort = ort;
 	}
 	
 }
