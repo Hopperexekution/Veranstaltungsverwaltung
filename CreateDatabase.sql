@@ -108,6 +108,7 @@ DROP TABLE IF EXISTS `tour`;
 CREATE TABLE `tour` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
+  `beschreibung` longtext,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -136,6 +137,7 @@ CREATE TABLE `veranstaltung` (
   `ort` varchar(255) NOT NULL DEFAULT 'Noch nicht bekannt',
   `istveroeffentlicht` tinyint(4) NOT NULL,
   `manager` int(11) NOT NULL,
+  `ticketpreis` double DEFAULT NULL,
   `bild` blob,
   `tour` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -152,7 +154,7 @@ CREATE TABLE `veranstaltung` (
 
 LOCK TABLES `veranstaltung` WRITE;
 /*!40000 ALTER TABLE `veranstaltung` DISABLE KEYS */;
-INSERT INTO `veranstaltung` VALUES (4,'Stalken','ldifgoifdjgodgod','2011-01-11','Münster',1,3,NULL,NULL);
+INSERT INTO `veranstaltung` VALUES (4,'Stalken','ldifgoifdjgodgod','2011-01-11','Münster',1,3,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `veranstaltung` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -165,4 +167,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-21 11:41:50
+-- Dump completed on 2017-03-21 23:41:11
