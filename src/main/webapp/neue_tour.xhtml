@@ -2,12 +2,70 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<ui:define name="title">
         Neue Tour erstellen
     </ui:define>
 	<ui:define name="content">
+
+
+		<div class="col-xs-3">
+
+			<ul class="nav nav-tabs tabs-left"  id="Tourtabs"
+				data-tabs="tabs">
+				
+				<li><a href="#tour" data-toggle="tab">Tour</a></li>
+				<c:if test="#{tourRequest.tourid!=0}">
+				<li><a href="#veranstaltungen" data-toggle="tab">Veranstaltungen</a></li>
+				<li><a href="#abschließen" data-toggle="tab">Abschließen</a></li>
+				</c:if>
+
+
+			</ul>
+		</div>
+		<div class="col-xs-9">
+			
+			<div class="tab-content">
+				<div class="tab-pane fade in active" id="tour">
+					<h:form>
+						<h:inputText id="name" class="form-control"
+							value="#{tourRequest.tourname}" pt:placeholder="Name der Tour"
+							pt:required="true">
+						</h:inputText>
+						<br />
+						<p>Beschreibung:</p>
+						<h:inputTextarea id="beschreibung" class="form-control"
+							value="#{tourRequest.tourbeschreibung}" cols="5">
+						</h:inputTextarea>
+						<h:inputHidden value="tourRequest.tourid"/>
+
+						<h:commandButton class="btn" action="#{tourRequest.erstelleTour}"
+							value="Bestätigen">
+						</h:commandButton>
+					</h:form>
+				</div>
+				<div class="tab-pane fade" id="veranstaltungen">
+				
+				<h:outputLabel value="#{tourRequest.tourid}"></h:outputLabel>
+				
+				
+				</div>
+				<div class="tab-pane fade" id="abschließen">Hier eine Möglichkeit,
+					komplett oder nur einzelne Veranstaltungen zu veröffentlichen</div>
+			</div>
+		</div>
+
+
+
 		
+
+
+
+
+
+
 	</ui:define>
 </ui:composition>
