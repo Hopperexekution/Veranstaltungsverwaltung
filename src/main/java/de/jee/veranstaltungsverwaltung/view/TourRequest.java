@@ -1,13 +1,18 @@
 package de.jee.veranstaltungsverwaltung.view;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import de.jee.veranstaltungsverwaltung.controller.Security;
+import de.jee.veranstaltungsverwaltung.model.Tour;
+import de.jee.veranstaltungsverwaltung.model.TourDAO;
 import de.jee.veranstaltungsverwaltung.model.Veranstaltung;
 
 @Named
@@ -19,15 +24,29 @@ public class TourRequest {
 	private String tourbeschreibung;
 	private int tourid;
 	private List<Veranstaltung> veranstaltungen;
+	
+
 
 	
 	public String erstelleTour(){
 		if(tourbeschreibung == null)
 			tourbeschreibung = "";
-		System.out.println("Hier fehlt ein passendes DAO für die Tour, DB zudem anpassen, Beschreibung fehlt");
-		setTourid(100);
-		veranstaltungen=new ArrayList<Veranstaltung>();
+		TourDAO dao = new TourDAO();
 		
+		
+		setTourid(dao.save(new Tour(tourname, tourbeschreibung, new HashSet<Veranstaltung>(veranstaltungen) )));
+		
+		
+
+		return "neue_tour";
+	}
+	public String erstelleVeranstaltung(){
+		if(veranstaltungen==null){
+			veranstaltungen=new ArrayList<Veranstaltung>();
+		}
+		if(tourbeschreibung == null)
+			tourbeschreibung = "";
+		veranstaltungen.add(new Veranstaltung(tourname,tourbeschreibung, new Date(), false, security.getCurrentUser()));
 
 		return "neue_tour";
 	}
@@ -74,6 +93,7 @@ public class TourRequest {
 	public void setTourid(int tourid) {
 		this.tourid = tourid;
 	}
+
 
 	
 

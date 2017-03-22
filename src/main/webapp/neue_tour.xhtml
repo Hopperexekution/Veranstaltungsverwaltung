@@ -12,25 +12,27 @@
 	<ui:define name="content">
 
 
+
+
+
 		<div class="col-xs-3">
 
-			<ul class="nav nav-tabs tabs-left"  id="Tourtabs"
-				data-tabs="tabs">
-				
+			<ul class="nav nav-tabs tabs-left" id="myTab" data-tabs="tabs">
+
 				<li><a href="#tour" data-toggle="tab">Tour</a></li>
-				<c:if test="#{tourRequest.tourid!=0}">
+
 				<li><a href="#veranstaltungen" data-toggle="tab">Veranstaltungen</a></li>
 				<li><a href="#abschließen" data-toggle="tab">Abschließen</a></li>
-				</c:if>
+
 
 
 			</ul>
 		</div>
 		<div class="col-xs-9">
-			
-			<div class="tab-content">
-				<div class="tab-pane fade in active" id="tour">
-					<h:form>
+			<h:form>
+				<div class="tab-content">
+					<div class="tab-pane fade in active" id="tour">
+
 						<h:inputText id="name" class="form-control"
 							value="#{tourRequest.tourname}" pt:placeholder="Name der Tour"
 							pt:required="true">
@@ -40,27 +42,40 @@
 						<h:inputTextarea id="beschreibung" class="form-control"
 							value="#{tourRequest.tourbeschreibung}" cols="5">
 						</h:inputTextarea>
-						<h:inputHidden value="tourRequest.tourid"/>
 
-						<h:commandButton class="btn" action="#{tourRequest.erstelleTour}"
-							value="Bestätigen">
+
+					</div>
+					<div class="tab-pane fade" id="veranstaltungen">
+
+
+						<h:dataTable value="#{tourRequest.veranstaltungen}" var="event">
+							<h:column>
+								<h:inputText class="form-control" value="#{event.name}"></h:inputText>
+							</h:column>
+							<h:column>
+								<h:inputText class="form-control" value="#{event.beschreibung}"></h:inputText>
+							</h:column>
+
+						</h:dataTable>
+						<h:commandButton class="btn"
+							action="#{tourRequest.erstelleVeranstaltung}"
+							value="neue Veranstaltung">
 						</h:commandButton>
-					</h:form>
+
+
+
+
+					</div>
+					<div class="tab-pane fade" id="abschließen">Hier eine
+						Möglichkeit, komplett oder nur einzelne Veranstaltungen zu
+						veröffentlichen</div>
 				</div>
-				<div class="tab-pane fade" id="veranstaltungen">
-				
-				<h:outputLabel value="#{tourRequest.tourid}"></h:outputLabel>
-				
-				
-				</div>
-				<div class="tab-pane fade" id="abschließen">Hier eine Möglichkeit,
-					komplett oder nur einzelne Veranstaltungen zu veröffentlichen</div>
-			</div>
+			</h:form>
 		</div>
 
 
 
-		
+
 
 
 

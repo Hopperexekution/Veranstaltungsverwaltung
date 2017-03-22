@@ -32,9 +32,7 @@ public class Security implements Serializable{
 	public void login(Nutzer user){
 		currentUser = user;
 	}
-	public Nutzer getUser(){
-		return currentUser;
-	}
+
 	public void logout(){
 		currentUser=null;
 	}

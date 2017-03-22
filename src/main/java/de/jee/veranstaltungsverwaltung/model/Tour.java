@@ -34,6 +34,11 @@ public class Tour {
 		this.veranstaltungen = veranstaltungen;
 		
 	}
+	public Tour(String name, String beschreibung, Set<Veranstaltung> veranstaltungen){
+		this.name=name;
+		this.beschreibung=beschreibung;
+		this.veranstaltungen=veranstaltungen;
+	}
 	public int getId() {
 		return id;
 	}
