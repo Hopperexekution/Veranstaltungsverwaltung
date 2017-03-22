@@ -25,7 +25,7 @@
 					<h:inputText id="datum" class="form-control" pt:type="date"
 						value="#{veranstaltungRequest.datum}"
 						pt:placeholder="Datum" pt:required="true">
-							<f:convertDateTime/>
+							<f:convertDateTime pattern="yyyy-M-d"/>
 					</h:inputText>
 					<br/>
 					<h:inputText id="ort" class="form-control"

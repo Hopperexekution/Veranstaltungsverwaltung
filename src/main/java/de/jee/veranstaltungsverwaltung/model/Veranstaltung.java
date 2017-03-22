@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,13 +14,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 @Entity
 @Indexed
@@ -35,10 +37,14 @@ public class Veranstaltung {
 	@Field(index=Index.YES, analyze=Analyze.YES, store = Store.YES)
 	private String name;
 	@Column(name="beschreibung")
+	@Field(index=Index.YES, analyze=Analyze.YES, store = Store.YES)
 	private String beschreibung;
 	@Column(name="datum")
+	@Field(index=Index.YES, analyze=Analyze.NO, store=Store.YES)
+	@DateBridge(resolution=Resolution.MILLISECOND)
 	private Date datum;
 	@Column(name="ort")
+	@Field(index=Index.YES, analyze=Analyze.YES, store = Store.YES)
 	private String ort;
 	@Column(name="istveroeffentlicht")
 	private boolean istVeroeffentlicht;
@@ -47,7 +53,7 @@ public class Veranstaltung {
 	@ManyToOne
 	@JoinColumn(name="manager", nullable=false)
 	private Nutzer manager;
-	@OneToMany(mappedBy="veranstaltung", cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="veranstaltung", cascade=CascadeType.ALL)
 	private Set<Ticket> tickets;
 	@ManyToOne
 	@JoinColumn(name="tour", nullable=true)

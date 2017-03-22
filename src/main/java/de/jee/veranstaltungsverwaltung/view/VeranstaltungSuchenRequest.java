@@ -1,5 +1,6 @@
 package de.jee.veranstaltungsverwaltung.view;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import javax.inject.Named;
 
 import de.jee.veranstaltungsverwaltung.controller.Security;
 import de.jee.veranstaltungsverwaltung.model.Veranstaltung;
+import de.jee.veranstaltungsverwaltung.model.VeranstaltungDAO;
 
 @Named
 @RequestScoped
@@ -19,28 +21,33 @@ public class VeranstaltungSuchenRequest {
 	private String suchString;
 	private Date vonDatum;
 	private Date bisDatum;
-	private String anzahlTickets;
+	private int anzahlTickets;
 	private List<Veranstaltung> veranstaltungsListe;
 	
 	public void sucheVeranstaltung(){
+		List<Veranstaltung> veranstaltungen = new ArrayList<Veranstaltung>();
+		System.out.println("Ich gehe hier rein");
+		VeranstaltungDAO dao = new VeranstaltungDAO();
 		if((vonDatum == null && bisDatum == null) || (vonDatum != null && bisDatum != null)){
 			if(vonDatum == null){
-				if(anzahlTickets == null){
-					
+				if(anzahlTickets <= 0){
+					veranstaltungen = dao.findByName(suchString);	
 				}
 				else{
-					
+					veranstaltungen = dao.findByName(suchString, anzahlTickets);
 				}
 			}
 			else{
-				if(anzahlTickets == null){
-					
+				if(anzahlTickets <= 0){
+					veranstaltungen = dao.findByName(suchString, vonDatum, bisDatum);
 				}
 				else{
-					
+					veranstaltungen = dao.findByName(suchString, vonDatum, bisDatum, anzahlTickets);
 				}
 			}
 		}
+		for(Veranstaltung veranstaltung : veranstaltungen)
+			System.out.println("Name: " + veranstaltung.getName() + " Beschreibung: " + veranstaltung.getBeschreibung() + " Anzahl Tickets: " + veranstaltung.getTickets().size());
 	}
 
 	public Security getSecurity() {
@@ -75,11 +82,11 @@ public class VeranstaltungSuchenRequest {
 		this.bisDatum = bisDatum;
 	}
 
-	public String getAnzahlTickets() {
+	public int getAnzahlTickets() {
 		return anzahlTickets;
 	}
 
-	public void setAnzahlTickets(String anzahlTickets) {
+	public void setAnzahlTickets(int anzahlTickets) {
 		this.anzahlTickets = anzahlTickets;
 	}
 

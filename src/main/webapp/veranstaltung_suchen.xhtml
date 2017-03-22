@@ -13,32 +13,35 @@
 			<div class="container">
 				<h1>Veranstaltungen suchen</h1>
 				<h:form id="suchenForm">
-					<h:panelGrid columns="6">
 						<p>Suchfeld:</p>
 						<p>von:</p>
 						<p>bis:</p>
 						<p>Mindestens verfügbare Tickets:</p>
 						<p></p>
+						<h:message for="suche"></h:message>
 						<h:inputText id="suche" class="form-control" value="#{veranstaltungSuchenRequest.suchString}" pt:placeholder="Suchfeld" pt:required="true">
 						</h:inputText>
+						<h:message for="vonDatum"></h:message>
 						<h:inputText id="vonDatum" class="form-control" pt:type="date"
 						value="#{veranstaltungSuchenRequest.vonDatum}"
-						pt:placeholder="Datum" pt:required="true">
-							<f:convertDateTime/>
+						pt:placeholder="Datum">
+							<f:convertDateTime pattern="yyyy-M-d"/>
 						</h:inputText>
+						<h:message for="bisDatum"></h:message>
 						<h:inputText id="bisDatum" class="form-control" pt:type="date"
 						value="#{veranstaltungSuchenRequest.bisDatum}"
-						pt:placeholder="Datum" pt:required="true">
-							<f:convertDateTime/>
+						pt:placeholder="Datum">
+							<f:convertDateTime pattern="yyyy-M-d"/>
 						</h:inputText>
+						<h:message for="anzahlTickets"></h:message>
 						<h:inputText id="anzahlTickets" class="form-control"
-						value="#{veranstaltungRequest.anzahlTickets}"
+						value="#{veranstaltungSuchenRequest.anzahlTickets}"
 						pt:placeholder="Anzahl Tickets" pt:required="true">
+						 <f:converter converterId="javax.faces.Integer"/>
 						</h:inputText>
-						<h:commandButton class="btn" action="#{veranstaltungRequest.sucheVeranstaltung}"
+						<h:commandButton class="btn" action="#{veranstaltungSuchenRequest.sucheVeranstaltung}"
 						value="Suchen">
 					</h:commandButton>
-					</h:panelGrid>
 				</h:form>
 			</div>
 		</h:panelGroup>	
