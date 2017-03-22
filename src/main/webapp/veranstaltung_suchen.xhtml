@@ -9,41 +9,71 @@
         Veranstaltung suchen
     </ui:define>
 	<ui:define name="content">
-		<h:panelGroup>
-			<div class="container">
+			<div class="container-fluid">
 				<h1>Veranstaltungen suchen</h1>
 				<h:form id="suchenForm">
-						<p>Suchfeld:</p>
-						<p>von:</p>
-						<p>bis:</p>
-						<p>Mindestens verfügbare Tickets:</p>
-						<p></p>
-						<h:message for="suche"></h:message>
-						<h:inputText id="suche" class="form-control" value="#{veranstaltungSuchenRequest.suchString}" pt:placeholder="Suchfeld" pt:required="true">
-						</h:inputText>
-						<h:message for="vonDatum"></h:message>
-						<h:inputText id="vonDatum" class="form-control" pt:type="date"
-						value="#{veranstaltungSuchenRequest.vonDatum}"
-						pt:placeholder="Datum">
-							<f:convertDateTime pattern="yyyy-M-d"/>
-						</h:inputText>
-						<h:message for="bisDatum"></h:message>
-						<h:inputText id="bisDatum" class="form-control" pt:type="date"
-						value="#{veranstaltungSuchenRequest.bisDatum}"
-						pt:placeholder="Datum">
-							<f:convertDateTime pattern="yyyy-M-d"/>
-						</h:inputText>
-						<h:message for="anzahlTickets"></h:message>
-						<h:inputText id="anzahlTickets" class="form-control"
-						value="#{veranstaltungSuchenRequest.anzahlTickets}"
-						pt:placeholder="Anzahl Tickets" pt:required="true">
-						 <f:converter converterId="javax.faces.Integer"/>
-						</h:inputText>
-						<h:commandButton class="btn" action="#{veranstaltungSuchenRequest.sucheVeranstaltung}"
-						value="Suchen">
-					</h:commandButton>
+					<div class="row">
+						<div class="col-md-3">
+							<p>Suchfeld:</p>
+						</div>
+						<div class="col-md-3">
+							<p>von:</p>
+						</div>
+						<div class="col-md-3">
+							<p>bis:</p>
+						</div>
+						<div class="col-md-3">
+							<p>Mindestens verfügbare Tickets:</p>
+						</div>
+						<div class="col-md-3">
+							<p></p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<h:inputText id="suche" class="form-control" value="#{veranstaltungSuchenRequest.suchString}" pt:placeholder="Suchfeld" pt:required="true">
+							</h:inputText>
+						</div>
+						<div class="col-md-3">
+							<h:inputText id="vonDatum" class="form-control" pt:type="date"
+							value="#{veranstaltungSuchenRequest.vonDatum}"
+							pt:placeholder="Datum">
+								<f:convertDateTime pattern="yyyy-M-d"/>
+							</h:inputText>
+						</div>
+						<div class="col-md-3">
+							<h:inputText id="bisDatum" class="form-control" pt:type="date"
+							value="#{veranstaltungSuchenRequest.bisDatum}"
+							pt:placeholder="Datum">
+								<f:convertDateTime pattern="yyyy-M-d"/>
+							</h:inputText>
+						</div>
+						<div class="col-md-3">
+							<h:inputText id="anzahlTickets" class="form-control"
+							value="#{veranstaltungSuchenRequest.anzahlTickets}"
+							pt:placeholder="Anzahl Tickets" pt:required="true">
+							 <f:converter converterId="javax.faces.Integer"/>
+							</h:inputText>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<h:message for="suche"></h:message>
+						</div>
+						<div class="col-md-3">
+							<h:message for="vonDatum"></h:message>
+						</div>
+						<div class="col-md-3">
+							<h:message for="bisDatum"></h:message>
+						</div>
+						<div class="col-md-3">	
+							<h:message for="anzahlTickets"></h:message>
+						</div>
+					</div>
+					<h:commandButton class="btn" action="#{veranstaltungSuchenRequest.sucheVeranstaltung}"
+							value="Suchen">
+							</h:commandButton>
 				</h:form>
 			</div>
-		</h:panelGroup>	
 	</ui:define>
 </ui:composition>
