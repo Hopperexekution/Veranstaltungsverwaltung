@@ -4,17 +4,34 @@
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+	
 
 	<ui:define name="title">
         Home
+        		<style type="text/css">
+a:link {
+	color: black;
+	text-decoration: none
+}
+
+a:visited {
+	color: black;
+	text-decoration: none
+}
+
+a:active {
+	color: black;
+	text-decoration: none
+}
+
+a:hover {
+	color: black;
+	text-decoration: none
+}
+</style>
     </ui:define>
 	<ui:define name="content">
-	      	<style type="text/css">
-a:link {color:black; text-decoration:none}
-a:visited {color:black; text-decoration:none}
-a:active {color:black; text-decoration:none}
-a:hover {color:black; text-decoration:none}
-</style>
+
 
 		<div class="panel-group" id="accordion">
 			<div class="panel panel-default">
@@ -31,15 +48,16 @@ a:hover {color:black; text-decoration:none}
 
 							<h:column>
 								<f:facet name="header">Name</f:facet>
-								<a href="detail_veranstaltung.jsf?id=4">#{event.name} 
+								<a href="detail_veranstaltung.jsf?id=#{event.id}">
+								#{event.name}
 								</a>
 							</h:column>
 							<h:column>
 								<f:facet name="header">Beschreibung</f:facet>
-								<a href="detail_veranstaltung.jsf">#{event.beschreibung} 
-								<f:param
-										name="id" value="#{event.id}" />
+								<a href="detail_veranstaltung.jsf?id=#{event.id}">
+								#{event.beschreibung}
 								</a>
+
 							</h:column>
 							<h:column>
 								<f:facet name="header">Datum</f:facet>
@@ -69,17 +87,16 @@ a:hover {color:black; text-decoration:none}
 					<div class="panel-body">
 						<h:dataTable class="table table-hover table-bordered"
 							value="#{homeRequest.meistReservierteEvents}" var="event">
-														<h:column>
+							<h:column>
 								<f:facet name="header">Name</f:facet>
-								<a href="detail_veranstaltung.jsf">#{event.name} <f:param
-										name="id" value="#{event.id}" />
+								<a href="detail_veranstaltung.jsf?id=#{event.id}">
+								#{event.name}
 								</a>
 							</h:column>
 							<h:column>
 								<f:facet name="header">Beschreibung</f:facet>
-								<a href="detail_veranstaltung.jsf">#{event.beschreibung} 
-								<f:param
-										name="id" value="#{event.id}" />
+								<a href="detail_veranstaltung.jsf?id=#{event.id}">
+								#{event.beschreibung}
 								</a>
 							</h:column>
 							<h:column>
@@ -113,15 +130,14 @@ a:hover {color:black; text-decoration:none}
 							value="#{homeRequest.neuesteEvents}" var="event">
 							<h:column>
 								<f:facet name="header">Name</f:facet>
-								<a href="detail_veranstaltung.jsf">#{event.name} <f:param
-										name="id" value="#{event.id}" />
+								<a href="detail_veranstaltung.jsf?id=#{event.id}">
+								#{event.name}
 								</a>
 							</h:column>
 							<h:column>
 								<f:facet name="header">Beschreibung</f:facet>
-								<a href="detail_veranstaltung.jsf">#{event.beschreibung} 
-								<f:param
-										name="id" value="#{event.id}" />
+								<a href="detail_veranstaltung.jsf?id=#{event.id}">
+								#{event.beschreibung}
 								</a>
 							</h:column>
 							<h:column>

@@ -26,6 +26,8 @@ public class HomeRequest {
             new Veranstaltung("Test2", "Beschreibung2", new Date(), true, null),
             new Veranstaltung("Test3", "Beschreibung3", new Date(), true, null)));
 
+	//private List<Veranstaltung> meistReservierteEvents = dao.mostReserved();
+	
 	private List<Veranstaltung> meistReservierteEvents = dao.mostReserved();
 	
 	private List<Veranstaltung> neuesteEvents = dao.latestFive();
