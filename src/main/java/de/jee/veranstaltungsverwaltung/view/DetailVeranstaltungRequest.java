@@ -1,27 +1,25 @@
 package de.jee.veranstaltungsverwaltung.view;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.ManagedProperty;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import de.jee.veranstaltungsverwaltung.controller.Security;
 import de.jee.veranstaltungsverwaltung.model.Veranstaltung;
-import de.jee.veranstaltungsverwaltung.service.EventService;
 
 @Named
 @RequestScoped
-public class AllEventsRequest {
-	
+public class DetailVeranstaltungRequest {
 	@Inject
 	private Security security;
 
-	private Veranstaltung events=EventService.holeAlleVeranstaltungen().get(0);
-	
+	private Veranstaltung event;
 
+	public String erstelleVeranstaltung() {
 
-
-
-
+		return "neue_veranstaltung";
+	}
 
 	public Security getSecurity() {
 		return security;
@@ -31,11 +29,12 @@ public class AllEventsRequest {
 		this.security = security;
 	}
 
-	public Veranstaltung getEvents() {
-		return events;
+	public Veranstaltung getEvent() {
+		return event;
 	}
 
-	public void setEvents(Veranstaltung events) {
-		this.events = events;
+	public void setEvent(Veranstaltung event) {
+		this.event = event;
 	}
+
 }

@@ -1,0 +1,51 @@
+<ui:composition template="./grundform.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+	<f:metadata>
+	<f:viewParam name="id" value="#{detailVeranstaltungRequest.event}">
+	<f:converter binding="#{veranstaltungConverter}" />
+	</f:viewParam>
+	</f:metadata>
+	<ui:define name="title">
+        Neue Veranstaltung erstellen
+    </ui:define>
+	<ui:define name="content">
+
+	
+		<h:panelGroup>
+			<div class="container">
+				<h:form>
+				
+					<h:outputText id="name" class="form-control"
+						value="#{detailVeranstaltungRequest.event.name}">
+					</h:outputText>
+					<br/>
+					<p>Beschreibung:</p>	
+					<h:outputText id="beschreibung" class="form-control"
+						value="#{detailVeranstaltungRequest.event.beschreibung}" cols="5">
+					</h:outputText>
+					<br/>
+					<h:outputText id="datum" class="form-control" 
+						value="#{detailVeranstaltungRequest.event.datum}">
+							<f:convertDateTime pattern="dd-MM-yyyy"></f:convertDateTime>
+					</h:outputText>
+					<br/>
+					<h:outputText id="ort" class="form-control"
+						value="#{detailVeranstaltungRequest.event.ort}">
+					</h:outputText>
+					<br/>
+
+					<br/>
+				
+					<h:commandButton class="btn" action="#{veranstaltungRequest.erstelleVeranstaltung}"
+						value="Veranstaltung erstellen">
+					</h:commandButton>
+				</h:form>
+			</div>
+		</h:panelGroup>	
+	</ui:define>
+</ui:composition>

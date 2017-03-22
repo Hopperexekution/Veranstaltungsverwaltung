@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
