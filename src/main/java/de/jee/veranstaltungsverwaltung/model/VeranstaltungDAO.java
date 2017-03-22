@@ -185,7 +185,7 @@ public class VeranstaltungDAO {
 			EntityManager em = null;
 			try{
 				em = HibernateUtil.getEntityManager();
-				String hql = "from Veranstaltung as v left join v.tickets as t left join t.reservierung as r order by count(r)";
+				String hql = "from Veranstaltung as v left join v.tickets as t where t.reservierung is not null group by v.id order by count(r)";
 				veranstaltungen = em.createQuery(hql).setMaxResults(5).getResultList();
 			}
 			catch(Exception e){
