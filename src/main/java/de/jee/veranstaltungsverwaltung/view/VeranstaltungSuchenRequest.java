@@ -1,53 +1,104 @@
 package de.jee.veranstaltungsverwaltung.view;
-
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import de.jee.veranstaltungsverwaltung.controller.Security;
+import de.jee.veranstaltungsverwaltung.model.Reservierung;
+import de.jee.veranstaltungsverwaltung.model.ReservierungDAO;
 import de.jee.veranstaltungsverwaltung.model.Veranstaltung;
 import de.jee.veranstaltungsverwaltung.model.VeranstaltungDAO;
 
 @Named
-@RequestScoped
-public class VeranstaltungSuchenRequest {
+@ViewScoped
+public class VeranstaltungSuchenRequest implements Serializable{
 	
 	@Inject
 	private Security security;
 	private String suchString;
 	private Date vonDatum;
 	private Date bisDatum;
-	private int anzahlTickets;
-	private List<Veranstaltung> veranstaltungsListe;
+	private String anzahlTickets;
+	private DataModel<Veranstaltung> veranstaltungen;
 	
 	public void sucheVeranstaltung(){
-		List<Veranstaltung> veranstaltungen = new ArrayList<Veranstaltung>();
-		System.out.println("Ich gehe hier rein");
+		this.setVeranstaltungen(null);
+		List<Veranstaltung> veranstaltungen = null;
 		VeranstaltungDAO dao = new VeranstaltungDAO();
 		if((vonDatum == null && bisDatum == null) || (vonDatum != null && bisDatum != null)){
 			if(vonDatum == null){
-				if(anzahlTickets <= 0){
+				if(anzahlTickets.trim().equals("")){
 					veranstaltungen = dao.findByName(suchString);	
 				}
 				else{
-					veranstaltungen = dao.findByName(suchString, anzahlTickets);
+					veranstaltungen = dao.findByName(suchString, Integer.parseInt(anzahlTickets));
 				}
 			}
 			else{
-				if(anzahlTickets <= 0){
+				if(anzahlTickets.trim().equals("")){
 					veranstaltungen = dao.findByName(suchString, vonDatum, bisDatum);
 				}
 				else{
-					veranstaltungen = dao.findByName(suchString, vonDatum, bisDatum, anzahlTickets);
+					veranstaltungen = dao.findByName(suchString, vonDatum, bisDatum, Integer.parseInt(anzahlTickets));
 				}
 			}
 		}
-		for(Veranstaltung veranstaltung : veranstaltungen)
-			System.out.println("Name: " + veranstaltung.getName() + " Beschreibung: " + veranstaltung.getBeschreibung() + " Anzahl Tickets: " + veranstaltung.getTickets().size());
+		if(veranstaltungen != null){
+			if(veranstaltungen.isEmpty()){
+				FacesContext context = FacesContext.getCurrentInstance();
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Es konnten keine Veranstaltungen die den angegebenen Kriterien entsprechen gefunden werden", null);
+				context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
+			}
+			else
+				this.setVeranstaltungen(new ListDataModel<Veranstaltung>(veranstaltungen));
+										
+		}
+		else{
+			FacesContext context = FacesContext.getCurrentInstance();
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Die Suche konnte nicht durchgeführt werden", null);
+			context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
+		}
+	}
+	public void reservieren(){
+		FacesContext context = FacesContext.getCurrentInstance();
+		FacesMessage message = null;
+		Veranstaltung veranstaltung = veranstaltungen.getRowData();
+		ReservierungDAO dao = new ReservierungDAO();
+		Reservierung reservierung = new Reservierung(security.getCurrentUser());
+		if(veranstaltung.getZuReservierendeTickets().equals("")){
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Die Anzahl der zu reservierenden Tickets muss angegeben werden", null);
+			context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
+			return;
+		}
+		int anzahlTickets = Integer.parseInt(veranstaltung.getZuReservierendeTickets());
+		if(anzahlTickets > veranstaltung.getVerfuegbareTickets().size()){
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Es können nicht mehr Tickets reserviert werden, als noch verfügbar sind!", null);
+			context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
+			return;
+		}
+		int returncode = dao.save(reservierung, veranstaltung, anzahlTickets);
+		switch(returncode){
+		case -1:
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Die Reservierung konnte nicht durchgeführt werden!", null);
+			context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
+			break;
+		case 0:
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Es sind nicht mehr genügend Tickets für die Reservierung vorhanden. Da war wohl jemand schneller...", null);
+			context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
+			break;
+		default:
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Die Tickets wurden erfolgreich reserviert. Die Reservierungs-ID lautet: " + returncode, null);
+			context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
+			break;
+		}
 	}
 
 	public Security getSecurity() {
@@ -82,20 +133,17 @@ public class VeranstaltungSuchenRequest {
 		this.bisDatum = bisDatum;
 	}
 
-	public int getAnzahlTickets() {
+	public String getAnzahlTickets() {
 		return anzahlTickets;
 	}
 
-	public void setAnzahlTickets(int anzahlTickets) {
+	public void setAnzahlTickets(String anzahlTickets) {
 		this.anzahlTickets = anzahlTickets;
 	}
-
-	public List<Veranstaltung> getVeranstaltungsListe() {
-		return veranstaltungsListe;
+	public DataModel<Veranstaltung> getVeranstaltungen() {
+		return veranstaltungen;
 	}
-
-	public void setVeranstaltungsListe(List<Veranstaltung> veranstaltungsListe) {
-		this.veranstaltungsListe = veranstaltungsListe;
+	public void setVeranstaltungen(DataModel<Veranstaltung> veranstaltungen) {
+		this.veranstaltungen = veranstaltungen;
 	}
-
 }

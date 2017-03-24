@@ -19,7 +19,7 @@
   				<div class="container">
     				<ul class="nav navbar-nav">
       					<li><h:link outcome = "home.jsf" value="Home"/></li>
-      					<li><h:link rendered="#{security.isManager()}" outcome = "neue_tour.jsf" value="Neue Tour"/></li>
+      					<li><h:link rendered="#{security.isLoggedIn()}" outcome = "meine_reservierungen.jsf" value="Meine Reservierungen"/></li>
       					<li><h:link rendered="#{security.isManager()}" outcome = "neue_veranstaltung.jsf" value="Neue Veranstaltung"/></li>
       					<li><h:link outcome = "veranstaltung_suchen.jsf" value="Veranstaltung suchen"/></li>
       					<li><h:commandLink rendered="#{security.isLoggedIn()}" action = "#{logoutRequest.doLogout}" value="Logout"/></li>

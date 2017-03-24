@@ -11,7 +11,7 @@
 	<ui:define name="content">
 			<div class="container-fluid">
 				<h1>Veranstaltungen suchen</h1>
-				<h:form id="suchenForm">
+				<h:form id="veranstaltungSuchenForm">
 					<div class="row">
 						<div class="col-md-3">
 							<p>Suchfeld:</p>
@@ -24,9 +24,6 @@
 						</div>
 						<div class="col-md-3">
 							<p>Mindestens verfügbare Tickets:</p>
-						</div>
-						<div class="col-md-3">
-							<p></p>
 						</div>
 					</div>
 					<div class="row">
@@ -48,31 +45,87 @@
 								<f:convertDateTime pattern="yyyy-M-d"/>
 							</h:inputText>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-2">
 							<h:inputText id="anzahlTickets" class="form-control"
 							value="#{veranstaltungSuchenRequest.anzahlTickets}"
-							pt:placeholder="Anzahl Tickets" pt:required="true">
-							 <f:converter converterId="javax.faces.Integer"/>
+							pt:placeholder="Anzahl Tickets">
+							 <f:validator validatorId="MinimaleAnzahlTickets"/>
 							</h:inputText>
+						</div>
+						<div class="col-md-1">
+							<h:commandButton id="suchButton" class="btn" action="#{veranstaltungSuchenRequest.sucheVeranstaltung}"
+							value="Suchen">
+							</h:commandButton>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-3">
-							<h:message for="suche"></h:message>
+							<h:message for="suche" infoStyle="color:darkgreen" errorStyle="color:darkred"></h:message>
 						</div>
 						<div class="col-md-3">
-							<h:message for="vonDatum"></h:message>
+							<h:message for="vonDatum" infoStyle="color:darkgreen" errorStyle="color:darkred"></h:message>
 						</div>
 						<div class="col-md-3">
-							<h:message for="bisDatum"></h:message>
+							<h:message for="bisDatum" infoStyle="color:darkgreen" errorStyle="color:darkred"></h:message>
 						</div>
-						<div class="col-md-3">	
-							<h:message for="anzahlTickets"></h:message>
+						<div class="col-md-2">	
+							<h:message for="anzahlTickets" infoStyle="color:darkgreen" errorStyle="color:darkred"></h:message>
+						</div>
+						<div class="col-md-1">
+							<h:message for="suchButton" infoStyle="color:darkgreen" errorStyle="color:darkred"></h:message>
 						</div>
 					</div>
-					<h:commandButton class="btn" action="#{veranstaltungSuchenRequest.sucheVeranstaltung}"
-							value="Suchen">
+					<br/>		
+					<h:message for="suchergebnis" infoStyle="color:darkgreen" errorStyle="color:darkred"/>
+					<br/>
+					<br/>
+					<h:dataTable id="suchergebnis" rendered="#{veranstaltungSuchenRequest.veranstaltungen != null &amp;&amp; veranstaltungSuchenRequest.veranstaltungen.getRowCount() > 0}" class="table table-bordered" value="#{veranstaltungSuchenRequest.veranstaltungen}" var="veranstaltung">
+						<h:column>
+							<f:facet name="header">
+						 		Titel der Veranstaltung
+							</f:facet>
+						 	#{veranstaltung.name}
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								Datum
+							</f:facet>
+							<h:outputText value="#{veranstaltung.datum}">
+								<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+							</h:outputText>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								Ort
+							</f:facet>
+							#{veranstaltung.ort}
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								Anzahl verfügbare Tickets
+							</f:facet>
+							#{veranstaltung.anzahlVerfuegbareTickets()}
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								Preis pro Ticket
+							</f:facet>
+							#{veranstaltung.ticketPreis.toString()}€
+						</h:column>
+						<h:column rendered="#{security.isLoggedIn()}">
+							<f:facet name="header">
+								Tickets reservieren
+							</f:facet>
+							<h:inputText id="anzahlTicketsReservieren" class="form-control" value="#{veranstaltung.zuReservierendeTickets}">
+								<f:validator validatorId="AnzahlTicketsReservieren"/>
+							</h:inputText>
+						</h:column>
+						<h:column rendered="#{security.isLoggedIn()}">
+							<h:commandButton id="reservierenButton" class="btn" action="#{veranstaltungSuchenRequest.reservieren}"
+							value="Reservieren">
 							</h:commandButton>
+						</h:column>
+					</h:dataTable>
 				</h:form>
 			</div>
 	</ui:define>

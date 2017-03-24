@@ -8,8 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
-import org.hibernate.criterion.Order;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
@@ -80,7 +78,12 @@ public class VeranstaltungDAO {
 				List<Veranstaltung> veranstaltungenOhneTicketKriterium = jpaQuery.getResultList();
 				veranstaltungen = new ArrayList<Veranstaltung>();
 				for(Veranstaltung veranstaltung : veranstaltungenOhneTicketKriterium){
-					if(veranstaltung.getTickets().size() >= anzahlTickets)
+					int anzahlVerfuegbareTickets = 0;
+					for(Ticket ticket : veranstaltung.getTickets()){
+						if(ticket.getReservierung() == null)
+							anzahlVerfuegbareTickets++;
+					}
+					if(anzahlVerfuegbareTickets >= anzahlTickets)
 						veranstaltungen.add(veranstaltung);
 				}
 			}
@@ -141,7 +144,12 @@ public class VeranstaltungDAO {
 				List<Veranstaltung> veranstaltungenOhneTicketKriterium = jpaQuery.getResultList();
 				veranstaltungen = new ArrayList<Veranstaltung>();
 				for(Veranstaltung veranstaltung: veranstaltungenOhneTicketKriterium){
-					if(veranstaltung.getTickets().size() >= anzahlTickets)
+					int anzahlVerfuegbareTickets = 0;
+					for(Ticket ticket : veranstaltung.getTickets()){
+						if(ticket.getReservierung() == null)
+							anzahlVerfuegbareTickets++;
+					}
+					if(anzahlVerfuegbareTickets >= anzahlTickets)
 						veranstaltungen.add(veranstaltung);
 				}
 			}

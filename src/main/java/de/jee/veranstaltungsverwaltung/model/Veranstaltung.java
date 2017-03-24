@@ -1,6 +1,8 @@
 package de.jee.veranstaltungsverwaltung.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DateBridge;
@@ -58,6 +62,8 @@ public class Veranstaltung {
 	@ManyToOne
 	@JoinColumn(name="tour", nullable=true)
 	private Tour tour;
+	@Transient
+	private String zuReservierendeTickets;
 	
 	public Veranstaltung(){}
 	public Veranstaltung(String name, String beschreibung, Date datum, boolean istVeroeffentlicht, Nutzer manager){
@@ -134,6 +140,28 @@ public class Veranstaltung {
 	}
 	public void setTicketPreis(double ticketPreis) {
 		this.ticketPreis = ticketPreis;
+	}
+	public int anzahlVerfuegbareTickets(){
+		int anzahlMitReservierung = 0;
+		for(Ticket ticket: this.getTickets()){
+			if(ticket.getReservierung() == null)
+				anzahlMitReservierung++;
+		}
+		return anzahlMitReservierung;
+	}
+	public List<Ticket> getVerfuegbareTickets(){
+		List<Ticket> ticketListe = new ArrayList<Ticket>();
+		for(Ticket ticket: this.getTickets()){
+			if(ticket.getReservierung() == null)
+				ticketListe.add(ticket);
+		}
+		return ticketListe;
+	}
+	public String getZuReservierendeTickets() {
+		return zuReservierendeTickets;
+	}
+	public void setZuReservierendeTickets(String zuReservierendeTickets) {
+		this.zuReservierendeTickets = zuReservierendeTickets;
 	}
 	
 }

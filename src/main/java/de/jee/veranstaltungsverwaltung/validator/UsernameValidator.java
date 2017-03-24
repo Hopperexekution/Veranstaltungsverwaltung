@@ -8,7 +8,7 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
 import de.jee.veranstaltungsverwaltung.model.NutzerDAO;
-@FacesValidator("de.jee.veranstaltungsverwaltung.validator.UsernameValidator")
+@FacesValidator("Username")
 public class UsernameValidator implements Validator {
 
 	@Override

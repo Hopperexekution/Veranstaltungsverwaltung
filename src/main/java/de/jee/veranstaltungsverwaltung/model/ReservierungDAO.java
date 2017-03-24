@@ -63,4 +63,41 @@ public class ReservierungDAO {
 		}
 		return tickets;
 	}
+	public int save(Reservierung reservierung){
+		int returncode = 0;
+		
+		return returncode;
+	}
+	public int save(Reservierung reservierung, Veranstaltung veranstaltung, int anzahlTickets){
+		int returncode = 0;
+		EntityManager em = null;
+		try{
+			em = HibernateUtil.getEntityManager();
+			List<Ticket> ticketListe = veranstaltung.getVerfuegbareTickets();
+			if(anzahlTickets <= ticketListe.size()){
+				em.getTransaction().begin();
+				em.persist(reservierung);
+				for(int i = 0; i < anzahlTickets; i++){
+					Ticket ticket = ticketListe.get(i);
+					ticket.setReservierung(reservierung);
+					em.merge(ticket);
+				}
+				em.getTransaction().commit();
+				returncode = reservierung.getId();
+			}
+			else
+				logger.log(Level.ERROR, "Es sind nicht genügend Tickets für die Reservierung verfügbar!");
+		}
+		catch(Exception e){
+			logger.log(Level.ERROR, "Die Reservierung konnte nicht durchgeführt werden");
+			if(em != null && em.getTransaction().isActive())
+				em.getTransaction().rollback();
+			returncode = -1;
+		}
+		finally{
+			if(em != null)
+				em.close();
+		}
+		return returncode;
+	}
 }
