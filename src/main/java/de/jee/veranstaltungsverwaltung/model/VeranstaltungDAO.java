@@ -46,9 +46,13 @@ public class VeranstaltungDAO {
 			try{
 				em = HibernateUtil.getEntityManager();
 				FullTextEntityManager ftEM = Search.getFullTextEntityManager(em);
+				Date mindestdatum = new Date(System.currentTimeMillis());
 				QueryBuilder qb = ftEM.getSearchFactory()
 					    .buildQueryBuilder().forEntity(Veranstaltung.class).get();
-				org.apache.lucene.search.Query luceneQuery = qb.keyword().fuzzy().onFields("name","ort","beschreibung").matching(name).createQuery();
+				org.apache.lucene.search.Query luceneQuery = qb.bool().must(qb.keyword().fuzzy().onFields("name","ort","beschreibung")
+						.matching(name).createQuery())
+						.must(qb.keyword().onField("istVeroeffentlicht").matching("true").createQuery())
+						.must(qb.range().onField("datum").above(mindestdatum).createQuery()).createQuery();
 				javax.persistence.Query jpaQuery = ftEM.createFullTextQuery(luceneQuery, Veranstaltung.class);
 				veranstaltungen = jpaQuery.getResultList();
 			}
@@ -71,9 +75,12 @@ public class VeranstaltungDAO {
 			try{
 				em = HibernateUtil.getEntityManager();
 				FullTextEntityManager ftEM = Search.getFullTextEntityManager(em);
+				Date mindestdatum = new Date(System.currentTimeMillis());
 				QueryBuilder qb = ftEM.getSearchFactory()
 					    .buildQueryBuilder().forEntity(Veranstaltung.class).get();
-				org.apache.lucene.search.Query luceneQuery = qb.keyword().fuzzy().onFields("name","ort","beschreibung").matching(name).createQuery();
+				org.apache.lucene.search.Query luceneQuery = qb.bool().must(qb.keyword().fuzzy().onFields("name","ort","beschreibung").matching(name).createQuery())
+						.must(qb.keyword().onField("istVeroeffentlicht").matching("true").createQuery())
+						.must(qb.range().onField("datum").above(mindestdatum).createQuery()).createQuery();
 				javax.persistence.Query jpaQuery = ftEM.createFullTextQuery(luceneQuery, Veranstaltung.class);
 				List<Veranstaltung> veranstaltungenOhneTicketKriterium = jpaQuery.getResultList();
 				veranstaltungen = new ArrayList<Veranstaltung>();
@@ -111,7 +118,8 @@ public class VeranstaltungDAO {
 				org.apache.lucene.search.Query luceneQuery = qb.bool()
 						.must(qb.keyword().fuzzy().onFields("name","ort","beschreibung").matching(name).createQuery())
 						.must(qb.range().onField("datum").above(vonDatum).createQuery())
-						.must(qb.range().onField("datum").below(bisDatum).createQuery()).createQuery();
+						.must(qb.range().onField("datum").below(bisDatum).createQuery())
+						.must(qb.keyword().onField("istVeroeffentlicht").matching("true").createQuery()).createQuery();
 				javax.persistence.Query jpaQuery = ftEM.createFullTextQuery(luceneQuery, Veranstaltung.class);
 				veranstaltungen = jpaQuery.getResultList();
 			}
@@ -139,7 +147,8 @@ public class VeranstaltungDAO {
 				org.apache.lucene.search.Query luceneQuery = qb.bool()
 						.must(qb.keyword().fuzzy().onFields("name","ort","beschreibung").matching(name).createQuery())
 						.must(qb.range().onField("datum").above(vonDatum).createQuery())
-						.must(qb.range().onField("datum").below(bisDatum).createQuery()).createQuery();
+						.must(qb.range().onField("datum").below(bisDatum).createQuery())
+						.must(qb.keyword().onField("istVeroeffentlicht").matching("true").createQuery()).createQuery();
 				javax.persistence.Query jpaQuery = ftEM.createFullTextQuery(luceneQuery, Veranstaltung.class);
 				List<Veranstaltung> veranstaltungenOhneTicketKriterium = jpaQuery.getResultList();
 				veranstaltungen = new ArrayList<Veranstaltung>();

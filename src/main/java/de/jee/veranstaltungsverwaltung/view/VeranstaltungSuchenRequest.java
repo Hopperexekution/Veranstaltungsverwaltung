@@ -29,6 +29,7 @@ public class VeranstaltungSuchenRequest implements Serializable{
 	private String anzahlTickets;
 	private DataModel<Veranstaltung> veranstaltungen;
 	
+	@SuppressWarnings("deprecation")
 	public void sucheVeranstaltung(){
 		this.setVeranstaltungen(null);
 		List<Veranstaltung> veranstaltungen = null;
@@ -43,6 +44,16 @@ public class VeranstaltungSuchenRequest implements Serializable{
 				}
 			}
 			else{
+				Date aktuellesDatum = new Date(System.currentTimeMillis());
+				aktuellesDatum.setSeconds(0);
+				aktuellesDatum.setMinutes(0);
+				aktuellesDatum.setHours(0);
+				if((bisDatum.getTime() - vonDatum.getTime()) < 0 || vonDatum.getTime() < aktuellesDatum.getTime()) {
+					FacesContext context = FacesContext.getCurrentInstance();
+					FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Das Bis-Datum darf nicht vor dem Von-Datum liegen! Außerdem können keine bereits stattgefundenen Veranstaltungen gesucht werden", null);
+					context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
+					return;
+				}
 				if(anzahlTickets.trim().equals("")){
 					veranstaltungen = dao.findByName(suchString, vonDatum, bisDatum);
 				}
@@ -50,6 +61,12 @@ public class VeranstaltungSuchenRequest implements Serializable{
 					veranstaltungen = dao.findByName(suchString, vonDatum, bisDatum, Integer.parseInt(anzahlTickets));
 				}
 			}
+		}
+		else{
+			FacesContext context = FacesContext.getCurrentInstance();
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Wenn ein Datenfilter verwendet werden soll müssen Von-Datum und Bis-Datum ausgefüllt werden", null);
+			context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
+			return;
 		}
 		if(veranstaltungen != null){
 			if(veranstaltungen.isEmpty()){

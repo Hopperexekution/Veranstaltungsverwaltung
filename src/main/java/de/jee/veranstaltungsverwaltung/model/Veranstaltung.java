@@ -23,10 +23,12 @@ import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
+import org.hibernate.search.bridge.builtin.BooleanBridge;
 @Entity
 @Indexed
 @Analyzer(impl = org.apache.lucene.analysis.standard.StandardAnalyzer.class)
@@ -51,6 +53,8 @@ public class Veranstaltung {
 	@Field(index=Index.YES, analyze=Analyze.YES, store = Store.YES)
 	private String ort;
 	@Column(name="istveroeffentlicht")
+	@Field(index=Index.YES, analyze=Analyze.NO, store = Store.NO)
+	@FieldBridge(impl= BooleanBridge.class)
 	private boolean istVeroeffentlicht;
 	@Column(name="ticketpreis")
 	private double ticketPreis;
