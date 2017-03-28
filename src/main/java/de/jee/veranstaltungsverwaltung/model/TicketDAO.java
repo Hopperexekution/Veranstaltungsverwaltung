@@ -55,4 +55,46 @@ public class TicketDAO {
 		}
 		return tickets;		
 	}
+	public int loescheTicket(Ticket ticket){
+		int returncode = 0;
+		EntityManager em = null;
+		try{
+			em = HibernateUtil.getEntityManager();
+			em.getTransaction().begin();
+			String hqlDelete = "delete Ticket where id = :id";
+			int deletedEntities = em.createQuery( hqlDelete )
+			                            .setParameter( "id", ticket.getId() )
+			                            .executeUpdate();
+			returncode=deletedEntities;
+			em.getTransaction().commit();
+		}
+		catch(Exception e){
+			logger.log(Level.DEBUG, "Das Ticket konnte nicht gelöscht werdenn \n" + e.getStackTrace());
+			returncode = -1;
+		}
+		finally{
+			em.close();
+		}
+		return returncode;
+	}
+	
+	public int save(Ticket ticket){
+		int returncode = 0;
+		EntityManager em = null;
+		try{
+			em = HibernateUtil.getEntityManager();
+			em.getTransaction().begin();
+			em.persist(ticket);
+
+			em.getTransaction().commit();
+		}
+		catch(Exception e){
+			logger.log(Level.DEBUG, "Das Ticket konnte nicht gespeichert werdenn \n" + e.getStackTrace());
+			returncode = -1;
+		}
+		finally{
+			em.close();
+		}
+		return returncode;
+	}
 }

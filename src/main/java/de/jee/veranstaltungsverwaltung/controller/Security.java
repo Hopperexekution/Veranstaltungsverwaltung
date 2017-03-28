@@ -6,6 +6,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import de.jee.veranstaltungsverwaltung.model.Nutzer;
+import de.jee.veranstaltungsverwaltung.model.Veranstaltung;
 
 @Named
 @SessionScoped
@@ -27,6 +28,12 @@ public class Security implements Serializable{
 	}
 	public boolean isManager(){
 		return isLoggedIn()&&currentUser.getIstManager();
+	}
+	
+	public boolean isManagerEvent(Veranstaltung event){
+		
+		return currentUser!=null&&event!=null&&event.getManager().getId()==currentUser.getId();
+		
 	}
 	
 	public void login(Nutzer user){
