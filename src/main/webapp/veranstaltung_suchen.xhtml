@@ -35,6 +35,7 @@
 							<h:inputText id="vonDatum" class="form-control" pt:type="date"
 							value="#{veranstaltungSuchenRequest.vonDatum}"
 							pt:placeholder="Datum">
+								<f:validator validatorId="DateValidator"/>
 								<f:convertDateTime pattern="yyyy-M-d"/>
 							</h:inputText>
 						</div>
@@ -42,6 +43,7 @@
 							<h:inputText id="bisDatum" class="form-control" pt:type="date"
 							value="#{veranstaltungSuchenRequest.bisDatum}"
 							pt:placeholder="Datum">
+								<f:validator validatorId="DateValidator"/>
 								<f:convertDateTime pattern="yyyy-M-d"/>
 							</h:inputText>
 						</div>

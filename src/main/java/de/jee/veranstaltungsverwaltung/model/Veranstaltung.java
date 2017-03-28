@@ -63,9 +63,6 @@ public class Veranstaltung {
 	private Nutzer manager;
 	@OneToMany(fetch=FetchType.EAGER, mappedBy="veranstaltung", cascade=CascadeType.ALL)
 	private Set<Ticket> tickets;
-	@ManyToOne
-	@JoinColumn(name="tour", nullable=true)
-	private Tour tour;
 	@Transient
 	private String zuReservierendeTickets;
 	
@@ -126,12 +123,6 @@ public class Veranstaltung {
 	}
 	public void setTickets(Set<Ticket> tickets) {
 		this.tickets = tickets;
-	}
-	public Tour getTour() {
-		return tour;
-	}
-	public void setTour(Tour tour) {
-		this.tour = tour;
 	}
 	public String getOrt() {
 		return ort;

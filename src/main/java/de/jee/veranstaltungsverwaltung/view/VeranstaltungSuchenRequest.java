@@ -29,58 +29,36 @@ public class VeranstaltungSuchenRequest implements Serializable{
 	private String anzahlTickets;
 	private DataModel<Veranstaltung> veranstaltungen;
 	
-	@SuppressWarnings("deprecation")
 	public void sucheVeranstaltung(){
 		this.setVeranstaltungen(null);
 		List<Veranstaltung> veranstaltungen = null;
 		VeranstaltungDAO dao = new VeranstaltungDAO();
-		if((vonDatum == null && bisDatum == null) || (vonDatum != null && bisDatum != null)){
-			if(vonDatum == null){
-				if(anzahlTickets.trim().equals("")){
-					veranstaltungen = dao.findByName(suchString);	
-				}
-				else{
-					veranstaltungen = dao.findByName(suchString, Integer.parseInt(anzahlTickets));
-				}
+		if(anzahlTickets.trim().equals("")){
+			try{
+				veranstaltungen = dao.findByName(suchString, vonDatum, bisDatum, true, 0);
 			}
-			else{
-				Date aktuellesDatum = new Date(System.currentTimeMillis());
-				aktuellesDatum.setSeconds(0);
-				aktuellesDatum.setMinutes(0);
-				aktuellesDatum.setHours(0);
-				if((bisDatum.getTime() - vonDatum.getTime()) < 0 || vonDatum.getTime() < aktuellesDatum.getTime()) {
-					FacesContext context = FacesContext.getCurrentInstance();
-					FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Das Bis-Datum darf nicht vor dem Von-Datum liegen! Außerdem können keine bereits stattgefundenen Veranstaltungen gesucht werden", null);
-					context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
-					return;
-				}
-				if(anzahlTickets.trim().equals("")){
-					veranstaltungen = dao.findByName(suchString, vonDatum, bisDatum);
-				}
-				else{
-					veranstaltungen = dao.findByName(suchString, vonDatum, bisDatum, Integer.parseInt(anzahlTickets));
-				}
-			}
-		}
-		else{
-			FacesContext context = FacesContext.getCurrentInstance();
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Wenn ein Datenfilter verwendet werden soll müssen Von-Datum und Bis-Datum ausgefüllt werden", null);
-			context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
-			return;
-		}
-		if(veranstaltungen != null){
-			if(veranstaltungen.isEmpty()){
+			catch(NullPointerException e){
 				FacesContext context = FacesContext.getCurrentInstance();
-				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Es konnten keine Veranstaltungen die den angegebenen Kriterien entsprechen gefunden werden", null);
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Die Suche konnte nicht durchgeführt werden", null);
 				context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
 			}
-			else
-				this.setVeranstaltungen(new ListDataModel<Veranstaltung>(veranstaltungen));
-										
+		}
+		else{
+			try{
+				veranstaltungen = dao.findByName(suchString, vonDatum, bisDatum, true, Integer.parseInt(anzahlTickets));
+			}
+			catch(NullPointerException e){
+				FacesContext context = FacesContext.getCurrentInstance();
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Die Suche konnte nicht durchgeführt werden", null);
+				context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
+			}
+		}
+		if(!veranstaltungen.isEmpty()){
+			this.veranstaltungen = new ListDataModel<Veranstaltung>(veranstaltungen); 
 		}
 		else{
 			FacesContext context = FacesContext.getCurrentInstance();
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Die Suche konnte nicht durchgeführt werden", null);
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Es konnten keine Veranstaltungen entsprechend der Kriterien gefunden werden", null);
 			context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
 		}
 	}
