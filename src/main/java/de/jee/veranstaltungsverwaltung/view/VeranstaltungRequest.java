@@ -34,7 +34,7 @@ public class VeranstaltungRequest {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Die Veranstaltung wurde erfolgreich angelegt", null));
 		else
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Die Veranstaltung konnte nicht angelegt werden", null));		
-		return "neue_veranstaltung";
+		return "home.jsf";
 	}
 
 	public Security getSecurity() {

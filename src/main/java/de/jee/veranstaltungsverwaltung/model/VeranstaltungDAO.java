@@ -322,4 +322,26 @@ public class VeranstaltungDAO {
 			}
 			return returncode;
 		}
+		
+		public int update(Veranstaltung veranstaltung){
+			System.out.println("Methode update");
+			int returncode = 0;
+			EntityManager em = null;
+			try{
+				if(veranstaltung.getName() == null)
+					return -2;
+				em = HibernateUtil.getEntityManager();
+				em.getTransaction().begin();
+				em.merge(veranstaltung);
+				em.getTransaction().commit();
+			}
+			catch(Exception e){
+				logger.log(Level.DEBUG, "Die Veranstaltung mit dem Namen: " + veranstaltung.getName() + " konnte nicht aktualisiert werden\n" + e.getStackTrace());
+				returncode = -1;
+			}
+			finally{
+				em.close();
+			}
+			return returncode;
+		}
 }
