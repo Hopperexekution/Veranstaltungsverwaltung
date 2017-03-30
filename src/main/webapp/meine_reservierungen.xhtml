@@ -14,24 +14,47 @@
         Meine Reservierungen
     </ui:define>
 	<ui:define name="content">
+	<style type="text/css">
+a:link {
+	color: black;
+	text-decoration: none
+}
 
+a:visited {
+	color: black;
+	text-decoration: none
+}
 
+a:active {
+	color: black;
+	text-decoration: none
+}
+
+a:hover {
+	color: black;
+	text-decoration: none
+}
+</style>
+<div class="container">
 		<h:dataTable id="suchergebnis"
-			rendered="#{reservierungenRequest.reservierungen != null &amp;&amp; reservierungenRequest.reservierungen.getRowCount() > 0}"
+			rendered="#{reservierungenRequest.reservierungen != null &amp;&amp; reservierungenRequest.reservierungen.size() > 0}"
 			class="table table-bordered"
 			value="#{reservierungenRequest.reservierungen}" var="reservierung">
 			<h:column>
 				<f:facet name="header">
 						 		Titel der Veranstaltung
 							</f:facet>
-						 	#reservierungenRequest.getVeranstaltung(reservierung).name
+							<a href="detail_veranstaltung.jsf?id=#{reservierungenRequest.getEvent(reservierung).id}">
+								#{reservierungenRequest.getEvent(reservierung).name}
+							</a>
+						 	
 						</h:column>
 			<h:column>
 				<f:facet name="header">
 								Datum
 							</f:facet>
 				<h:outputText
-					value="#{#reservierungenRequest.getVeranstaltung(reservierung).datum}">
+					value="#{reservierungenRequest.getEvent(reservierung).datum}">
 					<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
 				</h:outputText>
 			</h:column>
@@ -41,7 +64,7 @@
 								Uhrzeit
 							</f:facet>
 				<h:outputText
-					value="#{#reservierungenRequest.getVeranstaltung(reservierung).datum}">
+					value="#{reservierungenRequest.getEvent(reservierung).datum}">
 					<f:convertDateTime pattern="HH:mm"></f:convertDateTime>
 				</h:outputText>
 			</h:column>
@@ -49,13 +72,13 @@
 				<f:facet name="header">
 								Ort
 							</f:facet>
-							#reservierungenRequest.getVeranstaltung(reservierung).ort
+							#{reservierungenRequest.getEvent(reservierung).ort}
 						</h:column>
 			<h:column>
 				<f:facet name="header">
 								Anzahl Tickets
 							</f:facet>
-							#reservierungenRequest.getAnzTickets(reservierung)
+							#{reservierungenRequest.getTickets(reservierung).size()}
 						</h:column>
 
 			<h:column>
@@ -66,6 +89,7 @@
 						</h:column>
 
 		</h:dataTable>
+		</div>
 
 
 	</ui:define>

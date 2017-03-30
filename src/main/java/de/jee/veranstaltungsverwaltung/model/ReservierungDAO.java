@@ -37,22 +37,50 @@ public class ReservierungDAO {
 		}
 		return reservierung;
 	}
+	@SuppressWarnings("unchecked")
+	public List<Reservierung> selectbyUserID(Nutzer nutzer){
+		List<Reservierung> reservierungen = null;
+		EntityManager em = null;
+		try{
+			em = HibernateUtil.getEntityManager();
+			String hql = "from Reservierung as r where r.nutzer="+nutzer.getId();
+			reservierungen = em.createQuery(hql).getResultList();
+
+		}
+		catch(NullPointerException np){
+			logger.log(Level.INFO, "Die Reservierungen zu dem Nutzer mit der ID: " + nutzer.getId() + " befinden sich nicht in der Datenbank");
+			return null;
+		}
+		catch(Exception e){
+			logger.log(Level.DEBUG, "Die Reservierungen zu dem Nutzer mit der ID: " + nutzer.getId() + " konnten nicht bezogen werden\n" + e.getStackTrace());
+			return null;
+		}
+		finally{
+			em.close();
+		}
+		return reservierungen;
+	}
 	/**
 	 * Bezieht die Tickets zu der zugehörigen Reservierung. Dazu wird die Reservierungs-ID verwendet.
 	 * @param reservierungsID Die Reservierungs-ID nach der die Tickets gesucht werden sollen.
 	 * @return Eine Liste mit den Tickets, null falls sie nicht bezogen werden konnten. Die Liste ist leer, wenn es zur Reservierung keine Tickets gibt. 
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Ticket> getTicketsByReservierungsID(int reservierungsID){
 		List<Ticket> tickets = null;
 		EntityManager em = null;
 		try{
 			em = HibernateUtil.getEntityManager();
-			CriteriaBuilder cb = HibernateUtil.getCriteriaBuilder();
-			CriteriaQuery<Ticket> query = cb.createQuery(Ticket.class);
-			Root<Ticket> root = query.from(Ticket.class);
-			query.select(root);
-			query.where(cb.equal(root.get("reservierung").as(Integer.class), reservierungsID));
-			tickets = em.createQuery(query).getResultList();
+			em = HibernateUtil.getEntityManager();
+			String hql = "from Ticket as t where t.reservierung="+reservierungsID;
+			tickets = em.createQuery(hql).getResultList();
+			
+//			CriteriaBuilder cb = HibernateUtil.getCriteriaBuilder();
+//			CriteriaQuery<Ticket> query = cb.createQuery(Ticket.class);
+//			Root<Ticket> root = query.from(Ticket.class);
+//			query.select(root);
+//			query.where(cb.equal(root.get("reservierung").as(Integer.class), reservierungsID));
+//			tickets = em.createQuery(query).getResultList();
 		}
 		catch(Exception e){
 			logger.log(Level.DEBUG, "Die Tickets zu der Reservierungs-ID: " + reservierungsID + " konnten nicht bezogen werden");

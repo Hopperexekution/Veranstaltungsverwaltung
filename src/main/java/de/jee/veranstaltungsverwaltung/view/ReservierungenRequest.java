@@ -1,6 +1,5 @@
 package de.jee.veranstaltungsverwaltung.view;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
@@ -8,11 +7,11 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import de.jee.veranstaltungsverwaltung.controller.Security;
-import de.jee.veranstaltungsverwaltung.model.NutzerDAO;
 import de.jee.veranstaltungsverwaltung.model.Reservierung;
 import de.jee.veranstaltungsverwaltung.model.ReservierungDAO;
 import de.jee.veranstaltungsverwaltung.model.Ticket;
 import de.jee.veranstaltungsverwaltung.model.Veranstaltung;
+import de.jee.veranstaltungsverwaltung.model.VeranstaltungDAO;
 
 @Named
 @RequestScoped
@@ -23,23 +22,32 @@ public class ReservierungenRequest implements Serializable{
 	private List<Reservierung> reservierungen;
 	
 	public void init(){
-		reservierungen = new ArrayList<Reservierung>();
-		reservierungen.addAll(security.getCurrentUser().getReservierungen());
+		System.out.println("init");
+		ReservierungDAO dao = new ReservierungDAO();
+		
+		reservierungen = dao.selectbyUserID(security.getCurrentUser());
+		System.out.println(reservierungen.size());
+		
 		
 		
 						
 	}
 	
-	public int getAnzTickets(Reservierung r){
+	public List<Ticket> getTickets(Reservierung r){
+		System.out.println("anz");
 		ReservierungDAO dao = new ReservierungDAO();
 		List<Ticket> tickets = dao.getTicketsByReservierungsID(r.getId());
-		return tickets.size();
+		System.out.println(tickets.size());
+		return tickets;
 	}
 	
 	public Veranstaltung getEvent(Reservierung r){
-		ReservierungDAO dao = new ReservierungDAO();
-		List<Ticket> tickets = dao.getTicketsByReservierungsID(r.getId());
-		return tickets.get(0).getVeranstaltung();
+		System.out.println("event");
+
+		VeranstaltungDAO vdao = new VeranstaltungDAO();
+		Veranstaltung event = vdao.findByID(getTickets(r).get(0).getVeranstaltung().getId());
+		
+		return event;
 	}
 
 	public Security getSecurity() {
