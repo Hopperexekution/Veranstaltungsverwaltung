@@ -8,6 +8,8 @@
 		<f:viewParam name="id" value="#{detailVeranstaltungRequest.event}">
 			<f:converter binding="#{veranstaltungConverter}" />
 		</f:viewParam>
+		<f:event type="preRenderView"
+			listener="#{detailVeranstaltungRequest.init()}" />
 	</f:metadata>
 	<ui:define name="title">
          #{detailVeranstaltungRequest.event.name}
@@ -17,57 +19,137 @@
 
 		<h:panelGroup>
 			<div class="container">
-			<h:messages></h:messages>
+				<h:messages></h:messages>
 				<h:form>
-					
-					<h:outputText rendered="#{not detailVeranstaltungRequest.canEdit}" id="name" class="form-control"
-						value="#{detailVeranstaltungRequest.event.name}">
-					</h:outputText>
-					<h:inputText rendered="#{detailVeranstaltungRequest.canEdit}" id="nameEdit" class="form-control"
-						value="#{detailVeranstaltungRequest.event.name}">
-					</h:inputText>
-					<br />
-					<p>Beschreibung:</p>
-					<h:outputText rendered="#{not detailVeranstaltungRequest.canEdit}"
-						id="beschreibung" class="form-control"
-						value="#{detailVeranstaltungRequest.event.beschreibung}" cols="5">
-					</h:outputText>
-					<h:inputText rendered="#{detailVeranstaltungRequest.canEdit}"
-						id="beschreibungEdit" class="form-control"
-						value="#{detailVeranstaltungRequest.event.beschreibung}" cols="5">
-					</h:inputText>
-					<br />
-					<h:outputText rendered="#{not detailVeranstaltungRequest.canEdit}"
-						id="datum" class="form-control"
-						value="#{detailVeranstaltungRequest.event.datum}">
-						<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
-					</h:outputText>
-					<h:inputText rendered="#{detailVeranstaltungRequest.canEdit}"
-						id="datumEdit" class="form-control"
-						value="#{detailVeranstaltungRequest.event.getDatum().toString()}">
-						<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
-					</h:inputText>
-					<br />
-					<h:outputText rendered="#{not detailVeranstaltungRequest.canEdit}"
-						id="ort" class="form-control"
-						value="#{detailVeranstaltungRequest.event.ort}">
-					</h:outputText>
-					<h:inputText rendered="#{detailVeranstaltungRequest.canEdit}"
-						id="ortEdit" class="form-control"
-						value="#{detailVeranstaltungRequest.event.ort}">
-					</h:inputText>
-					<h:outputText rendered="#{not detailVeranstaltungRequest.canEdit}"
-						id="tickets" class="form-control"
-						value="#{detailVeranstaltungRequest.event.anzahlVerfuegbareTickets()}">
-					</h:outputText>
-					<h:inputText rendered="#{detailVeranstaltungRequest.canEdit}"
-						id="ticketsEdit" class="form-control" 
-						value="#{detailVeranstaltungRequest.anzTickets}">
-					</h:inputText>
-										
-					<br />
+					<div class="row">
+						<div class="col-md-12">
+							<h:outputText
+								rendered="#{not detailVeranstaltungRequest.canEdit}" id="name"
+								class="form-control"
+								value="#{detailVeranstaltungRequest.event.name}">
+							</h:outputText>
+							<h:inputText rendered="#{detailVeranstaltungRequest.canEdit}"
+								id="nameEdit" class="form-control"
+								value="#{detailVeranstaltungRequest.event.name}">
+							</h:inputText>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<p>Beschreibung:</p>
+						</div>
+						<div class="col-md-8">
+							<h:outputText
+								rendered="#{not detailVeranstaltungRequest.canEdit}"
+								id="beschreibung" class="form-control"
+								value="#{detailVeranstaltungRequest.event.beschreibung}"
+								cols="5">
+							</h:outputText>
+							<h:inputTextarea rendered="#{detailVeranstaltungRequest.canEdit}"
+								id="beschreibungEdit" class="form-control"
+								value="#{detailVeranstaltungRequest.event.beschreibung}"
+								cols="5">
+							</h:inputTextarea>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<p>Datum</p>
+						</div>
+						<div class="col-md-8">
+							<h:outputText
+								rendered="#{not detailVeranstaltungRequest.canEdit}" id="datum"
+								class="form-control"
+								value="#{detailVeranstaltungRequest.event.datum}">
+								<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+							</h:outputText>
+							<h:inputText rendered="#{detailVeranstaltungRequest.canEdit}"
+								id="datumEdit" class="form-control"
+								value="#{detailVeranstaltungRequest.event.datum}">
+								<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+							</h:inputText>
 
-					<br />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<p>Uhrzeit</p>
+						</div>
+						<div class="col-md-8">
+							<h:outputText
+								rendered="#{not detailVeranstaltungRequest.canEdit}" id="zeit"
+								class="form-control"
+								value="#{detailVeranstaltungRequest.event.datum}">
+								<f:convertDateTime type="time" pattern="HH:mm" timeZone="GMT+2"></f:convertDateTime>
+							</h:outputText>
+							<h:inputText rendered="#{detailVeranstaltungRequest.canEdit}"
+								id="zeitEdit" class="form-control"
+								value="#{detailVeranstaltungRequest.zeit}">
+								<f:convertDateTime pattern="HH:mm" timeZone="GMT+2"></f:convertDateTime>
+							</h:inputText>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<p>Ort</p>
+						</div>
+						<div class="col-md-8">
+							<h:outputText
+								rendered="#{not detailVeranstaltungRequest.canEdit}" id="ort"
+								class="form-control"
+								value="#{detailVeranstaltungRequest.event.ort}">
+							</h:outputText>
+							<h:inputText rendered="#{detailVeranstaltungRequest.canEdit}"
+								id="ortEdit" class="form-control"
+								value="#{detailVeranstaltungRequest.event.ort}">
+							</h:inputText>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<p>Tickets</p>
+						</div>
+						<div class="col-md-8">
+							<h:outputText
+								rendered="#{not detailVeranstaltungRequest.canEdit}"
+								id="tickets" class="form-control"
+								value="#{detailVeranstaltungRequest.event.anzahlVerfuegbareTickets()}">
+							</h:outputText>
+							<h:inputText rendered="#{detailVeranstaltungRequest.canEdit}"
+								id="ticketsEdit" class="form-control"
+								value="#{detailVeranstaltungRequest.anzTickets}">
+							</h:inputText>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<p>Ticketpreis</p>
+						</div>
+						<div class="col-md-8">
+							<h:outputText
+								rendered="#{not detailVeranstaltungRequest.canEdit}"
+								id="ticketpreis" class="form-control"
+								value="#{detailVeranstaltungRequest.event.ticketPreis}">
+								<f:convertNumber type="currency" maxFractionDigits="2"></f:convertNumber>
+							</h:outputText>
+							<h:inputText pt:type="number"
+								rendered="#{detailVeranstaltungRequest.canEdit}"
+								id="ticketpreisEdit" class="form-control"
+								value="#{detailVeranstaltungRequest.event.ticketPreis}">
+								<f:convertNumber maxFractionDigits="2"></f:convertNumber>
+							</h:inputText>
+						</div>
+					</div>
+
+
+
+
+
+					<h:panelGroup rendered="#{detailVeranstaltungRequest.canEdit}">
+						<h:selectBooleanCheckbox
+							value="#{detailVeranstaltungRequest.event.istVeroeffentlicht}" />
+						<p>Veröffentlichen</p>
+					</h:panelGroup>
 
 					<h:commandButton value="Bearbeiten"
 						action="#{detailVeranstaltungRequest.editVeranstaltung}"
@@ -77,17 +159,20 @@
 						action="#{detailVeranstaltungRequest.updateVeranstaltung}"
 						rendered="#{detailVeranstaltungRequest.canEdit}">
 					</h:commandButton>
-					<h:inputText rendered="#{security.isLoggedIn() &amp;&amp; !detailVeranstaltungRequest.canEdit}" pt:placeholder="0" pt:type="number" value="#{detailVeranstaltungRequest.event.zuReservierendeTickets}">
-					<f:convertNumber/>
+					<h:inputText
+						rendered="#{security.isLoggedIn() &amp;&amp; !detailVeranstaltungRequest.canEdit}"
+						pt:placeholder="0" pt:type="number"
+						value="#{detailVeranstaltungRequest.event.zuReservierendeTickets}">
+						<f:convertNumber />
 					</h:inputText>
-					<h:commandButton value = "Reservieren"
-					action ="#{detailVeranstaltungRequest.reservieren(detailVeranstaltungRequest.event.zuReservierendeTickets)}"
-					rendered="#{security.isLoggedIn() &amp;&amp; !detailVeranstaltungRequest.canEdit}">
-					
+					<h:commandButton value="Reservieren"
+						action="#{detailVeranstaltungRequest.reservieren(detailVeranstaltungRequest.event.zuReservierendeTickets)}"
+						rendered="#{security.isLoggedIn() &amp;&amp; !detailVeranstaltungRequest.canEdit}">
+
 					</h:commandButton>
-					
-					
-					
+
+
+
 				</h:form>
 			</div>
 		</h:panelGroup>

@@ -6,77 +6,66 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
+	<f:metadata>
+		<f:event type="preRenderView"
+			listener="#{reservierungenRequest.init()}" />
+	</f:metadata>
 	<ui:define name="title">
-        Neue Tour erstellen
+        Meine Reservierungen
     </ui:define>
 	<ui:define name="content">
 
 
-		<div class="col-xs-3">
+		<h:dataTable id="suchergebnis"
+			rendered="#{reservierungenRequest.reservierungen != null &amp;&amp; reservierungenRequest.reservierungen.getRowCount() > 0}"
+			class="table table-bordered"
+			value="#{reservierungenRequest.reservierungen}" var="reservierung">
+			<h:column>
+				<f:facet name="header">
+						 		Titel der Veranstaltung
+							</f:facet>
+						 	#reservierungenRequest.getVeranstaltung(reservierung).name
+						</h:column>
+			<h:column>
+				<f:facet name="header">
+								Datum
+							</f:facet>
+				<h:outputText
+					value="#{#reservierungenRequest.getVeranstaltung(reservierung).datum}">
+					<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+				</h:outputText>
+			</h:column>
 
-			<ul class="nav nav-tabs tabs-left" id="myTab" data-tabs="tabs">
+			<h:column>
+				<f:facet name="header">
+								Uhrzeit
+							</f:facet>
+				<h:outputText
+					value="#{#reservierungenRequest.getVeranstaltung(reservierung).datum}">
+					<f:convertDateTime pattern="HH:mm"></f:convertDateTime>
+				</h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+								Ort
+							</f:facet>
+							#reservierungenRequest.getVeranstaltung(reservierung).ort
+						</h:column>
+			<h:column>
+				<f:facet name="header">
+								Anzahl Tickets
+							</f:facet>
+							#reservierungenRequest.getAnzTickets(reservierung)
+						</h:column>
 
-				<li><a href="#tour" data-toggle="tab">Tour</a></li>
+			<h:column>
+				<f:facet name="header">
+								Gesamtpreis
+							</f:facet>
+							Fehlt
+						</h:column>
 
-				<li><a href="#veranstaltungen" data-toggle="tab">Veranstaltungen</a></li>
-				<li><a href="#abschließen" data-toggle="tab">Abschließen</a></li>
-
-
-
-			</ul>
-		</div>
-		<div class="col-xs-9">
-			<h:form>
-				<div class="tab-content">
-					<div class="tab-pane fade in active" id="tour">
-
-						<h:inputText id="name" class="form-control"
-							value="#{tourRequest.tourname}" pt:placeholder="Name der Tour"
-							pt:required="true">
-						</h:inputText>
-						<br />
-						<p>Beschreibung:</p>
-						<h:inputTextarea id="beschreibung" class="form-control"
-							value="#{tourRequest.tourbeschreibung}" cols="5">
-						</h:inputTextarea>
-
-
-					</div>
-					<div class="tab-pane fade" id="veranstaltungen">
-
-
-						<h:dataTable value="#{tourRequest.veranstaltungen}" var="event">
-							<h:column>
-								<h:inputText class="form-control" value="#{event.name}"></h:inputText>
-							</h:column>
-							<h:column>
-								<h:inputText class="form-control" value="#{event.beschreibung}"></h:inputText>
-							</h:column>
-
-						</h:dataTable>
-						<h:commandButton class="btn"
-							action="#{tourRequest.erstelleVeranstaltung}"
-							value="neue Veranstaltung">
-						</h:commandButton>
-
-
-
-
-					</div>
-					<div class="tab-pane fade" id="abschließen">Hier eine
-						Möglichkeit, komplett oder nur einzelne Veranstaltungen zu
-						veröffentlichen</div>
-				</div>
-			</h:form>
-		</div>
-
-
-
-
-
-
-
-
+		</h:dataTable>
 
 
 	</ui:define>

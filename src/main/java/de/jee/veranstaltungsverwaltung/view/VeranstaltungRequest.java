@@ -20,6 +20,8 @@ public class VeranstaltungRequest {
 	private String name;
 	private String beschreibung;
 	private Date datum;
+	private Date zeit;
+	private double ticketPreis;
 	private String ort;
 	private int anzahlTickets;
 	private boolean istVeroeffentlicht;
@@ -29,6 +31,10 @@ public class VeranstaltungRequest {
 			beschreibung = "";
 		VeranstaltungDAO dao = new VeranstaltungDAO();
 		Veranstaltung veranstaltung = new Veranstaltung(name, beschreibung, datum, ort, istVeroeffentlicht, security.getCurrentUser());
+		veranstaltung.setTicketPreis(ticketPreis);
+		veranstaltung.getDatum().setHours(zeit.getHours());
+		veranstaltung.getDatum().setMinutes(zeit.getMinutes());
+		
 		int returncode = dao.save(veranstaltung, anzahlTickets);
 		if(returncode <= 1)
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Die Veranstaltung wurde erfolgreich angelegt", null));
@@ -91,5 +97,21 @@ public class VeranstaltungRequest {
 
 	public void setAnzahlTickets(int anzahlTickets) {
 		this.anzahlTickets = anzahlTickets;
+	}
+
+	public Date getZeit() {
+		return zeit;
+	}
+
+	public void setZeit(Date zeit) {
+		this.zeit = zeit;
+	}
+
+	public double getTicketPreis() {
+		return ticketPreis;
+	}
+
+	public void setTicketPreis(double ticketPreis) {
+		this.ticketPreis = ticketPreis;
 	}
 }

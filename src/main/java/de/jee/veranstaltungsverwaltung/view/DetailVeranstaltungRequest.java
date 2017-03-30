@@ -3,6 +3,7 @@ package de.jee.veranstaltungsverwaltung.view;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -32,7 +33,20 @@ public class DetailVeranstaltungRequest implements Serializable {
 	private int tickets;
 
 	private int anzTickets;
+	private Date zeit;
 
+	
+	public void init(){
+		zeit = new Date();
+		zeit.setHours(event.getDatum().getHours());
+		zeit.setMinutes(event.getDatum().getMinutes());
+	}
+	public Date getZeit() {
+		return zeit;
+	}
+	public void setZeit(Date zeit) {
+		this.zeit = zeit;
+	}
 	public void editVeranstaltung() {
 		anzTickets = event.getTickets().size();
 		canEdit = true;
@@ -63,6 +77,8 @@ public class DetailVeranstaltungRequest implements Serializable {
 			}
 		}
 		VeranstaltungDAO dao = new VeranstaltungDAO();
+		event.getDatum().setHours(zeit.getHours());
+		event.getDatum().setMinutes(zeit.getMinutes());
 		dao.update(event);
 		
 		canEdit = false;

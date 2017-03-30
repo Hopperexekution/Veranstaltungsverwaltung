@@ -73,6 +73,7 @@ public class Veranstaltung {
 		this.datum = datum;
 		this.istVeroeffentlicht = istVeroeffentlicht;
 		this.manager = manager;
+		
 	}
 	public Veranstaltung(String name, String beschreibung, Date datum, String ort, boolean istVeroeffentlicht, Nutzer manager){
 		this.name = name;

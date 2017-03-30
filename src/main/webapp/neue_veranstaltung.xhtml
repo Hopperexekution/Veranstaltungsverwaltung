@@ -11,43 +11,63 @@
 	<ui:define name="content">
 		<h:panelGroup>
 			<div class="container">
-			<h:messages/>
+				<h:messages />
 				<h:form>
 					<h:inputText id="name" class="form-control"
 						value="#{veranstaltungRequest.name}"
 						pt:placeholder="Name der Veranstaltung" pt:required="true">
 					</h:inputText>
-					<br/>
-					<p>Beschreibung:</p>	
+					<br />
+					<p>Beschreibung</p>
 					<h:inputTextarea id="beschreibung" class="form-control"
 						value="#{veranstaltungRequest.beschreibung}" cols="5">
 					</h:inputTextarea>
-					<br/>
+					<br />
+					<p>Datum</p>
 					<h:inputText id="datum" class="form-control" pt:type="date"
-						value="#{veranstaltungRequest.datum}"
-						pt:placeholder="Datum" pt:required="true">
-							<f:convertDateTime pattern="yyyy-M-d"/>
+						value="#{veranstaltungRequest.datum}" pt:placeholder="Datum"
+						pt:required="true">
+						<f:convertDateTime pattern="yyyy-M-d" />
 					</h:inputText>
-					<br/>
+					<br />
+<p>Uhrzeit</p>
+					<h:inputText id="zeitEdit" class="form-control" pt:type="time" pt:placeholder="Datum"
+						value="#{veranstaltungRequest.zeit}">
+						<f:convertDateTime pattern="HH:mm" timeZone="GMT+2"></f:convertDateTime>
+					</h:inputText>
+					<br />
+					<p>Ort</p>
 					<h:inputText id="ort" class="form-control"
-						value="#{veranstaltungRequest.ort}"
-						pt:placeholder="Ort" pt:required="true">
+						value="#{veranstaltungRequest.ort}" pt:placeholder="Ort"
+						pt:required="true">
 					</h:inputText>
-					<br/>
+					<br />
+					<p>Anzahl Tickets</p>
 					<h:inputText id="anzahlTickets" class="form-control"
 						value="#{veranstaltungRequest.anzahlTickets}"
 						pt:placeholder="Anzahl Tickets" pt:required="true">
-						<f:converter converterId="javax.faces.Integer"/>
+						<f:converter converterId="javax.faces.Integer" />
+						
 					</h:inputText>
-					<br/>
-					<h:selectBooleanCheckbox value="#{veranstaltungRequest.istVeroeffentlicht}" /><p> Veröffentlichen</p>
-					<br/>
-					<br/>
-					<h:commandButton class="btn" action="#{veranstaltungRequest.erstelleVeranstaltung}"
+					<br />
+					<p>Anzahl Tickets</p>
+					<h:inputText pt:type="number"
+						id="ticketpreisEdit" class="form-control"
+						value="#{veranstaltungRequest.ticketPreis}">
+						<f:converter converterId="javax.faces.Double" />
+					</h:inputText>
+					<br />
+					<h:selectBooleanCheckbox
+						value="#{veranstaltungRequest.istVeroeffentlicht}" />
+					<p>Veröffentlichen</p>
+					<br />
+					<br />
+					<h:commandButton class="btn"
+						action="#{veranstaltungRequest.erstelleVeranstaltung}"
 						value="Veranstaltung erstellen">
 					</h:commandButton>
 				</h:form>
 			</div>
-		</h:panelGroup>	
+		</h:panelGroup>
 	</ui:define>
 </ui:composition>
