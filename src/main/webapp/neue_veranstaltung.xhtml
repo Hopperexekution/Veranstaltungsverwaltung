@@ -90,9 +90,9 @@
 							<p>Ticketpreis</p>
 						</div>
 						<div class="col-md-8">
-							<h:inputText pt:type="number" id="ticketpreisEdit"
+							<h:inputText id="ticketpreisEdit"
 								class="form-control" value="#{veranstaltungRequest.ticketPreis}">
-								<f:converter converterId="javax.faces.Double" />
+								<f:convertNumber maxFractionDigits="2" />
 							</h:inputText>
 						</div>
 					</div>

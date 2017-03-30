@@ -1,0 +1,17 @@
+- Uhrzeit eine Stunde geht pro bearbeitung eine Stunde vor
+- Uhrzeit bei der Suche
+- Gültigkeit der Veranstaltung auf der Home-Seite
+- DAOs als Services implementieren
+- Umleiten wenn nicht eingeloggt/authorisiert
+- Kommentare
+- Testen Testen Testen
+- Doku
+	- Kurzbeschreibung --> Ann-Katrin
+	- User-Stories --> Aufteilen
+	- Installationsanleitung --> Nur mit Chrome getestet
+	- Klassendiagramm generieren --> Jan
+	- Sprintbacklog
+	- Datenbankeschreibung --> Jan
+	- Eigenständigkeitserklärung --> Ann-Katrin vorher unterschreiben!
+	- Models, Default Values einstellen
+	
