@@ -4,14 +4,14 @@
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
-	
+
 
 	<ui:define name="title">
         Home
         		
     </ui:define>
 	<ui:define name="content">
-	<style type="text/css">
+		<style type="text/css">
 a:link {
 	color: black;
 	text-decoration: none
@@ -33,129 +33,104 @@ a:hover {
 }
 </style>
 
+		<div class="container">
+			<div class="panel-group" id="accordion">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapse1"> Die neuesten Veranstaltungen</a>
+						</h4>
+					</div>
+					<div id="collapse1" class="panel-collapse collapse in">
+						<div class="panel-body">
+							<h:dataTable class="table table-hover table-bordered"
+								value="#{homeRequest.neuesteEvents}" var="event">
+								<h:column>
+									<f:facet name="header">Name</f:facet>
+									<a href="detail_veranstaltung.jsf?id=#{event.id}">
+										#{event.name} </a>
+								</h:column>
+								<h:column>
+									<f:facet name="header">Datum</f:facet>
 
-		<div class="panel-group" id="accordion">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h4 class="panel-title">
-						<a data-toggle="collapse" data-parent="#accordion"
-							href="#collapse1"> Demnächst stattfindende Veranstaltungen</a>
-					</h4>
-				</div>
-				<div id="collapse1" class="panel-collapse collapse in">
-					<div class="panel-body">
-						<h:dataTable class="table table-hover table-bordered rowlink"
-							value="#{homeRequest.naechsteEvents}" var="event" data-link="row">
+									<h:outputText value="#{event.datum}">
+										<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+									</h:outputText>
 
-							<h:column>
-								<f:facet name="header">Name</f:facet>
-								<a href="detail_veranstaltung.jsf?id=#{event.id}">
-								#{event.name}
-								</a>
-							</h:column>
-							<h:column>
-								<f:facet name="header">Beschreibung</f:facet>
-								<a href="detail_veranstaltung.jsf?id=#{event.id}">
-								#{event.beschreibung}
-								</a>
+								</h:column>
+								<h:column>
+									<f:facet name="header">Uhrzeit</f:facet>
 
-							</h:column>
-							<h:column>
-								<f:facet name="header">Datum</f:facet>
+									<h:outputText value="#{event.datum}">
+										<f:convertDateTime pattern="HH:mm" timeZone="GMT+2"></f:convertDateTime>
+									</h:outputText>
 
-								<h:outputText value="#{event.datum}">
-									<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
-								</h:outputText>
-
-							</h:column>
-							<h:column>
-								<f:facet name="header">Ort</f:facet>
+								</h:column>
+								<h:column>
+									<f:facet name="header">Ort</f:facet>
 								#{event.ort} 
 							</h:column>
+								<h:column>
+									<f:facet name="header">Verfügbare Tickets</f:facet>
+								#{event.anzahlVerfuegbareTickets()} 
+							</h:column>
+							</h:dataTable>
 
-						</h:dataTable>
+
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h4 class="panel-title">
-						<a data-toggle="collapse" data-parent="#accordion"
-							href="#collapse2"> Die meist reservierten Veranstaltungen</a>
-					</h4>
-				</div>
-				<div id="collapse2" class="panel-collapse collapse">
-					<div class="panel-body">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapse2"> Alle Veranstaltungen</a>
+						</h4>
+					</div>
+					<div id="collapse2" class="panel-collapse collapse">
+						<div class="panel-body">
+						
 						<h:dataTable class="table table-hover table-bordered"
-							value="#{homeRequest.meistReservierteEvents}" var="event">
-							<h:column>
-								<f:facet name="header">Name</f:facet>
-								<a href="detail_veranstaltung.jsf?id=#{event.id}">
-								#{event.name}
-								</a>
-							</h:column>
-							<h:column>
-								<f:facet name="header">Beschreibung</f:facet>
-								<a href="detail_veranstaltung.jsf?id=#{event.id}">
-								#{event.beschreibung}
-								</a>
-							</h:column>
-							<h:column>
-								<f:facet name="header">Datum</f:facet>
+								value="#{homeRequest.alleEvents}" var="event">
+								<h:column>
+									<f:facet name="header">Name</f:facet>
+									<a href="detail_veranstaltung.jsf?id=#{event.id}">
+										#{event.name} </a>
+								</h:column>
+								<h:column>
+									<f:facet name="header">Datum</f:facet>
 
-								<h:outputText value="#{event.datum}">
-									<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
-								</h:outputText>
+									<h:outputText value="#{event.datum}">
+										<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+									</h:outputText>
 
-							</h:column>
-							<h:column>
-								<f:facet name="header">Ort</f:facet>
+								</h:column>
+								<h:column>
+									<f:facet name="header">Uhrzeit</f:facet>
+
+									<h:outputText value="#{event.datum}">
+										<f:convertDateTime pattern="HH:mm" timeZone="GMT+2"></f:convertDateTime>
+									</h:outputText>
+
+								</h:column>
+								<h:column>
+									<f:facet name="header">Ort</f:facet>
 								#{event.ort} 
 							</h:column>
-						</h:dataTable>
+								<h:column>
+									<f:facet name="header">Verfügbare Tickets</f:facet>
+								#{event.anzahlVerfuegbareTickets()} 
+							</h:column>
+							</h:dataTable>
+						
+						
+						
+						</div>
 					</div>
 
-
 				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h4 class="panel-title">
-						<a data-toggle="collapse" data-parent="#accordion"
-							href="#collapse3"> Die neuesten Veranstaltungen</a>
-					</h4>
-				</div>
-				<div id="collapse3" class="panel-collapse collapse">
-					<div class="panel-body">
-						<h:dataTable class="table table-hover table-bordered"
-							value="#{homeRequest.neuesteEvents}" var="event">
-							<h:column>
-								<f:facet name="header">Name</f:facet>
-								<a href="detail_veranstaltung.jsf?id=#{event.id}">
-								#{event.name}
-								</a>
-							</h:column>
-							<h:column>
-								<f:facet name="header">Beschreibung</f:facet>
-								<a href="detail_veranstaltung.jsf?id=#{event.id}">
-								#{event.beschreibung}
-								</a>
-							</h:column>
-							<h:column>
-								<f:facet name="header">Datum</f:facet>
 
-								<h:outputText value="#{event.datum}">
-									<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
-								</h:outputText>
-
-							</h:column>
-							<h:column>
-								<f:facet name="header">Ort</f:facet>
-								#{event.ort} 
-							</h:column>
-						</h:dataTable>
-					</div>
-				</div>
 			</div>
 		</div>
 

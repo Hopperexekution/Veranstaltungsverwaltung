@@ -21,32 +21,11 @@ public class HomeRequest {
 	private Security security;
 	@Inject
 	private VeranstaltungDAO dao = new VeranstaltungDAO();
-	private List<Veranstaltung> naechsteEvents = new ArrayList<Veranstaltung>(Arrays.asList(
-            new Veranstaltung("Test1", "Beschreibung1", new Date(), true, null),
-            new Veranstaltung("Test2", "Beschreibung2", new Date(), true, null),
-            new Veranstaltung("Test3", "Beschreibung3", new Date(), true, null)));
-
-	//private List<Veranstaltung> meistReservierteEvents = dao.mostReserved();
-	
-	private List<Veranstaltung> meistReservierteEvents = dao.mostReserved();
+	private List<Veranstaltung> alleEvents = dao.all();
 	
 	private List<Veranstaltung> neuesteEvents = dao.latestFive();
 
-	public List<Veranstaltung> getNaechsteEvents() {
-		return naechsteEvents;
-	}
 
-	public void setNaechsteEvents(List<Veranstaltung> naechsteEvents) {
-		this.naechsteEvents = naechsteEvents;
-	}
-
-	public List<Veranstaltung> getMeistReservierteEvents() {
-		return meistReservierteEvents;
-	}
-
-	public void setMeistReservierteEvents(List<Veranstaltung> meistReservierteEvents) {
-		this.meistReservierteEvents = meistReservierteEvents;
-	}
 
 	public List<Veranstaltung> getNeuesteEvents() {
 		return neuesteEvents;
@@ -62,6 +41,14 @@ public class HomeRequest {
 
 	public void setSecurity(Security security) {
 		this.security = security;
+	}
+
+	public List<Veranstaltung> getAlleEvents() {
+		return alleEvents;
+	}
+
+	public void setAlleEvents(List<Veranstaltung> alleEvents) {
+		this.alleEvents = alleEvents;
 	}
 
 }

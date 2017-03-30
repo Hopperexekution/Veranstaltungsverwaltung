@@ -312,4 +312,22 @@ public class VeranstaltungDAO {
 			}
 			return returncode;
 		}
+		public List<Veranstaltung> all() {
+			List<Veranstaltung> veranstaltungen = null;
+			EntityManager em = null;
+			try{
+				em = HibernateUtil.getEntityManager();
+				String hql = "from Veranstaltung as v";
+				veranstaltungen = em.createQuery(hql).setMaxResults(5).getResultList();
+			}
+			catch(Exception e){
+				logger.log(Level.DEBUG, "Die Veranstaltungen mit den meisten Reservierungen konnten nicht");
+			}
+			finally{
+				if(em != null)
+					em.close();
+			}
+			return veranstaltungen;
+		}
+		
 }
