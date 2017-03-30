@@ -1,10 +1,11 @@
 package de.jee.veranstaltungsverwaltung.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+
 import org.jboss.logging.Logger;
 import org.jboss.logging.Logger.Level;
 
@@ -127,5 +128,35 @@ public class ReservierungDAO {
 				em.close();
 		}
 		return returncode;
+	}
+
+	public List<Reservierung> findByEvents(List<Veranstaltung> events) {
+		List<Reservierung> reservierungen = new ArrayList<Reservierung>();
+		for(Veranstaltung event:events){
+			List<Reservierung> rs = findeReservierungEvent(event);
+			if (rs!=null)
+			reservierungen.addAll(rs);
+		}
+		return reservierungen;
+	}
+	private List<Reservierung> findeReservierungEvent(Veranstaltung event) {
+		List<Reservierung> reservierungen = null;
+		EntityManager em = null;
+		try{
+			em = HibernateUtil.getEntityManager();
+			em = HibernateUtil.getEntityManager();
+			String hql = "from Reservierung as r inner join fetch r.tickets as t inner join fetch t.veranstaltung as v where v.id="+ event.getId() + "group by r.id";
+			reservierungen = em.createQuery(hql).getResultList();
+			
+
+		}
+		catch(Exception e){
+			logger.log(Level.DEBUG, "Die Reservierungen zu der Event-ID: " + event.getId() + " konnten nicht bezogen werden");
+			return null;
+		}
+		finally{
+			em.close();
+		}
+		return reservierungen;
 	}
 }

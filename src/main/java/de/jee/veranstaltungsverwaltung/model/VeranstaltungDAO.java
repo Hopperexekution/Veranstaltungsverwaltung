@@ -220,6 +220,33 @@ public class VeranstaltungDAO {
 			}
 			return veranstaltungen;
 		}
+		@SuppressWarnings("unchecked")
+		public List<Veranstaltung> allbyManager(Nutzer manager){
+			List<Veranstaltung> veranstaltungen = null;
+			EntityManager em = null;
+			if(!manager.getIstManager()){
+				logger.log(Level.INFO, "Der übergebene Benutzer ist kein Manager, folglich kann er keine Veranstaltungen besitzen");
+				return null;
+			}
+			try{
+				if(manager.getBenutzername() == null){
+					logger.log(Level.DEBUG, "Der Benutzername im Nutzer-Objekt ist null");
+					return null;
+				}
+				em = HibernateUtil.getEntityManager();
+				String query ="from Veranstaltung as v where v.manager="+ manager.getId();
+				
+				veranstaltungen = em.createQuery(query).getResultList();
+			}
+			catch(Exception e){
+				logger.log(Level.DEBUG, "Es konnten keine Veranstaltungen zu dem Manager mit dem Benutzernamen" 
+						+ manager.getBenutzername() + " bezogen werden" + e.getStackTrace());
+			}
+			finally{
+				em.close();
+			}
+			return veranstaltungen;
+		}
 		
 		public int save(Veranstaltung veranstaltung){
 			int returncode = 0;

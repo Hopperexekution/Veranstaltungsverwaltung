@@ -85,7 +85,8 @@ a:hover {
 				<f:facet name="header">
 								Gesamtpreis
 							</f:facet>
-							Fehlt
+							<h:outputText value="#{reservierungenRequest.getGesamtPreis(reservierung)}">
+							<f:convertNumber type="currency" maxFractionDigits="2" /></h:outputText>
 						</h:column>
 
 		</h:dataTable>

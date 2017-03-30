@@ -1,0 +1,147 @@
+<ui:composition template="./grundform.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+	
+
+	<ui:define name="title">
+        Home
+        		
+    </ui:define>
+	<ui:define name="content">
+	<f:metadata>
+	<f:event type="preRenderView" listener="#{managerRequest.init()}"/>
+	</f:metadata>
+	
+	<style type="text/css">
+a:link {
+	color: black;
+	text-decoration: none
+}
+
+a:visited {
+	color: black;
+	text-decoration: none
+}
+
+a:active {
+	color: black;
+	text-decoration: none
+}
+
+a:hover {
+	color: black;
+	text-decoration: none
+}
+</style>
+
+<div class="container">
+		<div class="panel-group" id="accordion">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion"
+							href="#collapse1"> Meine Veranstaltungen</a>
+					</h4>
+				</div>
+				<div id="collapse1" class="panel-collapse collapse in">
+					<div class="panel-body">
+						<h:dataTable class="table table-hover table-bordered rowlink"
+							value="#{managerRequest.events}" var="event" data-link="row">
+
+							<h:column>
+								<f:facet name="header">Name</f:facet>
+								<a href="detail_veranstaltung.jsf?id=#{event.id}">
+								#{event.name}
+								</a>
+							</h:column>
+							<h:column>
+								<f:facet name="header">Datum</f:facet>
+
+								<h:outputText value="#{event.datum}">
+									<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+								</h:outputText>
+
+							</h:column>
+														<h:column>
+								<f:facet name="header">Uhrzeit</f:facet>
+
+								<h:outputText value="#{event.datum}">
+									<f:convertDateTime pattern="HH:mm" timezone="GMT+2"></f:convertDateTime>
+								</h:outputText>
+
+							</h:column>
+							<h:column>
+								<f:facet name="header">Ort</f:facet>
+								#{event.ort} 
+							</h:column>
+							<h:column>
+								<f:facet name="header">Tickets</f:facet>
+								#{event.anzahlVerfuegbareTickets()} 
+							</h:column>
+							<h:column>
+							<f:facet name="header">Ticketpreis</f:facet>
+							<h:outputText
+								id="ticketpreis"
+								value="#{event.ticketPreis}">
+								<f:convertNumber type="currency" maxFractionDigits="2"></f:convertNumber>
+							</h:outputText>
+							</h:column>
+
+						</h:dataTable>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion"
+							href="#collapse2"> Reservierungen</a>
+					</h4>
+				</div>
+				<div id="collapse2" class="panel-collapse collapse">
+					<div class="panel-body">
+						<h:dataTable class="table table-hover table-bordered"
+							value="#{managerRequest.reservierungen}" var="reserv"
+							rendered="#{managerRequest.reservierungen != null and managerRequest.reservierungen.size() > 0}">
+							<h:column>
+								<f:facet name="header">Veranstaltung</f:facet>
+								<a href="detail_veranstaltung.jsf?id=#{managerRequest.getEvent(reserv).id}">
+								#{managerRequest.getEvent(reserv).name}
+								</a>
+							</h:column>
+
+							<h:column>
+								<f:facet name="header">User</f:facet>
+
+								#{managerRequest.getUser(reserv).benutzername}
+								
+
+							</h:column>
+							
+							<h:column>
+								<f:facet name="header">Anzahl reservierter Tickets</f:facet>
+
+								#{managerRequest.getTickets(reserv).size()}
+								
+
+							</h:column>
+
+						</h:dataTable>
+					</div>
+
+
+				</div>
+			</div>
+			
+		</div>
+		</div>
+
+
+
+
+
+	</ui:define>
+</ui:composition>
