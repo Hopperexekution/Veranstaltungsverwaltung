@@ -22,7 +22,10 @@
 				<h:messages></h:messages>
 				<h:form>
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-md-4">
+							<p>Name</p>
+						</div>
+						<div class="col-md-8">
 							<h:outputText
 								rendered="#{not detailVeranstaltungRequest.canEdit}" id="name"
 								class="form-control"
@@ -160,14 +163,14 @@
 						rendered="#{detailVeranstaltungRequest.canEdit}">
 					</h:commandButton>
 					<h:inputText
-						rendered="#{security.isLoggedIn() &amp;&amp; !detailVeranstaltungRequest.canEdit and detailVeranstaltungRequest.event.istveroeffentlicht}"
+						rendered="#{security.isLoggedIn() &amp;&amp; !detailVeranstaltungRequest.canEdit and detailVeranstaltungRequest.event.istVeroeffentlicht}"
 						pt:placeholder="0" pt:type="number"
 						value="#{detailVeranstaltungRequest.event.zuReservierendeTickets}">
 						<f:convertNumber />
 					</h:inputText>
 					<h:commandButton value="Reservieren"
 						action="#{detailVeranstaltungRequest.reservieren(detailVeranstaltungRequest.event.zuReservierendeTickets)}"
-						rendered="#{security.isLoggedIn() and !detailVeranstaltungRequest.canEdit and detailVeranstaltungRequest.event.istveroeffentlicht}">
+						rendered="#{security.isLoggedIn() and !detailVeranstaltungRequest.canEdit and detailVeranstaltungRequest.event.istVeroeffentlicht}">
 
 					</h:commandButton>
 

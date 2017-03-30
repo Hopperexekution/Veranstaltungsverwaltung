@@ -125,6 +125,7 @@ public class VeranstaltungDAO {
 				Root<Veranstaltung> root = query.from(Veranstaltung.class);
 				query.select(root);
 				query.orderBy(cb.desc(root.get("id")));
+				query.where(cb.equal(root.get("istVeroeffentlicht").as(Integer.class), 1));
 				veranstaltungen = em.createQuery(query).setMaxResults(5).getResultList();				
 			}
 			catch(Exception e){
@@ -317,7 +318,7 @@ public class VeranstaltungDAO {
 			EntityManager em = null;
 			try{
 				em = HibernateUtil.getEntityManager();
-				String hql = "from Veranstaltung as v";
+				String hql = "from Veranstaltung as v where v.istVeroeffentlicht=1";
 				veranstaltungen = em.createQuery(hql).setMaxResults(5).getResultList();
 			}
 			catch(Exception e){
