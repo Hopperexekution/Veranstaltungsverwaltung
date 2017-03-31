@@ -37,7 +37,7 @@ a:hover {
 </style>
 		<div class="container">
 			<h:dataTable id="suchergebnis"
-				rendered="#{reservierungenRequest.reservierungen != null &amp;&amp; reservierungenRequest.reservierungen.size() > 0}"
+				rendered="#{reservierungenRequest.reservierungen != null and reservierungenRequest.reservierungen.size() > 0}"
 				class="table table-bordered"
 				value="#{reservierungenRequest.reservierungen}" var="reservierung">
 				<h:column>
@@ -94,13 +94,16 @@ a:hover {
 					<f:facet name="header">
 						 		Reservierungscode
 							</f:facet>
-					<a
-						href="detail_veranstaltung.jsf?id=#{reservierungenRequest.getEvent(reservierung).id}">
-						#{reservierung.id} </a>
+					
+						#{reservierung.id}
 
 				</h:column>
 				
 			</h:dataTable>
+			<h:panelGroup rendered="#{empty reservierungenRequest.reservierungen or reservierungenRequest.reservierungen.size() == 0}">
+			Es liegen keine Reservierungen vor.
+			
+			</h:panelGroup>
 		</div>
 
 
