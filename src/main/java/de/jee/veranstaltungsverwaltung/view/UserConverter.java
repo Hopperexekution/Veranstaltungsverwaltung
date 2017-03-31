@@ -14,7 +14,7 @@ import de.jee.veranstaltungsverwaltung.service.UserService;
 @Named
 public class UserConverter implements Converter{
 	@Inject
-	UserService userService = new UserService();
+	private UserService userService;
 	
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component,
