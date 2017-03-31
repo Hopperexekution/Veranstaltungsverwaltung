@@ -11,13 +11,15 @@ import javax.inject.Named;
 
 import de.jee.veranstaltungsverwaltung.controller.Security;
 import de.jee.veranstaltungsverwaltung.model.Veranstaltung;
-import de.jee.veranstaltungsverwaltung.model.VeranstaltungDAO;
+import de.jee.veranstaltungsverwaltung.service.VeranstaltungDAO;
 
 @Named
 @RequestScoped
 public class VeranstaltungRequest {
 	@Inject
 	private Security security;
+	@Inject
+	private VeranstaltungDAO veranstaltungDAO;
 	private String name;
 	private String beschreibung;
 	private Date datum;
@@ -41,16 +43,16 @@ public class VeranstaltungRequest {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public String erstelleVeranstaltung(){
 		if(beschreibung == null)
 			beschreibung = "";
-		VeranstaltungDAO dao = new VeranstaltungDAO();
 		Veranstaltung veranstaltung = new Veranstaltung(name, beschreibung, datum, ort, istVeroeffentlicht, security.getCurrentUser());
 		veranstaltung.setTicketPreis(ticketPreis);
 		veranstaltung.getDatum().setHours(zeit.getHours());
 		veranstaltung.getDatum().setMinutes(zeit.getMinutes());
 		
-		int returncode = dao.save(veranstaltung, anzahlTickets);
+		int returncode = veranstaltungDAO.save(veranstaltung, anzahlTickets);
 		if(returncode <= 1)
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Die Veranstaltung wurde erfolgreich angelegt", null));
 		else
@@ -128,5 +130,9 @@ public class VeranstaltungRequest {
 
 	public void setTicketPreis(double ticketPreis) {
 		this.ticketPreis = ticketPreis;
+	}
+
+	public void setVeranstaltungDAO(VeranstaltungDAO veranstaltungDAO) {
+		this.veranstaltungDAO = veranstaltungDAO;
 	}
 }

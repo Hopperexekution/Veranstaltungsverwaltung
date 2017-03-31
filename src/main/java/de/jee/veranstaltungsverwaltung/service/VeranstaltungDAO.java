@@ -1,8 +1,11 @@
-package de.jee.veranstaltungsverwaltung.model;
-
+package de.jee.veranstaltungsverwaltung.service;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -15,7 +18,16 @@ import org.jboss.logging.Logger;
 import org.jboss.logging.Logger.Level;
 
 import de.jee.veranstaltungsverwaltung.controller.HibernateUtil;
-public class VeranstaltungDAO {
+import de.jee.veranstaltungsverwaltung.model.Veranstaltung;
+import de.jee.veranstaltungsverwaltung.model.Nutzer;
+import de.jee.veranstaltungsverwaltung.model.Ticket;
+@Named
+@ApplicationScoped
+public class VeranstaltungDAO implements Serializable {
+		/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8376080847979098662L;
 		private static final Logger logger = Logger.getLogger(VeranstaltungDAO.class);
 		
 		public Veranstaltung findByID(int id){
@@ -34,7 +46,11 @@ public class VeranstaltungDAO {
 				return null;
 			}
 			finally{
-				em.close();
+				if(em != null)
+					em.close();
+				else
+					logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
+
 			}
 			return veranstaltung;
 		}
@@ -112,6 +128,9 @@ public class VeranstaltungDAO {
 			finally{
 				if(em != null)
 					em.close();
+				else
+					logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
+
 			}
 			return veranstaltungen;
 		}
@@ -134,6 +153,9 @@ public class VeranstaltungDAO {
 			finally{
 				if(em != null)
 					em.close();
+				else
+					logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
+
 			}
 			return veranstaltungen;
 			
@@ -153,6 +175,9 @@ public class VeranstaltungDAO {
 			finally{
 				if(em != null)
 					em.close();
+				else
+					logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
+
 			}
 			return veranstaltungen;
 		}
@@ -183,7 +208,11 @@ public class VeranstaltungDAO {
 						+ manager.getBenutzername() + " bezogen werden" + e.getStackTrace());
 			}
 			finally{
-				em.close();
+				if(em != null)
+					em.close();
+				else
+					logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
+
 			}
 			return veranstaltungen;
 		}
@@ -217,7 +246,11 @@ public class VeranstaltungDAO {
 						+ manager.getBenutzername() + " bezogen werden" + e.getStackTrace());
 			}
 			finally{
-				em.close();
+				if(em != null)
+					em.close();
+				else
+					logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
+
 			}
 			return veranstaltungen;
 		}
@@ -244,7 +277,11 @@ public class VeranstaltungDAO {
 						+ manager.getBenutzername() + " bezogen werden" + e.getStackTrace());
 			}
 			finally{
-				em.close();
+				if(em != null)
+					em.close();
+				else
+					logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
+
 			}
 			return veranstaltungen;
 		}
@@ -265,7 +302,11 @@ public class VeranstaltungDAO {
 				returncode = -1;
 			}
 			finally{
-				em.close();
+				if(em != null)
+					em.close();
+				else
+					logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
+
 			}
 			return returncode;
 		}
@@ -287,7 +328,11 @@ public class VeranstaltungDAO {
 				returncode = -1;
 			}
 			finally{
-				em.close();
+				if(em != null)
+					em.close();
+				else
+					logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
+
 			}
 			return returncode;
 		}
@@ -309,10 +354,15 @@ public class VeranstaltungDAO {
 				returncode = -1;
 			}
 			finally{
-				em.close();
+				if(em != null)
+					em.close();
+				else
+					logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
+
 			}
 			return returncode;
 		}
+		@SuppressWarnings("unchecked")
 		public List<Veranstaltung> all() {
 			List<Veranstaltung> veranstaltungen = null;
 			EntityManager em = null;
@@ -327,6 +377,9 @@ public class VeranstaltungDAO {
 			finally{
 				if(em != null)
 					em.close();
+				else
+					logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
+
 			}
 			return veranstaltungen;
 		}

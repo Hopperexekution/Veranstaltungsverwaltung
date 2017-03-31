@@ -14,18 +14,27 @@ import javax.inject.Named;
 
 import de.jee.veranstaltungsverwaltung.controller.Security;
 import de.jee.veranstaltungsverwaltung.model.Reservierung;
-import de.jee.veranstaltungsverwaltung.model.ReservierungDAO;
 import de.jee.veranstaltungsverwaltung.model.Ticket;
-import de.jee.veranstaltungsverwaltung.model.TicketDAO;
 import de.jee.veranstaltungsverwaltung.model.Veranstaltung;
-import de.jee.veranstaltungsverwaltung.model.VeranstaltungDAO;
+import de.jee.veranstaltungsverwaltung.service.ReservierungDAO;
+import de.jee.veranstaltungsverwaltung.service.TicketDAO;
+import de.jee.veranstaltungsverwaltung.service.VeranstaltungDAO;
 
 @Named
 @ViewScoped
 public class DetailVeranstaltungRequest implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6137562470997474652L;
 	@Inject
 	private Security security;
-
+	@Inject
+	private TicketDAO ticketDAO;
+	@Inject
+	private ReservierungDAO reservierungDAO;
+	@Inject
+	private VeranstaltungDAO veranstaltungDAO;
 	private Veranstaltung event;
 
 	private boolean canEdit;
@@ -36,6 +45,7 @@ public class DetailVeranstaltungRequest implements Serializable {
 	private Date zeit;
 
 	
+	@SuppressWarnings("deprecation")
 	public void init(){
 		zeit = new Date();
 		zeit.setHours(event.getDatum().getHours());
@@ -53,13 +63,11 @@ public class DetailVeranstaltungRequest implements Serializable {
 		
 	}
 
+	@SuppressWarnings("deprecation")
 	public void updateVeranstaltung() {
-
-		System.out.println("Methode update Veranstaltung");
 		System.out.println(event.getName());
 
 		if (anzTickets != event.getTickets().size()) {
-			TicketDAO tdao = new TicketDAO();
 			int anz = 0;
 			// List<Ticket> tickets = tdao.alleTicketsEinerVeranstaltung(event);
 
@@ -67,19 +75,18 @@ public class DetailVeranstaltungRequest implements Serializable {
 			List<Ticket> tickets = new ArrayList<Ticket>();
 			tickets.addAll(event.getTickets());
 			while (anz < event.getTickets().size()) {
-				tdao.loescheTicket(tickets.get(anz));
+				ticketDAO.loescheTicket(tickets.get(anz));
 				anz++;
 
 			}
 			// event.getTickets().clear();
 			for (int i = 0; i < anzTickets; i++) {
-				tdao.save(new Ticket(event));
+				ticketDAO.save(new Ticket(event));
 			}
 		}
-		VeranstaltungDAO dao = new VeranstaltungDAO();
 		event.getDatum().setHours(zeit.getHours());
 		event.getDatum().setMinutes(zeit.getMinutes());
-		dao.update(event);
+		veranstaltungDAO.update(event);
 		
 		canEdit = false;
 		try {
@@ -95,7 +102,6 @@ public class DetailVeranstaltungRequest implements Serializable {
 	public void reservieren(int tickets) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		FacesMessage message = null;
-		ReservierungDAO dao = new ReservierungDAO();
 		Reservierung reservierung = new Reservierung(security.getCurrentUser());
 		if (event.getZuReservierendeTickets().equals("")) {
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -110,7 +116,7 @@ public class DetailVeranstaltungRequest implements Serializable {
 			context.addMessage("detailVeranstaltungForm:resTickets", message);
 			return;
 		}
-		int returncode = dao.save(reservierung, event, anzahlTickets);
+		int returncode = reservierungDAO.save(reservierung, event, anzahlTickets);
 		switch (returncode) {
 		case -1:
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -170,6 +176,15 @@ public class DetailVeranstaltungRequest implements Serializable {
 
 	public void setAnzTickets(int anzTickets) {
 		this.anzTickets = anzTickets;
+	}
+	public void setTicketDAO(TicketDAO ticketDAO) {
+		this.ticketDAO = ticketDAO;
+	}
+	public void setReservierungDAO(ReservierungDAO reservierungDAO) {
+		this.reservierungDAO = reservierungDAO;
+	}
+	public void setVeranstaltungDAO(VeranstaltungDAO veranstaltungDAO) {
+		this.veranstaltungDAO = veranstaltungDAO;
 	}
 
 }

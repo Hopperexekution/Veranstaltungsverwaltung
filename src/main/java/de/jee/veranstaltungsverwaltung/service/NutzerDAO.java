@@ -1,4 +1,8 @@
-package de.jee.veranstaltungsverwaltung.model;
+package de.jee.veranstaltungsverwaltung.service;
+import java.io.Serializable;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -6,8 +10,14 @@ import javax.persistence.criteria.Root;
 import org.jboss.logging.Logger;
 import org.jboss.logging.Logger.Level;
 import de.jee.veranstaltungsverwaltung.controller.HibernateUtil;
-
-public class NutzerDAO {
+import de.jee.veranstaltungsverwaltung.model.Nutzer;
+@Named
+@ApplicationScoped
+public class NutzerDAO implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5300002174328322928L;
 	private static final Logger logger = Logger.getLogger(NutzerDAO.class);
 	public int save(Nutzer nutzer){
 		int returncode = -1;
@@ -24,7 +34,10 @@ public class NutzerDAO {
 			logger.log(Level.DEBUG,"Der Benutzer mit dem Benuternamen: " + nutzer.getBenutzername() + " konnte nicht gespeichert werden:\n" + e.getStackTrace());
 		}
 		finally{
-			em.close();
+			if(em != null)
+				em.close();
+			else
+				logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
 		}
 		return returncode;
 	}
@@ -42,7 +55,11 @@ public class NutzerDAO {
 			logger.log(Level.DEBUG, "Der Benutzer mit der ID: " + id + " konnte nicht bezogen werden:\n" + e.getStackTrace());
 		}
 		finally{
-			em.close();
+			if(em != null)
+				em.close();
+			else
+				logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
+		
 		}
 		if(nutzer.getBenutzername() == null)
 			return null;
@@ -70,7 +87,11 @@ public class NutzerDAO {
 			return null;
 		}
 		finally{
-			em.close();
+			if(em != null)
+				em.close();
+			else
+				logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
+		
 		}
 		return nutzer;
 	}
@@ -97,7 +118,11 @@ public class NutzerDAO {
 			return false;
 		}
 		finally{
-			em.close();
+			if(em != null)
+				em.close();
+			else
+				logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
+		
 		}
 		return true;
 	}

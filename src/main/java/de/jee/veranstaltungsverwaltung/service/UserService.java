@@ -1,41 +1,45 @@
 package de.jee.veranstaltungsverwaltung.service;
 
+import java.io.Serializable;
+
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import de.jee.veranstaltungsverwaltung.model.Nutzer;
-import de.jee.veranstaltungsverwaltung.model.NutzerDAO;
 
 @ApplicationScoped
 @Named
-public class UserService {
+public class UserService implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3726388823135287805L;
+
+	@Inject
+	private NutzerDAO nutzerDAO;
 
 	public Nutzer findByUsername(String benutzername) {
-		NutzerDAO dao=new NutzerDAO();
 		
-		return dao.findByUsername(benutzername);
+		return nutzerDAO.findByUsername(benutzername);
 	}
 	
-	public static boolean checkPasswort(Nutzer nutzer, String passwort){
-		NutzerDAO userDAO = new NutzerDAO();
-		return userDAO.checkPassword(nutzer.getBenutzername(), passwort);
+	public boolean checkPasswort(Nutzer nutzer, String passwort){
+		return nutzerDAO.checkPassword(nutzer.getBenutzername(), passwort);
 		
 	}
 
-	public static boolean checkUser(String benutzername) {
-		NutzerDAO userDAO = new NutzerDAO();
+	public boolean checkUser(String benutzername) {
 				
-		return userDAO.findByUsername(benutzername)==null;
+		return nutzerDAO.findByUsername(benutzername)==null;
 	}
 
-	public static Nutzer registerUser(String benutzername, String passwort1, boolean istManager, String email) {
-		NutzerDAO userDAO = new NutzerDAO();
+	public Nutzer registerUser(String benutzername, String passwort1, boolean istManager, String email) {
 		Nutzer nutzer = new Nutzer(benutzername, passwort1, istManager, email);
-		userDAO.save(nutzer);
+		nutzerDAO.save(nutzer);
 		return nutzer;
 	}
-	
-	
-	
-
+	public void setNutzerDAO(NutzerDAO nutzerDAO) {
+		this.nutzerDAO = nutzerDAO;
+	}
 }

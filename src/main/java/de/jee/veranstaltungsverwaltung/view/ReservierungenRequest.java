@@ -10,17 +10,26 @@ import javax.inject.Named;
 
 import de.jee.veranstaltungsverwaltung.controller.Security;
 import de.jee.veranstaltungsverwaltung.model.Reservierung;
-import de.jee.veranstaltungsverwaltung.model.ReservierungDAO;
 import de.jee.veranstaltungsverwaltung.model.Ticket;
 import de.jee.veranstaltungsverwaltung.model.Veranstaltung;
-import de.jee.veranstaltungsverwaltung.model.VeranstaltungDAO;
+import de.jee.veranstaltungsverwaltung.service.ReservierungDAO;
+import de.jee.veranstaltungsverwaltung.service.VeranstaltungDAO;
+
 
 @Named
 @RequestScoped
 public class ReservierungenRequest implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -207215583642055024L;
 	@Inject
 	private Security security;
+	@Inject
+	private ReservierungDAO reservierungDAO;
+	@Inject
+	private VeranstaltungDAO veranstaltungDAO;
 	private List<Reservierung> reservierungen;
 	
 	public void init(){
@@ -34,32 +43,17 @@ public class ReservierungenRequest implements Serializable{
 			}
 			
 		}
-		
-		
-		System.out.println("init");
-		ReservierungDAO dao = new ReservierungDAO();
-		
-		reservierungen = dao.selectbyUserID(security.getCurrentUser());
-		System.out.println(reservierungen.size());
-		
-		
-		
-						
+		reservierungen = reservierungDAO.selectbyUserID(security.getCurrentUser());
+		System.out.println(reservierungen.size());		
 	}
 	
 	public List<Ticket> getTickets(Reservierung r){
-		System.out.println("anz");
-		ReservierungDAO dao = new ReservierungDAO();
-		List<Ticket> tickets = dao.getTicketsByReservierungsID(r.getId());
-		System.out.println(tickets.size());
+		List<Ticket> tickets = reservierungDAO.getTicketsByReservierungsID(r.getId());
 		return tickets;
 	}
 	
 	public Veranstaltung getEvent(Reservierung r){
-		System.out.println("event");
-
-		VeranstaltungDAO vdao = new VeranstaltungDAO();
-		Veranstaltung event = vdao.findByID(getTickets(r).get(0).getVeranstaltung().getId());
+		Veranstaltung event = veranstaltungDAO.findByID(getTickets(r).get(0).getVeranstaltung().getId());
 		
 		return event;
 	}
@@ -82,6 +76,14 @@ public class ReservierungenRequest implements Serializable{
 
 	public void setReservierungen(List<Reservierung> reservierungen) {
 		this.reservierungen = reservierungen;
+	}
+
+	public void setReservierungDAO(ReservierungDAO reservierungDAO) {
+		this.reservierungDAO = reservierungDAO;
+	}
+
+	public void setVeranstaltungDAO(VeranstaltungDAO veranstaltungDAO) {
+		this.veranstaltungDAO = veranstaltungDAO;
 	}
 	
 	

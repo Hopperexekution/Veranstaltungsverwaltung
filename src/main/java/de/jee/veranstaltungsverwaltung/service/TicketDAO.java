@@ -1,7 +1,10 @@
-package de.jee.veranstaltungsverwaltung.model;
+package de.jee.veranstaltungsverwaltung.service;
 
+import java.io.Serializable;
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -11,8 +14,15 @@ import org.jboss.logging.Logger;
 import org.jboss.logging.Logger.Level;
 
 import de.jee.veranstaltungsverwaltung.controller.HibernateUtil;
-
-public class TicketDAO {
+import de.jee.veranstaltungsverwaltung.model.Ticket;
+import de.jee.veranstaltungsverwaltung.model.Veranstaltung;
+@Named
+@ApplicationScoped
+public class TicketDAO implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9050853981754743506L;
 	private Logger logger = Logger.getLogger(TicketDAO.class);
 	
 	public Ticket findByID(int id){
@@ -31,7 +41,11 @@ public class TicketDAO {
 			return null;
 		}
 		finally{
-			em.close();
+			if(em != null)
+				em.close();
+			else
+				logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
+
 		}
 		return ticket;
 	}
@@ -53,6 +67,13 @@ public class TicketDAO {
 			logger.log(Level.DEBUG, "Die Tickets zu der Veranstaltung mit der ID: " + veranstaltung.getId() + " konnten nicht aus der Datenbank geladen werden\n" + e.getStackTrace());
 			return null;
 		}
+		finally{
+			if(em != null)
+				em.close();
+			else
+				logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
+
+		}
 		return tickets;		
 	}
 	public int loescheTicket(Ticket ticket){
@@ -73,7 +94,11 @@ public class TicketDAO {
 			returncode = -1;
 		}
 		finally{
-			em.close();
+			if(em != null)
+				em.close();
+			else
+				logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
+
 		}
 		return returncode;
 	}
@@ -93,7 +118,11 @@ public class TicketDAO {
 			returncode = -1;
 		}
 		finally{
-			em.close();
+			if(em != null)
+				em.close();
+			else
+				logger.log(Level.DEBUG, "Der Entity Manager war null --> Folglich konnte er warscheinlich nicht erzeugt werden. Prüfen sie die Datenbankenstellungen und die persistence.xml");
+
 		}
 		return returncode;
 	}

@@ -15,6 +15,8 @@ public class RegisterRequest {
 	
 	@Inject
 	private Security security;
+	@Inject
+	private UserService userService;
 
 	private String benutzername;;
 	private String passwort1;
@@ -28,9 +30,9 @@ public class RegisterRequest {
 	public String doRegister(){
 		if(!benutzername.trim().equals("")&&!passwort1.trim().equals("")){
 
-			if(UserService.checkUser(benutzername)){
+			if(userService.checkUser(benutzername)){
 				if(passwort1.equals(passwort2)){
-					Nutzer nutzer = UserService.registerUser(benutzername, passwort1, istManager, email);
+					Nutzer nutzer = userService.registerUser(benutzername, passwort1, istManager, email);
 					security.login(nutzer);
 				}
 			}
@@ -79,5 +81,9 @@ public class RegisterRequest {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
 	}
 }

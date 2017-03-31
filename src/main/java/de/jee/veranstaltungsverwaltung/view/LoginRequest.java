@@ -17,6 +17,8 @@ public class LoginRequest {
 	
 	@Inject
 	private Security security;
+	@Inject
+	private UserService userService;
 
 	private Nutzer user;
 
@@ -25,7 +27,7 @@ public class LoginRequest {
 	public String doLogin(){
 		if(user!=null&&!user.getBenutzername().trim().equals("")){
 
-			if(UserService.checkPasswort(user, passwort)){
+			if(userService.checkPasswort(user, passwort)){
 				security.login(user);
 			}else{
 				FacesContext context = FacesContext.getCurrentInstance();
@@ -56,6 +58,9 @@ public class LoginRequest {
 	}
 	public void setPasswort(String passwort) {
 		this.passwort = passwort;
+	}
+	public void setUserService(UserService userService) {
+		this.userService = userService;
 	}
 
 }

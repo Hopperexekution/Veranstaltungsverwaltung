@@ -12,7 +12,7 @@ import de.jee.veranstaltungsverwaltung.service.UserService;
 @Named
 public class UserConverter implements Converter{
 	@Inject
-	UserService userService = new UserService();
+	UserService userService;
 	
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component,

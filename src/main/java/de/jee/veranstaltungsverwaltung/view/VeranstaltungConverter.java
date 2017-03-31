@@ -5,16 +5,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import de.jee.veranstaltungsverwaltung.model.Nutzer;
 import de.jee.veranstaltungsverwaltung.model.Veranstaltung;
-import de.jee.veranstaltungsverwaltung.model.VeranstaltungDAO;
-import de.jee.veranstaltungsverwaltung.service.UserService;
+import de.jee.veranstaltungsverwaltung.service.VeranstaltungDAO;
 
 @Named
 public class VeranstaltungConverter implements Converter{
 	@Inject
-	VeranstaltungDAO dao = new VeranstaltungDAO();
+	private VeranstaltungDAO veranstaltungDAO;
 	
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component,
@@ -22,7 +19,7 @@ public class VeranstaltungConverter implements Converter{
 		if(null == value || value.isEmpty()){
 			return null;
 		}
-		Veranstaltung veranstaltung = dao.findByID(Integer.parseInt(value));
+		Veranstaltung veranstaltung = veranstaltungDAO.findByID(Integer.parseInt(value));
 		System.out.println(veranstaltung.getName());
 		return veranstaltung;
 	}
@@ -33,6 +30,10 @@ public class VeranstaltungConverter implements Converter{
 			return null;
 		}
 		return Veranstaltung.class.cast(value).getId()+"";
+	}
+
+	public void setVeranstaltungDAO(VeranstaltungDAO veranstaltungDAO) {
+		this.veranstaltungDAO = veranstaltungDAO;
 	}
 
 

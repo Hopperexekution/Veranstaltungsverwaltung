@@ -13,16 +13,24 @@ import javax.inject.Named;
 
 import de.jee.veranstaltungsverwaltung.controller.Security;
 import de.jee.veranstaltungsverwaltung.model.Reservierung;
-import de.jee.veranstaltungsverwaltung.model.ReservierungDAO;
 import de.jee.veranstaltungsverwaltung.model.Veranstaltung;
-import de.jee.veranstaltungsverwaltung.model.VeranstaltungDAO;
+import de.jee.veranstaltungsverwaltung.service.ReservierungDAO;
+import de.jee.veranstaltungsverwaltung.service.VeranstaltungDAO;
 
 @Named
 @ViewScoped
 public class VeranstaltungSuchenRequest implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2829093739275040768L;
 	@Inject
 	private Security security;
+	@Inject
+	private VeranstaltungDAO veranstaltungDAO;
+	@Inject
+	private ReservierungDAO reservierungDAO;
 	private String suchString;
 	private Date vonDatum;
 	private Date bisDatum;
@@ -32,10 +40,9 @@ public class VeranstaltungSuchenRequest implements Serializable{
 	public void sucheVeranstaltung(){
 		this.setVeranstaltungen(null);
 		List<Veranstaltung> veranstaltungen = null;
-		VeranstaltungDAO dao = new VeranstaltungDAO();
 		if(anzahlTickets.trim().equals("")){
 			try{
-				veranstaltungen = dao.findByName(suchString, vonDatum, bisDatum, true, 0);
+				veranstaltungen = veranstaltungDAO.findByName(suchString, vonDatum, bisDatum, true, 0);
 			}
 			catch(NullPointerException e){
 				FacesContext context = FacesContext.getCurrentInstance();
@@ -45,7 +52,7 @@ public class VeranstaltungSuchenRequest implements Serializable{
 		}
 		else{
 			try{
-				veranstaltungen = dao.findByName(suchString, vonDatum, bisDatum, true, Integer.parseInt(anzahlTickets));
+				veranstaltungen = veranstaltungDAO.findByName(suchString, vonDatum, bisDatum, true, Integer.parseInt(anzahlTickets));
 			}
 			catch(NullPointerException e){
 				FacesContext context = FacesContext.getCurrentInstance();
@@ -66,7 +73,6 @@ public class VeranstaltungSuchenRequest implements Serializable{
 		FacesContext context = FacesContext.getCurrentInstance();
 		FacesMessage message = null;
 		Veranstaltung veranstaltung = veranstaltungen.getRowData();
-		ReservierungDAO dao = new ReservierungDAO();
 		Reservierung reservierung = new Reservierung(security.getCurrentUser());
 		if(veranstaltung.getZuReservierendeTickets().equals("")){
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Die Anzahl der zu reservierenden Tickets muss angegeben werden", null);
@@ -79,7 +85,7 @@ public class VeranstaltungSuchenRequest implements Serializable{
 			context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
 			return;
 		}
-		int returncode = dao.save(reservierung, veranstaltung, anzahlTickets);
+		int returncode = reservierungDAO.save(reservierung, veranstaltung, anzahlTickets);
 		switch(returncode){
 		case -1:
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Die Reservierung konnte nicht durchgeführt werden!", null);
@@ -140,5 +146,11 @@ public class VeranstaltungSuchenRequest implements Serializable{
 	}
 	public void setVeranstaltungen(DataModel<Veranstaltung> veranstaltungen) {
 		this.veranstaltungen = veranstaltungen;
+	}
+	public void setVeranstaltungDAO(VeranstaltungDAO veranstaltungDAO) {
+		this.veranstaltungDAO = veranstaltungDAO;
+	}
+	public void setReservierungDAO(ReservierungDAO reservierungDAO) {
+		this.reservierungDAO = reservierungDAO;
 	}
 }
