@@ -19,7 +19,7 @@ public class AnzahlTicketsReservierenValidator implements Validator {
 				if(anzahlTicketsInt <= 0){
 					message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Die eingegebene Zahl muss größer als 0 sein!" , null);
 					context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
-					throw new ValidatorException(message);
+					
 				}
 			}
 			catch(NumberFormatException e){

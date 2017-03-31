@@ -20,7 +20,7 @@
 		<h:panelGroup>
 			<div class="container">
 				<h:messages></h:messages>
-				<h:form>
+				<h:form id="detailVeranstaltungForm">
 					<div class="row">
 						<div class="col-md-4">
 							<p>Name</p>
@@ -70,7 +70,9 @@
 								id="datumEdit" class="form-control"
 								value="#{detailVeranstaltungRequest.event.datum}">
 								<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+								
 							</h:inputText>
+							<h:message for="datumEdit" infoStyle="color:darkgreen" errorStyle="color:darkred"></h:message>
 
 						</div>
 					</div>
@@ -121,7 +123,9 @@
 							<h:inputText rendered="#{detailVeranstaltungRequest.canEdit}"
 								id="ticketsEdit" class="form-control"
 								value="#{detailVeranstaltungRequest.anzTickets}">
+								<f:validator validatorId="MinimaleAnzahlTickets"/>
 							</h:inputText>
+							<h:message for="ticketsEdit" infoStyle="color:darkgreen" errorStyle="color:darkred"></h:message>
 						</div>
 					</div>
 					<div class="row">
@@ -145,14 +149,12 @@
 					</div>
 
 
-
-
-
 					<h:panelGroup rendered="#{detailVeranstaltungRequest.canEdit}">
 						<h:selectBooleanCheckbox
 							value="#{detailVeranstaltungRequest.event.istVeroeffentlicht}" />
 						<p>Veröffentlichen</p>
 					</h:panelGroup>
+					<h:message for="resTickets" infoStyle="color:darkgreen" errorStyle="color:darkred"></h:message>
 
 					<h:commandButton value="Bearbeiten"
 						action="#{detailVeranstaltungRequest.editVeranstaltung}"
@@ -162,11 +164,11 @@
 						action="#{detailVeranstaltungRequest.updateVeranstaltung}"
 						rendered="#{detailVeranstaltungRequest.canEdit}">
 					</h:commandButton>
-					<h:inputText
+					<h:inputText id="resTickets"
 						rendered="#{security.isLoggedIn() &amp;&amp; !detailVeranstaltungRequest.canEdit and detailVeranstaltungRequest.event.istVeroeffentlicht}"
 						pt:placeholder="0" pt:type="number"
 						value="#{detailVeranstaltungRequest.event.zuReservierendeTickets}">
-						<f:convertNumber />
+						<f:validator validatorId="AnzahlTicketsReservieren"/>
 					</h:inputText>
 					<h:commandButton value="Reservieren"
 						action="#{detailVeranstaltungRequest.reservieren(detailVeranstaltungRequest.event.zuReservierendeTickets)}"

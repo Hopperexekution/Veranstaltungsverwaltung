@@ -2,6 +2,8 @@ package de.jee.veranstaltungsverwaltung.view;
 
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -25,6 +27,12 @@ public class LoginRequest {
 
 			if(UserService.checkPasswort(user, passwort)){
 				security.login(user);
+			}else{
+				FacesContext context = FacesContext.getCurrentInstance();
+				FacesMessage message = null;
+				message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						"Der Benutzername oder das Passwort ist nicht korrekt", null);
+				context.addMessage("loginForm:user", message);
 			}
 		}
 		return "home";

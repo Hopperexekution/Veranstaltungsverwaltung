@@ -25,7 +25,18 @@ public class DateValidator implements Validator {
 					throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Das eingegebene Datum darf nicht vor dem heutigen Datum liegen", null));
 			}
 			catch(Exception e){
-				throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Das eingegebene Datum ist ungültig", null));
+				SimpleDateFormat format2 = new SimpleDateFormat("dd.MM.yyyy");
+				try{
+					Date heute = new Date(System.currentTimeMillis());
+					heute = format2.parse(format2.format(heute));
+					Date eingegebenesDatum = format2.parse(format2.format((Date) value));
+					if(eingegebenesDatum.before(heute))
+						throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Das eingegebene Datum darf nicht vor dem heutigen Datum liegen", null));
+				}
+				catch(Exception e2){
+					throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Das eingegebene Datum ist ungültig", null));
+				}
+				
 			}
 		}
 	}

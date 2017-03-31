@@ -1,5 +1,6 @@
 package de.jee.veranstaltungsverwaltung.view;
 
+import java.io.IOException;
 import java.util.Date;
 
 import javax.faces.application.FacesMessage;
@@ -25,6 +26,20 @@ public class VeranstaltungRequest {
 	private String ort;
 	private int anzahlTickets;
 	private boolean istVeroeffentlicht;
+	
+	
+	public void init(){
+		if(!security.isManager()){
+			try {
+				FacesContext.getCurrentInstance().getExternalContext().redirect("login.jsf");
+				return;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+	}
 	
 	public String erstelleVeranstaltung(){
 		if(beschreibung == null)

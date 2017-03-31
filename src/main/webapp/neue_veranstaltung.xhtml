@@ -9,6 +9,9 @@
         Neue Veranstaltung erstellen
     </ui:define>
 	<ui:define name="content">
+		<f:metadata>
+	<f:event type="preRenderView" listener="#{veranstaltungRequest.init()}"/>
+	</f:metadata>
 		<h:panelGroup>
 			<div class="container">
 				<h:messages />

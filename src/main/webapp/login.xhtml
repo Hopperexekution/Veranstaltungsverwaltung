@@ -12,14 +12,13 @@
 	<ui:define name="content">
 		<h:panelGroup rendered="#{!security.isLoggedIn()}">		
 			<div class="container">
-				<h:form>
-					<h:message for="user" style="color:red"/>	
+				<h:form id="loginForm">
+					<h:message for="user" infoStyle="color:darkgreen" errorStyle="color:darkred"></h:message>
 					<h:inputText class="form-control" id="user" value="#{loginRequest.user}"
 						pt:placeholder="Benutzername" pt:required="true">
 						<f:converter binding="#{userConverter}" />
 					</h:inputText>
 					<br/>
-					<h:message for="pass" style="color:red"/>			
 					<h:inputSecret class="form-control" id="pass" value="#{loginRequest.passwort}"
 						pt:placeholder="Passwort" pt:required="true">
 					</h:inputSecret>

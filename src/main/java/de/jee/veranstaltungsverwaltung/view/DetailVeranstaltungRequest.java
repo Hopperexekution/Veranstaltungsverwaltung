@@ -100,14 +100,14 @@ public class DetailVeranstaltungRequest implements Serializable {
 		if (event.getZuReservierendeTickets().equals("")) {
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Die Anzahl der zu reservierenden Tickets muss angegeben werden", null);
-			context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
+			context.addMessage("detailVeranstaltungForm:resTickets", message);
 			return;
 		}
 		int anzahlTickets = Integer.parseInt(event.getZuReservierendeTickets());
 		if (anzahlTickets > event.getVerfuegbareTickets().size()) {
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Es können nicht mehr Tickets reserviert werden, als noch verfügbar sind!", null);
-			context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
+			context.addMessage("detailVeranstaltungForm:resTickets", message);
 			return;
 		}
 		int returncode = dao.save(reservierung, event, anzahlTickets);
@@ -115,18 +115,18 @@ public class DetailVeranstaltungRequest implements Serializable {
 		case -1:
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Die Reservierung konnte nicht durchgeführt werden!", null);
-			context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
+			context.addMessage("detailVeranstaltungForm:resTickets", message);
 			break;
 		case 0:
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Es sind nicht mehr genügend Tickets für die Reservierung vorhanden. Da war wohl jemand schneller...",
 					null);
-			context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
+			context.addMessage("detailVeranstaltungForm:resTickets", message);
 			break;
 		default:
 			message = new FacesMessage(FacesMessage.SEVERITY_INFO,
 					"Die Tickets wurden erfolgreich reserviert. Die Reservierungs-ID lautet: " + returncode, null);
-			context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
+			context.addMessage("detailVeranstaltungForm:resTickets", message);
 			break;
 		}
 

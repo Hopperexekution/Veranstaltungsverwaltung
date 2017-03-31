@@ -1,8 +1,10 @@
 package de.jee.veranstaltungsverwaltung.view;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -22,6 +24,18 @@ public class ReservierungenRequest implements Serializable{
 	private List<Reservierung> reservierungen;
 	
 	public void init(){
+		if(!security.isLoggedIn()){
+			try {
+				FacesContext.getCurrentInstance().getExternalContext().redirect("login.jsf");
+				return;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+		
 		System.out.println("init");
 		ReservierungDAO dao = new ReservierungDAO();
 		

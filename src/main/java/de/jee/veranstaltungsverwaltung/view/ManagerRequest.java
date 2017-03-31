@@ -1,8 +1,10 @@
 package de.jee.veranstaltungsverwaltung.view;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -26,6 +28,16 @@ public class ManagerRequest {
 	private List<Reservierung> reservierungen;
 	
 	public void init(){
+		if(!security.isManager()){
+			try {
+				FacesContext.getCurrentInstance().getExternalContext().redirect("login.jsf");
+				return;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 		
 		VeranstaltungDAO dao = new VeranstaltungDAO();
 		events = dao.allbyManager(security.getCurrentUser()); 
