@@ -63,7 +63,9 @@
 								rendered="#{not detailVeranstaltungRequest.canEdit}" id="datum"
 								class="form-control"
 								value="#{detailVeranstaltungRequest.event.datum}">
-								<f:convertDateTime pattern="dd.MM.yyyy"></f:convertDateTime>
+								<f:validator validatorId="DateValidator"/>
+								<f:convertDateTime pattern="dd.MM.yyyy"/>
+								
 							</h:outputText>
 							<h:inputText rendered="#{detailVeranstaltungRequest.canEdit}"
 								id="datumEdit" class="form-control"

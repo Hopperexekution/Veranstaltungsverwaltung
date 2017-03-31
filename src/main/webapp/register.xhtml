@@ -13,7 +13,6 @@
 		<h:panelGroup>
 			<div class="container">
 				<h:form id="registerForm">
-					<h:message for="user" style="color:red"></h:message>
 					<h:inputText id="user" class="form-control"
 						value="#{registerRequest.benutzername}"
 						pt:placeholder="Benutzername" pt:required="true">
@@ -31,12 +30,10 @@
 						pt:required="true">
 						<f:validateLength minimum="6" maximum="32" />
 					</h:inputSecret>
-					<h:message for="pass1" style="color:red"></h:message>
 					<br />
 					<h:inputSecret id="pass2" class="form-control"
 						value="#{registerRequest.passwort2}"
 						pt:placeholder="Passwort bestätigen" pt:required="true"></h:inputSecret>
-					<h:message for="pass2" style="color:red"></h:message>
 					<br />
 
 					<h:selectBooleanCheckbox value="#{registerRequest.istManager}" /> Manager
@@ -45,7 +42,7 @@
 					<h:commandButton class="btn" action="#{registerRequest.doRegister}"
 						value="Registrieren">
 					</h:commandButton>
-					<br/>
+					<h:messages layout="table" infoStyle="color:darkgreen" errorStyle="color:darkred"></h:messages>
 					<br/>
 				</h:form>
 				<p>
