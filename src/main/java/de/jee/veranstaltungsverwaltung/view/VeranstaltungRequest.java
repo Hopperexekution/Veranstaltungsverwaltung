@@ -49,7 +49,10 @@ public class VeranstaltungRequest {
 			beschreibung = "";
 		Veranstaltung veranstaltung = new Veranstaltung(name, beschreibung, datum, ort, istVeroeffentlicht, security.getCurrentUser());
 		veranstaltung.setTicketPreis(ticketPreis);
-		veranstaltung.getDatum().setHours(zeit.getHours());
+		if(zeit.getHours() < 23)
+			veranstaltung.getDatum().setHours(zeit.getHours() + 1);
+		else
+			veranstaltung.getDatum().setHours(0);	
 		veranstaltung.getDatum().setMinutes(zeit.getMinutes());
 		
 		int returncode = veranstaltungDAO.save(veranstaltung, anzahlTickets);

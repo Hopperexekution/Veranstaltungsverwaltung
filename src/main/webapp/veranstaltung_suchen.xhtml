@@ -86,7 +86,8 @@
 							<f:facet name="header">
 						 		Titel der Veranstaltung
 							</f:facet>
-						 	#{veranstaltung.name}
+						 	<a href="detail_veranstaltung.jsf?id=#{event.id}">
+										#{veranstaltung.name} </a>
 						</h:column>
 						<h:column>
 							<f:facet name="header">
@@ -101,6 +102,12 @@
 								Ort
 							</f:facet>
 							#{veranstaltung.ort}
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								Preis Pro Ticket
+							</f:facet>
+							#{veranstaltung.ticketPreis}
 						</h:column>
 						<h:column>
 							<f:facet name="header">

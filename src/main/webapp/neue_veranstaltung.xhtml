@@ -95,8 +95,9 @@
 						<div class="col-md-8">
 							<h:inputText id="ticketpreisEdit"
 								class="form-control" value="#{veranstaltungRequest.ticketPreis}"
-								converterMessage="Bitte als Ticketpreis eine Zahl angeben">
+								converterMessage="Bitte als Ticketpreis eine Zahl angeben" validatorMessage="Bitte eine positive Zahl eingeben">
 								<f:convertNumber maxFractionDigits="2" />
+								<f:validateLongRange minimum="0"/>
 							</h:inputText>
 						</div>
 					</div>

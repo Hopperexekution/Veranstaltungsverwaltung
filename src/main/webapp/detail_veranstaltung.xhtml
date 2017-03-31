@@ -63,7 +63,6 @@
 								rendered="#{not detailVeranstaltungRequest.canEdit}" id="datum"
 								class="form-control"
 								value="#{detailVeranstaltungRequest.event.datum}">
-								<f:validator validatorId="DateValidator"/>
 								<f:convertDateTime pattern="dd.MM.yyyy"/>
 								
 							</h:outputText>
@@ -146,8 +145,9 @@
 								id="ticketpreisEdit" class="form-control"
 								value="#{detailVeranstaltungRequest.event.ticketPreis}"
 								converterMessage="Bitte eine Zahl eingeben"
-								pt:required="true">
+								pt:required="true" validatorMessage="Bitte eine positive Zahl eingeben">
 								<f:convertNumber maxFractionDigits="2"/>
+								<f:validateLongRange minimum="0"/>
 							</h:inputText>
 						</div>
 					</div>

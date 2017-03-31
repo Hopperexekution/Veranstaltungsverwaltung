@@ -84,7 +84,10 @@ public class DetailVeranstaltungRequest implements Serializable {
 				ticketDAO.save(new Ticket(event));
 			}
 		}
-		event.getDatum().setHours(zeit.getHours());
+		if(zeit.getHours() < 23)
+			event.getDatum().setHours(zeit.getHours() + 1);
+		else
+			event.getDatum().setHours(0);
 		event.getDatum().setMinutes(zeit.getMinutes());
 		veranstaltungDAO.update(event);
 		

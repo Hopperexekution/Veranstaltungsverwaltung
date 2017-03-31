@@ -89,6 +89,7 @@ public class VeranstaltungDAO implements Serializable {
 			EntityManager em = null;
 			try{
 				em = HibernateUtil.getEntityManager();
+				Date date = new Date();
 				FullTextEntityManager ftEM = Search.getFullTextEntityManager(em);
 				QueryBuilder qb = ftEM.getSearchFactory()
 					    .buildQueryBuilder().forEntity(Veranstaltung.class).get();
@@ -101,7 +102,6 @@ public class VeranstaltungDAO implements Serializable {
 					luceneQuery = qb.bool().must(luceneQuery).must(qb.keyword().onField("istVeroeffentlicht").matching("true").createQuery()).createQuery();
 				else
 					luceneQuery = qb.bool().must(luceneQuery).must(qb.keyword().onField("istVeroeffentlicht").matching("false").createQuery()).createQuery();
-				luceneQuery = qb.bool().must(luceneQuery).must(qb.range().onField("datum").below(new Date(System.currentTimeMillis())).createQuery()).not().createQuery();
 				javax.persistence.Query jpaQuery = ftEM.createFullTextQuery(luceneQuery, Veranstaltung.class);
 				List<Veranstaltung> veranstaltungenOhneTicketKriterium = jpaQuery.getResultList();
 				if(anzahlTickets == 0)
@@ -139,12 +139,14 @@ public class VeranstaltungDAO implements Serializable {
 			EntityManager em = null;
 			try{
 				em = HibernateUtil.getEntityManager();
+				Date date = new Date(System.currentTimeMillis());
 				CriteriaBuilder cb = HibernateUtil.getCriteriaBuilder();
 				CriteriaQuery<Veranstaltung> query = cb.createQuery(Veranstaltung.class);
 				Root<Veranstaltung> root = query.from(Veranstaltung.class);
 				query.select(root);
 				query.orderBy(cb.desc(root.get("id")));
 				query.where(cb.equal(root.get("istVeroeffentlicht").as(Integer.class), 1));
+				query.where(cb.greaterThan(root.get("datum"), date ));
 				veranstaltungen = em.createQuery(query).setMaxResults(5).getResultList();				
 			}
 			catch(Exception e){
@@ -368,8 +370,9 @@ public class VeranstaltungDAO implements Serializable {
 			EntityManager em = null;
 			try{
 				em = HibernateUtil.getEntityManager();
-				String hql = "from Veranstaltung as v where v.istVeroeffentlicht=1";
-				veranstaltungen = em.createQuery(hql).setMaxResults(5).getResultList();
+				Date date = new Date(System.currentTimeMillis());
+				String hql = "from Veranstaltung as v where v.istVeroeffentlicht=1 and v.datum > :now";
+				veranstaltungen = em.createQuery(hql).setParameter("now", date).setMaxResults(5).getResultList();
 			}
 			catch(Exception e){
 				logger.log(Level.DEBUG, "Die Veranstaltungen mit den meisten Reservierungen konnten nicht");
