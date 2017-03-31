@@ -14,9 +14,8 @@
 	</f:metadata>
 		<h:panelGroup>
 			<div class="container">
-				<h:messages />
+				
 				<h:form>
-
 					<div class="row">
 						<div class="col-md-4">
 							<p>Name</p>
@@ -46,7 +45,7 @@
 						<div class="col-md-8">
 							<h:inputText id="datum" class="form-control" pt:type="date"
 								value="#{veranstaltungRequest.datum}" pt:placeholder="Datum"
-								pt:required="true">
+								pt:required="true" converterMessage="Bitte ein Datum im Format yyyy-M-d angeben">
 								<f:convertDateTime pattern="yyyy-M-d" />
 							</h:inputText>
 
@@ -58,7 +57,8 @@
 						</div>
 						<div class="col-md-8">
 							<h:inputText id="zeitEdit" class="form-control" pt:type="time"
-								pt:placeholder="Datum" value="#{veranstaltungRequest.zeit}">
+								pt:placeholder="Datum" value="#{veranstaltungRequest.zeit}" required="true"
+								converterMessage="Bitte eine Uhrzeit im Format HH:mm angeben" requiredMessage="Bitte eine Zeit angeben">
 								<f:convertDateTime pattern="HH:mm" timeZone="GMT+2"></f:convertDateTime>
 							</h:inputText>
 						</div>
@@ -82,9 +82,9 @@
 						<div class="col-md-8">
 							<h:inputText id="anzahlTickets" class="form-control"
 								value="#{veranstaltungRequest.anzahlTickets}"
-								pt:placeholder="Anzahl Tickets" pt:required="true">
-								<f:converter converterId="javax.faces.Integer" />
-
+								pt:placeholder="Anzahl Tickets" pt:required="true"
+								converterMessage="Als Ticketanzahl bitte eine ganze Zahl angeben.">
+								<f:validator validatorId="MinimaleAnzahlTickets" />
 							</h:inputText>
 						</div>
 					</div>
@@ -94,13 +94,12 @@
 						</div>
 						<div class="col-md-8">
 							<h:inputText id="ticketpreisEdit"
-								class="form-control" value="#{veranstaltungRequest.ticketPreis}">
+								class="form-control" value="#{veranstaltungRequest.ticketPreis}"
+								converterMessage="Bitte als Ticketpreis eine Zahl angeben">
 								<f:convertNumber maxFractionDigits="2" />
 							</h:inputText>
 						</div>
 					</div>
-
-
 					<h:selectBooleanCheckbox
 						value="#{veranstaltungRequest.istVeroeffentlicht}" />
 					<p>Veröffentlichen</p>
@@ -109,6 +108,8 @@
 						action="#{veranstaltungRequest.erstelleVeranstaltung}"
 						value="Veranstaltung erstellen">
 					</h:commandButton>
+					<h:messages layout="table" infoStyle="color:darkgreen" errorStyle="color:darkred"></h:messages>
+					
 				</h:form>
 			</div>
 		</h:panelGroup>

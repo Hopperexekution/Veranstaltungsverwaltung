@@ -13,9 +13,9 @@
 		<h:panelGroup rendered="#{!security.isLoggedIn()}">		
 			<div class="container">
 				<h:form id="loginForm">
-					<h:message for="user" infoStyle="color:darkgreen" errorStyle="color:darkred"></h:message>
+					
 					<h:inputText class="form-control" id="user" value="#{loginRequest.user}"
-						pt:placeholder="Benutzername" pt:required="true">
+						pt:placeholder="Benutzername" pt:required="true" converterMessage="Der Benutzername oder das Passwort ist nicht korrekt">
 						<f:converter binding="#{userConverter}" />
 					</h:inputText>
 					<br/>
@@ -32,6 +32,7 @@
 					Noch nicht angemeldet?
 					<h:link outcome="register" value="Registrieren" />
 				</p>
+				<h:messages layout="table" infoStyle="color:darkgreen" errorStyle="color:darkred"></h:messages>
 			</div>
 		</h:panelGroup>
 		<h:message/>
