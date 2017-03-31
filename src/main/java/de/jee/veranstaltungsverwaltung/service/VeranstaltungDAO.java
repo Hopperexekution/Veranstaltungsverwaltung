@@ -29,7 +29,11 @@ public class VeranstaltungDAO implements Serializable {
 	 */
 	private static final long serialVersionUID = 8376080847979098662L;
 		private static final Logger logger = Logger.getLogger(VeranstaltungDAO.class);
-		
+		/**
+		 * Findet eine Veranstaltung auf Basis der ID
+		 * @param id Die ID der Veranstaltung
+		 * @return Die Veranstaltung
+		 */
 		public Veranstaltung findByID(int id){
 			Veranstaltung veranstaltung = null;
 			EntityManager em = null;
@@ -54,6 +58,11 @@ public class VeranstaltungDAO implements Serializable {
 			}
 			return veranstaltung;
 		}
+		/**
+		 * Findet die veröffentlichen Veranstaltungen nach dem Namen
+		 * @param name Name der Veranstaltung
+		 * @return Die Veranstaltungsliste
+		 */
 		public List<Veranstaltung> findByName(String name){
 			List<Veranstaltung> veranstaltungen = null;
 			try{
@@ -63,6 +72,12 @@ public class VeranstaltungDAO implements Serializable {
 			}
 			return veranstaltungen;
 		}
+		/**
+		 * Findet die veröffentlichen Veranstaltungen nach dem Namen und einer mindestens verfügbaren Anzahl Tickets
+		 * @param name Name der Veranstaltung
+		 * @param anzahlTickets Anzahl der Tickets 
+		 * @return Die Veranstaltungsliste
+		 */
 		public List<Veranstaltung> findByName(String name, int anzahlTickets){
 			List<Veranstaltung> veranstaltungen = null;
 			try{
@@ -73,6 +88,13 @@ public class VeranstaltungDAO implements Serializable {
 			}
 			return veranstaltungen;
 		}
+		/**
+		 * Findet die veröffentlichten Veranstaltungen nach dem Namen und einem Datumsbereich
+		 * @param name Name der Veranstaltung
+		 * @param vonDatum Startdatum
+		 * @param bisDatum Endedatum 
+		 * @return Die Veranstaltungsliste
+		 */
 		public List<Veranstaltung> findByName(String name, Date vonDatum, Date bisDatum){
 			List<Veranstaltung> veranstaltungen = null;
 			try{
@@ -83,13 +105,22 @@ public class VeranstaltungDAO implements Serializable {
 			}
 			return veranstaltungen;
 		}
+		/**
+		 * Findet die Veranstaltungen nach dem Namen und einem Datumsbereich, ob sie veröffentlicht sind, und der mindestens verfügbaren Tickets.
+		 * Diese Methode führt eine Lucene-Suche durch, die auch ungenaue Suchbegriffe findet. In ihr steckt die Logik, auf die sich die anderen find by Name Methoden beziehen
+		 * @param name Name der Veranstaltung
+		 * @param vonDatum Startdatum
+		 * @param bisDatum Endedatum
+		 * @param istVeröffentlicht Legt fest ob die Veranstaltung veröffentlicht sein muss
+		 * @param anzahlTickets Lebt die mindestens verfügbaren Tickets fest 
+		 * @return Die Veranstaltungsliste
+		 */
 		@SuppressWarnings("unchecked")
 		public List<Veranstaltung> findByName(String name, Date vonDatum, Date bisDatum, boolean istVeroeffentlicht, int anzahlTickets){
 			List<Veranstaltung> veranstaltungen = null;
 			EntityManager em = null;
 			try{
 				em = HibernateUtil.getEntityManager();
-				Date date = new Date();
 				FullTextEntityManager ftEM = Search.getFullTextEntityManager(em);
 				QueryBuilder qb = ftEM.getSearchFactory()
 					    .buildQueryBuilder().forEntity(Veranstaltung.class).get();
@@ -102,6 +133,7 @@ public class VeranstaltungDAO implements Serializable {
 					luceneQuery = qb.bool().must(luceneQuery).must(qb.keyword().onField("istVeroeffentlicht").matching("true").createQuery()).createQuery();
 				else
 					luceneQuery = qb.bool().must(luceneQuery).must(qb.keyword().onField("istVeroeffentlicht").matching("false").createQuery()).createQuery();
+				luceneQuery = qb.bool().must(luceneQuery).must(qb.range().onField("datum").above(System.currentTimeMillis()).createQuery()).createQuery();
 				javax.persistence.Query jpaQuery = ftEM.createFullTextQuery(luceneQuery, Veranstaltung.class);
 				List<Veranstaltung> veranstaltungenOhneTicketKriterium = jpaQuery.getResultList();
 				if(anzahlTickets == 0)
@@ -134,6 +166,10 @@ public class VeranstaltungDAO implements Serializable {
 			}
 			return veranstaltungen;
 		}
+		/**
+		 * Findet die Veranstaltungen die als letztes erstellt wurden.
+		 * @return
+		 */
 		public List<Veranstaltung> latestFive(){
 			List<Veranstaltung> veranstaltungen = null;
 			EntityManager em = null;
@@ -162,7 +198,12 @@ public class VeranstaltungDAO implements Serializable {
 			return veranstaltungen;
 			
 		}
+		/**
+		 * Findet die meist reservierten Veranstaltungen
+		 * @return Die meist resrvierten Veranstaltungen
+		 */
 		@SuppressWarnings("unchecked")
+		
 		public List<Veranstaltung> mostReserved(){
 			List<Veranstaltung> veranstaltungen = null;
 			EntityManager em = null;
@@ -184,7 +225,11 @@ public class VeranstaltungDAO implements Serializable {
 			return veranstaltungen;
 		}
 		
-		
+		/**
+		 * Findet die Veranstaltungen zu einem Manager
+		 * @param manager Der Manager nach dem die Veranstaltungen gesucht werden sollen
+		 * @return
+		 */
 		public List<Veranstaltung> findByManager(Nutzer manager){
 			List<Veranstaltung> veranstaltungen = null;
 			EntityManager em = null;
@@ -218,6 +263,11 @@ public class VeranstaltungDAO implements Serializable {
 			}
 			return veranstaltungen;
 		}
+		/**
+		 * Findet die Veranstaltungen die von einem Manager erstellt wurden auf Basis des Benutzernamen
+		 * @param benutzername
+		 * @return
+		 */
 		public List<Veranstaltung> findByManager(String benutzername){
 			List<Veranstaltung> veranstaltungen = null;
 			EntityManager em = null;
@@ -256,6 +306,11 @@ public class VeranstaltungDAO implements Serializable {
 			}
 			return veranstaltungen;
 		}
+		/**
+		 * Findet alle Veranstaltungen von einem Manager
+		 * @param manager Der Manager
+		 * @return
+		 */
 		@SuppressWarnings("unchecked")
 		public List<Veranstaltung> allbyManager(Nutzer manager){
 			List<Veranstaltung> veranstaltungen = null;
@@ -287,7 +342,11 @@ public class VeranstaltungDAO implements Serializable {
 			}
 			return veranstaltungen;
 		}
-		
+		/**
+		 * Speichert eine Veranstaltung in der Datenbank
+		 * @param veranstaltung Die Veranstaltung die gespeichter werden soll
+		 * @return Der Returncode. 0 = erfolgreich < 0 = nicht erfolgreich
+		 */
 		public int save(Veranstaltung veranstaltung){
 			int returncode = 0;
 			EntityManager em = null;
@@ -312,6 +371,12 @@ public class VeranstaltungDAO implements Serializable {
 			}
 			return returncode;
 		}
+		/**
+		 * Speichert eine Veranstaltung und erzeugt dazu Tickets
+		 * @param veranstaltung Die Veranstaltung
+		 * @param anzahlTickets Die Anzahl an Tickets die erzeugt werden sollen
+		 * @return Der Returncode. 0 = erfolgreich < 0 = nicht erfolgreich
+		 */
 		public int save(Veranstaltung veranstaltung, int anzahlTickets){
 			int returncode = 0;
 			EntityManager em = null;
@@ -338,7 +403,11 @@ public class VeranstaltungDAO implements Serializable {
 			}
 			return returncode;
 		}
-		
+		/**
+		 * Aktualisiert die Änderungen an einer Veranstaltung
+		 * @param veranstaltung Die Veranstaltung
+		 * @return
+		 */
 		public int update(Veranstaltung veranstaltung){
 			System.out.println("Methode update");
 			int returncode = 0;
@@ -364,6 +433,10 @@ public class VeranstaltungDAO implements Serializable {
 			}
 			return returncode;
 		}
+		/**
+		 * Gibt alle Veranstaltungen zurück die veröffentlicht sind und die später als zum jetztigen Zeitpunkt stattfinden
+		 * @return Die Veranstaltungen
+		 */
 		@SuppressWarnings("unchecked")
 		public List<Veranstaltung> all() {
 			List<Veranstaltung> veranstaltungen = null;

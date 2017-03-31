@@ -24,7 +24,11 @@ public class TicketDAO implements Serializable {
 	 */
 	private static final long serialVersionUID = -9050853981754743506L;
 	private Logger logger = Logger.getLogger(TicketDAO.class);
-	
+	/**
+	 * Findet ein Ticket auf Basis seiner ID
+	 * @param id Die ID des Tickets
+	 * @return Das Ticket
+	 */
 	public Ticket findByID(int id){
 		Ticket ticket = null;
 		EntityManager em = null;
@@ -49,6 +53,11 @@ public class TicketDAO implements Serializable {
 		}
 		return ticket;
 	}
+	/**
+	 * Findet alle Tickets zu allen Veranstaltungen
+	 * @param veranstaltung Die Veranstaltung zu der die Tickets gesucht werden sollen
+	 * @return Die Tickets einer Veranstaltung
+	 */
 	public List<Ticket> alleTicketsEinerVeranstaltung(Veranstaltung veranstaltung){
 		if(veranstaltung.getId() == 0)
 			return null;
@@ -76,6 +85,11 @@ public class TicketDAO implements Serializable {
 		}
 		return tickets;		
 	}
+	/**
+	 * Löscht ein Ticket
+	 * @param ticket Das Ticket das gelöscht werden soll
+	 * @return
+	 */
 	public int loescheTicket(Ticket ticket){
 		int returncode = 0;
 		EntityManager em = null;
@@ -102,7 +116,11 @@ public class TicketDAO implements Serializable {
 		}
 		return returncode;
 	}
-	
+	/**
+	 * Speichert ein Ticket
+	 * @param ticket Das Ticket das gespeichert werden soll
+	 * @return Der Returncode ob es erfolgrich war -1 war nicht erfolgreich 0 war erfolgreich 
+	 */
 	public int save(Ticket ticket){
 		int returncode = 0;
 		EntityManager em = null;

@@ -19,6 +19,10 @@ public class NutzerDAO implements Serializable {
 	 */
 	private static final long serialVersionUID = 5300002174328322928L;
 	private static final Logger logger = Logger.getLogger(NutzerDAO.class);
+	/**
+	 * Speichert den Nutzer
+	 * @param Nutzer Der Nutzer der gespeichert werden soll
+	 */
 	public int save(Nutzer nutzer){
 		int returncode = -1;
 		nutzer.setBenutzername(nutzer.getBenutzername().toLowerCase());
@@ -41,6 +45,11 @@ public class NutzerDAO implements Serializable {
 		}
 		return returncode;
 	}
+	/**
+	 * Bezieht den Nutzer auf Basis der Benutzer-ID
+	 * @param id Die Nutzer-ID zum zugehörigen Nutzer-Objekt
+	 * @return Das Nutzer-Objekt oder Null, falls es nicht bezogen werden konnte.
+	 */
 	public Nutzer findByID(int id){
 		Nutzer nutzer = new Nutzer();
 		EntityManager em = null;
@@ -65,6 +74,11 @@ public class NutzerDAO implements Serializable {
 			return null;
 		return nutzer;
 	}
+	/**
+	 * Bezieht den Reservierung auf Basis des Benutzernamen
+	 * @param id Der Benutzername zum zugehörigen Nutzer-Objekt
+	 * @return Das Nutzers-Objekt oder Null, falls es nicht bezogen werden konnte.
+	 */
 	public Nutzer findByUsername(String benutzername){
 		benutzername = benutzername.toLowerCase();
 		Nutzer nutzer = new Nutzer();
@@ -95,7 +109,13 @@ public class NutzerDAO implements Serializable {
 		}
 		return nutzer;
 	}
-	
+	/**
+	 * Ändert das Passwort eines Benutzers.
+	 * @param benutzername Der Benutzername zu dem das Passwort geändert werden soll
+	 * @param altesPasswort  Das alte Passwort
+	 * @param neuesPasswort Das neue Passwort
+	 * @return
+	 */
 	public boolean changePassword(String benutzername, String altesPasswort, String neuesPasswort){
 		benutzername = benutzername.toLowerCase();
 		if(!this.checkPassword(benutzername, altesPasswort))
@@ -126,6 +146,12 @@ public class NutzerDAO implements Serializable {
 		}
 		return true;
 	}
+	/**
+	 * Überprüft das Passwort des Benutzers auf Korrektheit
+	 * @param benutzername Der Benutzername dessen Passwort geprüft werden soll
+	 * @param passwort Das Passwort das geprüft werden soll
+	 * @return
+	 */
 	public boolean checkPassword(String benutzername, String passwort){
 		benutzername = benutzername.toLowerCase();
 		try{

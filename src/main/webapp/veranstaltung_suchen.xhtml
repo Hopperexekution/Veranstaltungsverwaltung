@@ -86,7 +86,7 @@
 							<f:facet name="header">
 						 		Titel der Veranstaltung
 							</f:facet>
-						 	<a href="detail_veranstaltung.jsf?id=#{event.id}">
+						 	<a href="detail_veranstaltung.jsf?id=#{veranstaltung.id}">
 										#{veranstaltung.name} </a>
 						</h:column>
 						<h:column>
@@ -99,15 +99,17 @@
 						</h:column>
 						<h:column>
 							<f:facet name="header">
-								Ort
+								Uhrzeit
 							</f:facet>
-							#{veranstaltung.ort}
+							<h:outputText value="#{veranstaltung.datum}">
+								<f:convertDateTime pattern="HH:mm" timeZone="GMT+2"></f:convertDateTime>
+							</h:outputText>
 						</h:column>
 						<h:column>
 							<f:facet name="header">
-								Preis Pro Ticket
+								Ort
 							</f:facet>
-							#{veranstaltung.ticketPreis}
+							#{veranstaltung.ort}
 						</h:column>
 						<h:column>
 							<f:facet name="header">

@@ -36,7 +36,9 @@ public class VeranstaltungSuchenRequest implements Serializable{
 	private Date bisDatum;
 	private String anzahlTickets;
 	private DataModel<Veranstaltung> veranstaltungen;
-	
+	/**
+	 * Diese Methode sucht in der Datenbank nach Veranstaltungen. Verpflichtend ist der Suchbegriff, die anderen Parameter sind beliebig kombinierbar
+	 */
 	public void sucheVeranstaltung(){
 		this.setVeranstaltungen(null);
 		List<Veranstaltung> veranstaltungen = null;
@@ -69,6 +71,9 @@ public class VeranstaltungSuchenRequest implements Serializable{
 			context.addMessage("veranstaltungSuchenForm:suchergebnis", message);
 		}
 	}
+	/**
+	 * Reserviert Tickets für einen Benutzer, dabei wird aus dem ListDataModel die Veranstaltung und die Anzahl der Tickets ausgewertet. 
+	 */
 	public void reservieren(){
 		FacesContext context = FacesContext.getCurrentInstance();
 		FacesMessage message = null;

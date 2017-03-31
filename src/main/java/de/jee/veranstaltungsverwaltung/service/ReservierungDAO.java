@@ -53,6 +53,11 @@ public class ReservierungDAO implements Serializable {
 		}
 		return reservierung;
 	}
+	/**
+	 * Bezieht die Reservierungen, die zu einem Benutzer gehören
+	 * @param nutzer Der Benutzer zu dem die Reservierungen bezogen werden sollen.
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Reservierung> selectbyUserID(Nutzer nutzer){
 		List<Reservierung> reservierungen = null;
@@ -115,11 +120,13 @@ public class ReservierungDAO implements Serializable {
 		}
 		return tickets;
 	}
-	public int save(Reservierung reservierung){
-		int returncode = 0;
-		
-		return returncode;
-	}
+	/**
+	 * Speichert die Reservierung an eine Veranstaltung und bindet Tickets an die Reservierung
+	 * @param reservierung Die Reservierung die gespeichert werden soll
+	 * @param veranstaltung Die Veranstaltung die gespeichert werden soll
+	 * @param anzahlTickets Die Anzahl Tickets die gebunden werden sollen
+	 * @return
+	 */
 	public int save(Reservierung reservierung, Veranstaltung veranstaltung, int anzahlTickets){
 		int returncode = 0;
 		EntityManager em = null;
@@ -155,7 +162,11 @@ public class ReservierungDAO implements Serializable {
 		}
 		return returncode;
 	}
-
+	/**
+	 * Findet alle Reservierungen zu den übergebenen Veranstaltungen
+	 * @param events Die Veranstaltungen zu denen die Reservierungen gefunden werden sollen
+	 * @return
+	 */
 	public List<Reservierung> findByEvents(List<Veranstaltung> events) {
 		List<Reservierung> reservierungen = new ArrayList<Reservierung>();
 		for(Veranstaltung event:events){
@@ -165,6 +176,11 @@ public class ReservierungDAO implements Serializable {
 		}
 		return reservierungen;
 	}
+	/**
+	 * Findet alle Reservierungen zu einer Veranstaltung
+	 * @param event Die Veranstaltung zu der die Reservierungen gefunden werden sollen
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	private List<Reservierung> findeReservierungEvent(Veranstaltung event) {
 		List<Reservierung> reservierungen = null;
