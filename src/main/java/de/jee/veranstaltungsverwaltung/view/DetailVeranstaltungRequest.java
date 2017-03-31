@@ -19,7 +19,12 @@ import de.jee.veranstaltungsverwaltung.model.Veranstaltung;
 import de.jee.veranstaltungsverwaltung.service.ReservierungDAO;
 import de.jee.veranstaltungsverwaltung.service.TicketDAO;
 import de.jee.veranstaltungsverwaltung.service.VeranstaltungDAO;
-
+/**
+ * 
+ * Diese Bean ermöglicht das Anzeigen von Detailinformationen zu einer Veranstaltung
+ * Zudem können Tickets reserviert und eine nicht veröffentlichte Veranstaltung bearbeitet werden
+ *
+ */
 @Named
 @ViewScoped
 public class DetailVeranstaltungRequest implements Serializable {
@@ -45,6 +50,9 @@ public class DetailVeranstaltungRequest implements Serializable {
 	private Date zeit;
 
 	
+	/**
+	 * Die Uhrzeit wird gesetzt
+	 */
 	@SuppressWarnings("deprecation")
 	public void init(){
 		zeit = new Date();
@@ -57,33 +65,41 @@ public class DetailVeranstaltungRequest implements Serializable {
 	public void setZeit(Date zeit) {
 		this.zeit = zeit;
 	}
+	
+	/**
+	 * setzen des Flags zur Bearbeitung auf true
+	 */
 	public void editVeranstaltung() {
 		anzTickets = event.getTickets().size();
 		canEdit = true;
 		
 	}
 
+	/**
+	 * Update auf die Veranstaltung
+	 */
 	@SuppressWarnings("deprecation")
 	public void updateVeranstaltung() {
 		System.out.println(event.getName());
 
+		//wenn sihc die Anzahl Tickets verändert
 		if (anzTickets != event.getTickets().size()) {
 			int anz = 0;
-			// List<Ticket> tickets = tdao.alleTicketsEinerVeranstaltung(event);
-
 			System.out.println(event.getTickets().size());
 			List<Ticket> tickets = new ArrayList<Ticket>();
 			tickets.addAll(event.getTickets());
+			//Alle Tickets der Veranstaltung löschen
 			while (anz < event.getTickets().size()) {
 				ticketDAO.loescheTicket(tickets.get(anz));
 				anz++;
 
 			}
-			// event.getTickets().clear();
+			//neue Tickets gemäß der übergebenen Anzahl erzeugen
 			for (int i = 0; i < anzTickets; i++) {
 				ticketDAO.save(new Ticket(event));
 			}
 		}
+		//Zusammenfügen von Uhrzeit und Datum
 		if(zeit.getHours() < 23)
 			event.getDatum().setHours(zeit.getHours() + 1);
 		else
@@ -101,18 +117,24 @@ public class DetailVeranstaltungRequest implements Serializable {
 		
 
 	}
-
+/**
+ * Reservieren von Tickets
+ * @param tickets Anzahl der zu reservierenden Tickets
+ */
 	public void reservieren(int tickets) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		FacesMessage message = null;
 		Reservierung reservierung = new Reservierung(security.getCurrentUser());
+		//Anzahl zu reservierender Tickets nicht angegeben
 		if (event.getZuReservierendeTickets().equals("")) {
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Die Anzahl der zu reservierenden Tickets muss angegeben werden", null);
 			context.addMessage("detailVeranstaltungForm:resTickets", message);
 			return;
 		}
+		
 		int anzahlTickets = Integer.parseInt(event.getZuReservierendeTickets());
+		//Mehr Tickets angegeben, als verfügbar sind
 		if (anzahlTickets > event.getVerfuegbareTickets().size()) {
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Es können nicht mehr Tickets reserviert werden, als noch verfügbar sind!", null);
@@ -120,6 +142,7 @@ public class DetailVeranstaltungRequest implements Serializable {
 			return;
 		}
 		int returncode = reservierungDAO.save(reservierung, event, anzahlTickets);
+		//Returncode-Handling DB-seitig
 		switch (returncode) {
 		case -1:
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,

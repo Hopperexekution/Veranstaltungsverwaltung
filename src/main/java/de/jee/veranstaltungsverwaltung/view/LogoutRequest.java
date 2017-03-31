@@ -7,6 +7,9 @@ import javax.inject.Named;
 
 import de.jee.veranstaltungsverwaltung.controller.Security;
 
+/**
+ * Diese Bean ermöglicht den Logout des Benutzers
+ */
 @Named
 @RequestScoped
 public class LogoutRequest {

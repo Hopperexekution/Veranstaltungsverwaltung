@@ -12,7 +12,9 @@ import javax.inject.Named;
 import de.jee.veranstaltungsverwaltung.controller.Security;
 import de.jee.veranstaltungsverwaltung.model.Veranstaltung;
 import de.jee.veranstaltungsverwaltung.service.VeranstaltungDAO;
-
+/**
+ * Diese Bean ermöglicht das Hinzufügen von Veranstaltungen
+ */
 @Named
 @RequestScoped
 public class VeranstaltungRequest {
@@ -29,7 +31,9 @@ public class VeranstaltungRequest {
 	private int anzahlTickets;
 	private boolean istVeroeffentlicht;
 	
-	
+	/**
+	 * Weiterleiten, wenn die Authorisierung fehlschlägt
+	 */
 	public void init(){
 		if(!security.isManager()){
 			try {
@@ -42,19 +46,25 @@ public class VeranstaltungRequest {
 			
 		}
 	}
-	
+	/**
+	 * Erstellen der Veranstaltung
+	 * @return nächste Seite
+	 */
 	@SuppressWarnings("deprecation")
 	public String erstelleVeranstaltung(){
+		//Beschreibung ist leer
 		if(beschreibung == null)
 			beschreibung = "";
+		//Erzeugung der neuen Veranstaltung
 		Veranstaltung veranstaltung = new Veranstaltung(name, beschreibung, datum, ort, istVeroeffentlicht, security.getCurrentUser());
 		veranstaltung.setTicketPreis(ticketPreis);
+		//Zusammenfügung von Uhrzeit und Datum
 		if(zeit.getHours() < 23)
 			veranstaltung.getDatum().setHours(zeit.getHours() + 1);
 		else
 			veranstaltung.getDatum().setHours(0);	
 		veranstaltung.getDatum().setMinutes(zeit.getMinutes());
-		
+		//Speichern der Veranstaltung
 		int returncode = veranstaltungDAO.save(veranstaltung, anzahlTickets);
 		if(returncode <= 1)
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Die Veranstaltung wurde erfolgreich angelegt", null));

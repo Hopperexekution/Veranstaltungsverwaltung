@@ -9,7 +9,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
-
+/**
+ * Über diese Klasse wird das Datum einer Veranstaltung validiert:
+ * Bedingungen für die erfolgreiche Prüfung:
+ * 1. Der Wert ist nicht leer
+ * 2. Der Wert ist ein Datum im Format yyyy-M-d oder dd.MM.yyyy
+ * 3. Das Datum liegt nicht vor dem aktuellen Datum
+ */
 @FacesValidator("DateValidator")
 public class DateValidator implements Validator {
 

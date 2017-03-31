@@ -16,7 +16,12 @@ import de.jee.veranstaltungsverwaltung.model.Veranstaltung;
 import de.jee.veranstaltungsverwaltung.service.NutzerDAO;
 import de.jee.veranstaltungsverwaltung.service.ReservierungDAO;
 import de.jee.veranstaltungsverwaltung.service.VeranstaltungDAO;
-
+/**
+ * Diese Bean ermöglicht das Anzeigen einer Liste aller Veranstaltungen eines Managers,
+ * sowie eine Liste mit allen Reservierungen zu diesen
+ * @author anwender
+ *
+ */
 @Named
 @RequestScoped
 public class ManagerRequest {
@@ -32,6 +37,9 @@ public class ManagerRequest {
 	private List<Veranstaltung> events;
 	private List<Reservierung> reservierungen;
 	
+	/**
+	 * Weiterleiten, falls die Authorisierung fehlschlägt, Laden der Veranstaltungen und der Reservierungen
+	 */
 	public void init(){
 		if(!security.isManager()){
 			try {
@@ -47,15 +55,29 @@ public class ManagerRequest {
 		reservierungen = reservierungDAO.findByEvents(events);
 	}
 	
+	/**
+	 * Suchen aller Tickets zu einer Reservierung
+	 * @param r Reservierung
+	 * @return Liste mit Tickets zu der Reservierung
+	 */
 	public List<Ticket> getTickets(Reservierung r){
 		List<Ticket> tickets = reservierungDAO.getTicketsByReservierungsID(r.getId());
 		return tickets;
 	}
-
+/**
+ * Suchen der Veranstaltung zu der Reservierung
+ * @param r Reservierung
+ * @return Veranstaltung zu der Reservierung
+ */
 	public Veranstaltung getEvent(Reservierung r){
 		Veranstaltung event = veranstaltungDAO.findByID(getTickets(r).get(0).getVeranstaltung().getId());
 		return event;
 	}
+	/**
+	 * Suchen des Nutzers zu der Reservierung
+	 * @param r Reservierung
+	 * @return Nutzer zu der Reservierung
+	 */
 	public Nutzer getUser(Reservierung r){
 		Nutzer user = nutzerDAO.findByID(r.getNutzer().getId());
 		return user;

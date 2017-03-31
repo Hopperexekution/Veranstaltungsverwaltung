@@ -6,6 +6,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+/**
+ * Über diese Klasse wird die Anzahl der Tickets einer Veranstaltung validiert:
+ * Bedingungen für die erfolgreiche Prüfung:
+ * 1. Der Wert ist nicht leer
+ * 2. Der Wert ist ein Integer
+ * 3. Der Wert ist größer oder gleich 0
+ */
 @FacesValidator("MinimaleAnzahlTickets")
 public class MinimaleAnzahlTicketsValidator implements Validator {
 

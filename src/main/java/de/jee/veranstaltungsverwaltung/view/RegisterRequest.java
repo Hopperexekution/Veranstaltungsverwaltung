@@ -2,13 +2,17 @@ package de.jee.veranstaltungsverwaltung.view;
 
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import de.jee.veranstaltungsverwaltung.controller.Security;
 import de.jee.veranstaltungsverwaltung.model.Nutzer;
 import de.jee.veranstaltungsverwaltung.service.UserService;
-
+/**
+ * Diese Bean ermöglicht das Registrieren eines Benutzers
+ */
 @Named
 @RequestScoped
 public class RegisterRequest {
@@ -27,18 +31,38 @@ public class RegisterRequest {
 	
 	private String email;
 	
+	/**
+	 * Registrieren des Benutzers, Speichern des Benutzers in der Datenbank
+	 * @return
+	 */
 	public String doRegister(){
+		FacesContext context = FacesContext.getCurrentInstance();
+		FacesMessage message = null;
+		//Der Benutzername ist nicht leer
 		if(!benutzername.trim().equals("")&&!passwort1.trim().equals("")){
 
+			//Der Benutzername existiert noch nicht
 			if(userService.checkUser(benutzername)){
+				//Das Passwort wurde korrekt bestätigt
 				if(passwort1.equals(passwort2)){
 					Nutzer nutzer = userService.registerUser(benutzername, passwort1, istManager, email);
 					security.login(nutzer);
+				}else{
+					message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Das Passwort wurde nicht korrekt bestätigt", null);
+					context.addMessage("registerForm:user", message);
 				}
+			}else{
+				message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						"Der Benutzername existiert bereits", null);
+				context.addMessage("registerForm:user", message);
 			}
-			else{
-			}				
+		}else{
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Der Benutzername muss angegeben werden", null);
+			context.addMessage("registerForm:user", message);
 		}
+
 		return "home";
 	}
 

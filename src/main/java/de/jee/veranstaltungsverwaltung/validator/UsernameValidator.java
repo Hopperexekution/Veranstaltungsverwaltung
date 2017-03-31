@@ -9,6 +9,12 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 
 import de.jee.veranstaltungsverwaltung.service.NutzerDAO;
+/**
+ *  Über diese Klasse wird der Nutzername validiert.
+ *  Bedingungen für eine erfolgreiche Prüfung:
+ *  1. Der Wert ist nicht leer
+ *  2. Der Benutzername existiert noch nicht
+ */
 @FacesValidator("Username")
 public class UsernameValidator implements Validator {
 

@@ -12,6 +12,11 @@ import de.jee.veranstaltungsverwaltung.service.VeranstaltungDAO;
 
 @Named
 @RequestScoped
+/**
+ * Diese Bean ermöglicht das Anzeigen zweier Tabellen mit Veranstaltungen.
+ * Zum einen die 5 neuesten Veranstaltungen, zum anderen alle Veranstaltungen
+ *
+ */
 public class HomeRequest {
 
 	@Inject
@@ -21,6 +26,9 @@ public class HomeRequest {
 	private List<Veranstaltung> alleEvents;
 	
 	private List<Veranstaltung> neuesteEvents;
+	/**
+	 * Laden der Veranstaltungen
+	 */
 	@PostConstruct
 	public void postConstruct(){
 		alleEvents = veranstaltungDAO.all();

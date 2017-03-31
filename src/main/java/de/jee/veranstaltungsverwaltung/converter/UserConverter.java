@@ -1,4 +1,4 @@
-package de.jee.veranstaltungsverwaltung.view;
+package de.jee.veranstaltungsverwaltung.converter;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -10,7 +10,9 @@ import javax.inject.Named;
 
 import de.jee.veranstaltungsverwaltung.model.Nutzer;
 import de.jee.veranstaltungsverwaltung.service.UserService;
-
+/**
+ * Über diesen Converter wird der Benutzer zu einem Benutzernamen geholt
+ */
 @Named
 public class UserConverter implements Converter{
 	@Inject
@@ -19,10 +21,12 @@ public class UserConverter implements Converter{
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component,
 			String value) {
+		//Der Wert ist leer
 		if(null == value || value.isEmpty()){
 			return null;
 		}
 		Nutzer user= userService.findByUsername(value);
+		//Der Benutzer wurde nicht gefunden
 				if (user==null){
 					FacesMessage msg =
 							new FacesMessage("Der Benutzername oder das Passwort ist nicht korrekt");

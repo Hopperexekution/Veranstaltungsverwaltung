@@ -10,7 +10,10 @@ import javax.inject.Named;
 import de.jee.veranstaltungsverwaltung.controller.Security;
 import de.jee.veranstaltungsverwaltung.model.Nutzer;
 import de.jee.veranstaltungsverwaltung.service.UserService;
-
+/**
+ * Diese Bean ermöglicht den Login des Benutzers
+ *
+ */
 @Named
 @RequestScoped
 public class LoginRequest {
@@ -23,10 +26,14 @@ public class LoginRequest {
 	private Nutzer user;
 
 	private String passwort;
-	
+	/**
+	 * Login des Nutzers
+	 * @return neue Seite
+	 */
 	public String doLogin(){
+		//Kein Benutzername angegeben
 		if(user!=null&&!user.getBenutzername().trim().equals("")){
-
+			//Passwort ist korrekt
 			if(userService.checkPasswort(user, passwort)){
 				security.login(user);
 			}else{

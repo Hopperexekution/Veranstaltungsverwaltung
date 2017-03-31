@@ -15,7 +15,11 @@ import de.jee.veranstaltungsverwaltung.model.Veranstaltung;
 import de.jee.veranstaltungsverwaltung.service.ReservierungDAO;
 import de.jee.veranstaltungsverwaltung.service.VeranstaltungDAO;
 
-
+/**
+ * Diese Bean ermöglicht das Anzeigen aller Reservierungen des angemeldeten Benutzers
+ * @author anwender
+ *
+ */
 @Named
 @RequestScoped
 public class ReservierungenRequest implements Serializable{
@@ -32,6 +36,10 @@ public class ReservierungenRequest implements Serializable{
 	private VeranstaltungDAO veranstaltungDAO;
 	private List<Reservierung> reservierungen;
 	
+	/**
+	 * Weiterleiten, falls die Authorisierung fehlschlägt
+	 * Laden der Reservierungen
+	 */
 	public void init(){
 		if(!security.isLoggedIn()){
 			try {
@@ -46,12 +54,20 @@ public class ReservierungenRequest implements Serializable{
 		reservierungen = reservierungDAO.selectbyUserID(security.getCurrentUser());
 		System.out.println(reservierungen.size());		
 	}
-	
+	/**
+	 * Alle Tickets zu einer Reservierung holen
+	 * @param r Reservierung
+	 * @return Tickets zu der Reservierung
+	 */
 	public List<Ticket> getTickets(Reservierung r){
 		List<Ticket> tickets = reservierungDAO.getTicketsByReservierungsID(r.getId());
 		return tickets;
 	}
-	
+	/**
+	 * Veranstaltung zu einer Reservierung holen
+	 * @param r Reservierung
+	 * @return Veranstaltung zu der Reservierung
+	 */
 	public Veranstaltung getEvent(Reservierung r){
 		Veranstaltung event = veranstaltungDAO.findByID(getTickets(r).get(0).getVeranstaltung().getId());
 		
