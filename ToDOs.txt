@@ -1,15 +1,9 @@
-- Uhrzeit eine Stunde geht pro bearbeitung eine Stunde vor
-- Uhrzeit bei der Suche
-- Gültigkeit der Veranstaltung auf der Home-Seite
+
 - Kommentare
 - Testen Testen Testen
 - Doku
-	
-	- User-Stories --> Aufteilen
 	- Installationsanleitung --> Nur mit Chrome getestet
 	- Klassendiagramm generieren --> Jan
-	- Sprintbacklog - Taskbeschreibung
 	- Datenbankeschreibung --> Jan
-	- Eigenständigkeitserklärung --> Ann-Katrin vorher unterschreiben!
-	- Models, Default Values einstellen
+	- Eigenständigkeitserklärung --> Jan Unterschreiben
 	
